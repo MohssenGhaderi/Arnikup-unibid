@@ -1,0 +1,126 @@
+{% extends 'site/layout.html' %}
+{% block title %} ورود به سایت {% endblock %}
+{% block content %}
+
+	<div class="container" id="app">
+		<div class="row">
+		<div class="col-md-12">
+			<h2 class="title-shop-page">ورود به حساب کاربری یونی بید</h2>
+			<div class="register-content-box">
+				<div class="row">
+					<div class="form">
+					<div class="thumbnail"><img src="/static/images/theme/login-icon.svg"/></div>
+
+					<div class="alert alert-danger error_alert hide">
+						<a href="#" class="close" aria-label="close">×</a>
+						<div class="error_container"></div>
+					</div>
+
+					<div class="alert alert-success alert-dismissable success_alert hide">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+						<div class="success_container"></div>
+					</div>
+
+					<form class="login-form"  @submit.prevent="handleSubmit">
+						<input type="text" v-model="loginInformation.username" placeholder="نام کاربری"/>
+						<input type="password" v-model="loginInformation.password" placeholder="رمز عبور"/>
+						<input type="submit" value="ورود به حساب کاربری"/>
+						<div class="form-my-account">
+							<div class="table create-account">
+								<div class="text-left">
+									<p>
+										<input v-model="loginInformation.remember_me" type="checkbox"  id="remember_me" /> <label for="remember_me">مرا به خاطر بسپار</label>
+									</p>
+								</div>
+								<div class="text-right">
+									<a href="/forgotpassword" class="color">رمز عبور خود را فراموش کرده اید؟</a>
+								</div>
+							</div>
+						</div>
+
+						<p class="message">هنوز ثبت نام نکرده اید؟ <a href="/register">ثبت نام کنید</a></p>
+					</form>
+
+
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+	</div>
+
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+
+<script>
+
+var app = new Vue({
+
+  el: '#app',
+
+  data:{
+		loginInformation :{
+			username : "",
+			password : "",
+			remember_me :1,
+		},
+		next : "{{next}}",
+	},
+	mounted:function(){
+		console.log(this.next);
+	},
+	methods:{
+		handleSubmit: function(){
+			self = this;
+			var obj = self.loginInformation;
+
+      for (var propName in obj) {
+        if (obj[propName] === "null" || obj[propName] === undefined || obj[propName]==="" || obj[propName]===-1) {
+          delete obj[propName];
+        }
+      }
+			axios.post("{{url_for('userlogin')}}",obj,
+				{
+					headers:
+					{
+						'Content-Type': 'application/json'
+					}
+				}).then(function (response) {
+          //handle success
+					$(".error_alert").addClass('hide');
+					$(".success_alert").removeClass('hide');
+					$(".success_container").html('ورود شما با موفقیت انجام گرفت')
+					if(self.next!="None"){
+							window.location = self.next;
+						}
+						else {
+						window.parent.location.reload();
+					}
+         })
+         .catch((error)=>{
+					 console.log(error.response.data.message);
+
+					 if (error.response.data.message.field == "verification"){
+
+						 window.location = "/verify";
+					 }else {
+						 $(".error_alert").removeClass('hide');
+						 for (var propName in error.response.data.message) {
+							 $(".error_container").html(error.response.data.message[propName]);
+						 }
+					 }
+ 				});
+		},
+	}
+});
+
+$('.close').on('click',function(event){
+	event.preventDefault();
+	$(this).parent().removeClass('show').addClass('hide');
+});
+
+</script>
+{% endblock scripts %}

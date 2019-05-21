@@ -1,0 +1,22 @@
+/* Table of contents
+  -searchResult
+  -article container
+*/
+
+/* =searchResult */
+.searchResult {
+  flex:1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding-bottom: 50px;
+}
+
+.searchResult-title {
+  text-align: center;
+  font-size: 26px;
+  color: #212121;
+  margin: 42px 0;
+}

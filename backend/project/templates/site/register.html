@@ -1,0 +1,120 @@
+{% extends 'site/layout.html' %}
+{% block title %} ثبت نام {% endblock %}
+{% block content %}
+
+<div class="container" id="app">
+	<div class="row">
+	<div class="col-md-12">
+		<h2 class="title-shop-page">ثبت نام در یونی بید</h2>
+		<div class="register-content-box">
+			<div class="row">
+				<div class="form">
+				<div class="thumbnail"><img src="/static/images/theme/login-icon.svg"/></div>
+
+				<div class="alert alert-danger error_alert hide">
+					<a href="#" class="close" aria-label="close">×</a>
+					<div class="error_container"></div>
+				</div>
+				<div class="alert alert-success alert-dismissable success_alert hide">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+					<div class="success_container"></div>
+				</div>
+
+				<form class="register-form"  @submit.prevent="handleSubmit">
+					<input v-model="registerInformation.username" type="text" placeholder="نام کاربری (حداقل ۳ حرفی)"/>
+					<input v-model="registerInformation.password" type="password" placeholder="رمز عبور(حداقل ۴ کاراکتری)"/>
+					<input v-model="registerInformation.c_password" type="password" placeholder="تکرار رمز عبور(مشابه رمز عبور)"/>
+					<input v-model="registerInformation.mobile" v-on:keypress="isNumber($event)" type="text" placeholder="شماره موبایل (فقط عدد بصورت انگلیسی)" :maxlength="11"/>
+					<input v-model="registerInformation.invitor" type="text" placeholder="کد معرف"/>
+					<div class="form-my-account">
+						<div class="table create-account">
+							<div class="text-left">
+								<p>
+									<!-- <input v-model="registerInformation.accept_roles" type="checkbox"  id="accept_roles" name="accept_roles"/><label for="accept_roles"><a href="/roles" class="color">قوانین و مقررات سایت </a> را مطالعه کرده ام و قبول دارم <span class="required">*</span></label> -->
+									قبل از ثبت نام در سایت <a href="/roles" class="color"> قوانین و مقررات سایت </a>را مطالعه کرده ام و قبول دارم. </label>
+								</p>
+							</div>
+						</div>
+					</div>
+					<input type="submit" value="ثبت نام" />
+					<p class="message">قبلا ثبت نام کرده اید؟ <a href="/login">ورود به حساب کاربری</a></p>
+
+				</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+
+<script>
+
+var app = new Vue({
+
+  el: '#app',
+
+  data:{
+		registerInformation :{
+			username : "",
+			password : "",
+			c_password : "",
+			mobile : "",
+			accept_roles : true,
+			invitor : "",
+		},
+		next : "{{next}}",
+	},
+	methods:{
+		handleSubmit: function(){
+			self = this;
+			var obj = self.registerInformation;
+
+      for (var propName in obj) {
+        if (obj[propName] === "null" || obj[propName] === undefined || obj[propName]==="" || obj[propName]===false) {
+          delete obj[propName];
+        }
+      }
+			axios.post("{{url_for('userregistration')}}",obj,
+				{
+					headers:
+					{
+						'Content-Type': 'application/json'
+					}
+				}).then(function (response) {
+
+					window.location = "/verify"
+
+         })
+         .catch((error)=>{
+              $(".error_alert").removeClass('hide');
+							for (var propName in error.response.data.message) {
+ 							 $(".error_container").html(error.response.data.message[propName]);
+ 						 }
+ 				});
+		},
+		isNumber: function(evt) {
+			evt = (evt) ? evt : window.event;
+			var charCode = (evt.which) ? evt.which : evt.keyCode;
+			// if ((charCode > 31 && (charCode < 48 || charCode > 57)) && (charCode < 1776 || charCode > 1785) && charCode !== 46) {
+			if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+				evt.preventDefault();
+			}
+			else {
+				return true;
+			}
+		},
+	}
+});
+
+$('.close').on('click',function(event){
+	event.preventDefault();
+	$(this).parent().removeClass('show').addClass('hide');
+});
+
+</script>
+{% endblock scripts %}

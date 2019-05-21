@@ -1,0 +1,40 @@
+<header>
+  <div class="header-top">
+   <span class="header-top-text">حراجی و فروشگاه بزرگ آنلاین</span>
+    <div dir="ltr" class="header-top-info">
+        <img src="../../assets/resources/images/assets/svg/Telegram.svg" class="telegram">
+        <img src="../../assets/resources/images/assets/svg/Instagram.svg" class="instagram">
+        <img src="../../assets/resources/images/assets/svg/Twitter.svg" class="twitter">
+        <span class="line"></span>
+        <span>راهنما</span>
+        <img src="../../assets/resources/images/assets/svg/question.svg" class="question">
+    </div>
+  </div>
+  <div class="header-content">
+    <img src="../../assets/resources/images/assets/png/logo.png" class="logo">
+  <div class="cfnSearch">
+    <input type="search" (click)="searchBoxBehaviour($event)" #txtSearch  class="cfnSearch-input" autocomplete="false"  placeholder="کالای مورد نظر خود را جستجو کنید...">
+    <div class="search-toolbar-suggestion" #searchToolbarSuggestion>
+      <ul class="search-toolbar-list">
+        <li (click)="searchItemClick($event)" *ngFor="let item of searchItems?.categories" class="search-toolbar-list-item"><img [src]="Link.category(item.icon)">{{item.title}}</li>
+      </ul>
+    </div>
+    <img src="../../assets/resources/images/assets/svg/magnifying-glass-3.svg" class="cfnSearch-submit magnifying-glass-3">
+  </div>
+  <div class="header-content-loginInfo" dir="ltr" *ngIf="isLoggedIn === true">
+    <div class="header-content-loginInfo-pic">
+        <img src="../../assets/resources/images/pics/pic1.jpg" alt="" class="">
+        <span class="badge">2</span>
+    </div>
+    <ul class="header-content-loginInfo-stats">
+      <li><img src="../../assets/resources/images/assets/svg/Coin.svg" class="coin"><span>۳۲۰</span></li>
+      <li><img src="../../assets/resources/images/assets/svg/Gem.svg" class="gem"><span>۴</span></li>
+      <li><img src="../../assets/resources/images/assets/svg/Notification.svg" class="notification"><span>۱</span></li>
+    </ul>
+  </div>
+  <div class="header-content-unauthorized" *ngIf="isLoggedIn === false">
+    <span routerLink = '/signup' class="header-content-unauthorized-register">ثبت نام</span>
+    <span routerLink = "/signin">ورود</span>
+  </div>
+  </div>
+</header>

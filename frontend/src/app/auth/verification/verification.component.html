@@ -1,0 +1,40 @@
+<div class="account-container">
+  <span class="account-logo">یونی‌بید</span>
+  <p class="account-regularText">فعال سازی حساب کاربری</p>
+  <span class="account-pic"></span>
+  <form [formGroup]="verificationForm" (ngSubmit)="onSubmit()">
+  <div class="verificationText" #verificationText>
+    <span appVerificationInputKeyup class="verificationInput" contenteditable="true"></span>
+    <span appVerificationInputKeyup class="verificationInput" contenteditable="true"></span>
+    <span appVerificationInputKeyup class="verificationInput" contenteditable="true"></span>
+    <span appVerificationInputKeyup class="verificationInput" contenteditable="true"></span>
+    <span appVerificationInputKeyup class="verificationInput" contenteditable="true"></span>
+    <span appVerificationInputKeyup class="verificationInput" contenteditable="true"></span>
+  </div>
+  <button [disabled]="disabled" class="cfnButton cfnButton-primary">تایید کد فعال سازی</button>
+  <div class="account-timedown">
+    <span>زمان باقی مانده</span>
+    <span class="account-timer">{{verificationPut?.remainedToExpire}} ثانیه</span>
+  </div>
+  <div class="account-retry">
+      <span>موفق به دریافت کد فعال سازی نشده اید؟</span>
+      <a (click)="resendActivationCodeClick($event)">دریافت مجدد کد فعال سازی</a>
+    </div>
+  </form>
+</div>
+
+<div class="account-footer">
+  <ul class="account-footer-list">
+    <li><a href="">قوانین و مقررات</a></li>
+    <li><a href="">حریم خصوصی</a></li>
+  </ul>
+  <span dir="ltr">Copyright © unibid allrights reserved.</span>
+</div>
+
+<div class="cfnError" #errorMessage>
+  <ng-template [ngIf]="errorObj">
+  <div>
+    {{errorObj.error.message}}
+  </div>
+</ng-template>
+</div>

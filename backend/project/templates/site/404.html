@@ -1,0 +1,18 @@
+{% extends 'site/layout.html' %}
+{% block title %} صفحه نامعتبر {% endblock %}
+{% block content %}
+<div class="content-page">
+	<div class="container">
+		<div class="bread-crumb radius">
+			<a href="/">خانه</a>
+		</div>
+		<div class="content-404">
+			<img src="{{ url_for('static', filename = 'images/theme/404.png')}}" alt="404" />
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+
+{% endblock scripts %}

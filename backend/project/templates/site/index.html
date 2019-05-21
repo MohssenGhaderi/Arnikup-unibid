@@ -1,0 +1,795 @@
+{% extends 'site/layout.html' %}
+{% block content %}
+
+<div id="app">
+
+	<div class="container">
+		<div class="content-top1">
+			<div class="row">
+				<div class="col-md-3 hidden-sm hidden-xs" style="display:none">
+					<div class="wrap-cat-icon wrap-cat-icon1">
+						<h2 class="title14 title-cat-icon">دسته بندی ها</h2>
+						<ul class="list-cat-icon">
+						</ul>
+					</div>
+				</div>
+				<div v-if="ad_auctions" class="col-md-12 col-sm-12 col-xs-12">
+					<div class="wrap-banner-slider1">
+						<div class="banner-slider banner-slider1">
+							<div v-wrapitemhot data-autoplay = "true"  data-pagination = "false" data-navigation = "true"  data-itemscustom = "[[0,1]]" data-transition = "fade">
+								<template v-for="item in ad_auctions">
+									{%raw%}
+									<div class="item-banner item-banner1">
+	 								<div class="banner-thumb">
+
+										<a v-bind:href="item.link" class="btn-rect white bg-color5 radius">
+											<img v-bind:src="prepare_ad_images(item.images)" alt="" />
+										</a>
+
+	 								</div>
+	 								<div class="banner-info animated" data-animated="zoomInRight"  >
+	 									<h2 class="title30">{{item.title}}</h2>
+	 									<h2 class="title30 color">{{item.discount}}</h2>
+	 									<p>{{item.description}}</p>
+
+	 									<a v-if="item.link" v-bind:href="item.link" class="shopnow">{{item.link_title}}</a>
+
+	 								</div>
+	 							  </div>
+									{%endraw%}
+								</template>
+							</div>
+						</div>
+						<!-- End Banner -->
+						<div v-if="ad_products.length>0" class="sub-banner-slider">
+							<div v-wrapitem data-pagination="false" data-navigation="true" data-itemscustom="[[0,1],[560,3],[1024,4]]">
+								<template v-for="item in ad_products">
+									{%raw%}
+									<div class="item-sub-banner">
+										<div class="product-thumb">
+											<a v-bind:href="_createAuctionLink(item.id)"><img class="wobble-horizontal" v-bind:src="prepare_ad_images(item.advertisement.images)" alt=""></a>
+										</div>
+										<div class="product-info">
+											<h3 class="product-title text-capitalize"><a v-bind:href=" _createAuctionLink(item.id)">{{item.advertisement.title}}</a></h3>
+											<strong class="color"> تا {{ _ToPersian(item.advertisement.discount)}} ٪ تخفیف</strong>
+										</div>
+									</div>
+									{%endraw%}
+								</template>
+							</div>
+						</div>
+						<!-- End Sub Banner -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<div v-if="events">
+			<template v-for="event in events">
+				{%raw%}
+				<div class="intro-countdown">
+					<h2 class="title30"> ٪<strong class="color" data-bind="text: discount ">{{_ToPersian(event.discount)}}</strong> {{event.description}} <span class="color"> محدود </span></h2>
+					<div v-bigtimer class="deals-cowndown" v-bind:data-timer ="event.deadline"></div>
+				</div>
+				{%endraw%}
+			</template>
+			<!-- End Intro Countown -->
+		</div>
+
+	</div>
+
+	<div class="list-flash">
+		<div class="container">
+			<h2 class="title24 title-flash"><span class="bg-color white">آخرین حراجی های سایت</span></h2>
+			<div class="row">
+				<template v-for="auction in today_auctions">
+					{%raw%}
+					<div class="col-md-4 col-sm-6 col-xs-12">
+						<div class="banner-flash">
+							<div class="banner-zoom">
+								<a v-bind:href="_createAuctionLink(auction.id)" class="thumb-zoom"><img v-bind:src="auction.image" alt="" /></a>
+								<div class="flash-label">
+									<span class="text-uppercase white">{{auction.participant_count}} از {{auction.max_members}} </span>
+								</div>
+								<div class="flash-label right-time">
+									<span class="text-uppercase white"><div v-flashtimer class="flash-countdown timer auction"  v-bind:data-timer ="auction.deadline" v-bind:data-auctionid="auction.id"></div></span>
+								</div>
+							</div>
+							<div class="flash-info">
+								<ul class="list-none clearfix">
+
+									<li>
+										<div class="flash-timer">
+											<p>{{auction.title}}</p>
+										</div>
+									</li>
+
+									<li>
+										<div class="flash-timer">
+											{%endraw%}
+
+											{%if current_user.is_authenticated%}
+											<div v-if="auction.is_participant">
+												<a v-bind:href="auction.link" class="btn-rect white bg-color5 radius"><span>ورود به حراجی</span></a>
+											</div>
+											<div v-if="!auction.is_participant">
+												<a v-bind:href="auction.link" class="quickview-link fancybox.iframe btn-rect white bg-color1 radius"><span>ثبت نام در حراجی</span></a>
+											</div>
+											{%else%}
+												<a v-bind:href="auction.link" class="quickview-link fancybox.iframe btn-rect white bg-color3 radius"><span>ورود</span></a>
+											{%endif%}
+
+											{%raw%}
+										</div>
+									</li>
+
+									<li>
+										<div class="info-pro-hotdeal">
+											<div class="deal-percent"><span>شروع حراجی: </span>{{auction.base_price}}</div>
+											<div class="product-price"><label>قیمت محصول: </label><ins>{{auction.price}}</ins></div>
+										</div>
+									</li>
+
+								</ul>
+							</div>
+						</div>
+					</div>
+					{%endraw%}
+				</template>
+
+				<!-- End Intro Countown -->
+			</div>
+		</div>
+	</div>
+
+	<div class="product-hotdeal" style="display:none">
+		<div class="header-hotdeal">
+			<div class="container">
+				<div class="title-box1">
+					<h2 class="title30"><span><i class="fa fa-legal" aria-hidden="true"></i></span><a href="#">بهترین ها</a></h2>
+					<ul class="list-none">
+						<li class="active"><a href="#hot1" data-toggle="tab">پر بازدیدترین حراجی ها</a></li>
+						<li><a href="#hot2" data-toggle="tab">محبوب ترین حراجی ها</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- End Header Hotdeal -->
+		<div class="content-hotdeal tab-content">
+
+			<div id="hot1" class="tab-pane active">
+				<div class="hotdeal-slider">
+					<div v-wrapitemhot data-itemscustom="[[0,1],[560,2],[768,3],[1024,4],[1200,5],[1366,6]]"  data-pagination = "false"  data-autoplay = "true"  data-navigation = "true">
+						<template v-for="auction in best_auctions">
+							{%raw%}
+							<div class="item-pro-hotdeal">
+								<div class="product-thumb">
+									<a href="#" v-on:click="$event.preventDefault()" class="product-thumb-link">
+										<img v-bind:src="auction.image" alt="">
+									</a>
+									<a v-bind:href="auction.instance_link" class="quickview-link pos-bottom fancybox.iframe"><span>مشاهده سریع</span></a>
+								</div>
+								<div class="product-info">
+									<h3 class="product-title"><a v-bind:href="_createAuctionLink(auction.id)">{{auction.title}}</a></h3>
+									<div class="info-pro-hotdeal">
+										<div class="deal-percent">
+											<span>شروع حراجی: </span>
+											{{auction.base_price}}
+										</div>
+										<div class="product-price">
+											<del><span>قیمت محصول</span></del>
+											<ins><span>{{auction.price}} تومان</span></ins>
+										</div>
+									</div>
+
+									<div class="product-extra-link2">
+										{%endraw%}
+
+										{%if current_user.is_authenticated%}
+										<div v-if="auction.is_participant">
+											<a v-bind:href="auction.link" class="addcart-link bg-color5 "><span>ورود به حراجی</span></a>
+											<a href="#" class="wishlist-link"><i class="fa fa-heart" aria-hidden="true"></i></a>
+										</div>
+
+										<div v-if="!auction.is_participant">
+											<a v-bind:href="auction.link" class="addcart-link bg-color1 quickview-link fancybox.iframe "><span>ثبت نام در حراجی</span></a>
+											<a href="#" class="wishlist-link"><i class="fa fa-heart" aria-hidden="true"></i></a>
+										</div>
+
+										{%else%}
+											<a v-bind:href="auction.link" class="addcart-link bg-color3 quickview-link fancybox.iframe"><span>ورود</span></a>
+										{%endif%}
+
+										{%raw%}
+
+									</div>
+								</div>
+							</div>
+
+							{%endraw%}
+						</template>
+
+						<!-- End Item -->
+					</div>
+
+				</div>
+			</div>
+			<!-- ENd Tab -->
+			<div id="hot2" class="tab-pane">
+				<div class="hotdeal-slider">
+					<div v-wrapitemhot data-itemscustom="[[0,1],[560,2],[768,3],[1024,4],[1200,5],[1366,6]]"  data-pagination = "false"  data-autoplay = "true"  data-navigation = "true">
+						<template v-for="auction in popular_auctions">
+							{%raw%}
+							<div class="item-pro-hotdeal">
+								<div class="product-thumb">
+									<a href="#" v-on:click="$event.preventDefault()" class="product-thumb-link">
+										<img v-bind:src="auction.image" alt="">
+									</a>
+									<a v-bind:href="auction.instance_link" class="quickview-link pos-bottom fancybox.iframe"><span>مشاهده سریع</span></a>
+								</div>
+								<div class="product-info">
+									<h3 class="product-title"><a v-bind:href="_createAuctionLink(auction.id)">{{auction.title}}</a></h3>
+									<div class="info-pro-hotdeal">
+										<div class="deal-percent">
+											<span>شروع حراجی: </span>
+											{{auction.base_price}}
+										</div>
+										<div class="product-price">
+											<del><span>قیمت محصول</span></del>
+											<ins><span>{{auction.price}} تومان</span></ins>
+										</div>
+									</div>
+
+									<div class="product-extra-link2">
+										{%endraw%}
+
+										{%if current_user.is_authenticated%}
+										<div v-if="auction.is_participant">
+											<a v-bind:href="auction.link" class="addcart-link bg-color5 "><span>ورود به حراجی</span></a>
+											<a href="#" class="wishlist-link"><i class="fa fa-heart" aria-hidden="true"></i></a>
+										</div>
+										<div v-if="!auction.is_participant">
+											<a v-bind:href="auction.link" class="addcart-link bg-color1 quickview-link fancybox.iframe "><span>ثبت نام در حراجی</span></a>
+											<a href="#" class="wishlist-link"><i class="fa fa-heart" aria-hidden="true"></i></a>
+										</div>
+
+										{%else%}
+											<a v-bind:href="auction.link" class="addcart-link bg-color3 quickview-link fancybox.iframe"><span>ورود</span></a>
+										{%endif%}
+
+										{%raw%}
+
+									</div>
+								</div>
+							</div>
+
+							{%endraw%}
+						</template>
+
+						<!-- End Item -->
+					</div>
+
+				</div>
+			</div>
+			<!-- ENd Tab -->
+		</div>
+		<!-- End Content Hot Deal -->
+	</div>
+
+	<div class="service-footer3 service-footer11">
+		<div class="container">
+			<div class="service-slider3">
+				<div v-wrapitem class="wrap-item" data-pagination="false" data-navigation="false" data-items="6">
+					<div class="item-service3 white">
+						<a class="service-icon" href="#"><img src="static/images/theme/for1.png" alt="" /></a>
+						<h2 class="title14">شرکت کنید</h2>
+						<p> شما میتوانید با ثبت نام در حراجی های یونی بید کالای مورد نظر خود را تا ۷۰ درصد تخفیف خریداری کنید </p>
+					</div>
+					<div class="item-service3 white">
+						<a class="service-icon" href="#"><img src="static/images/theme/for2.png" alt="" /></a>
+						<h2 class="title14">تحویل ۲۴ ساعته</h2>
+						<p> در هر ساعتی از شبانه روز میتوانید کالای برنده شده یا خریداری شده خود را تحویل بگیرید. </p>
+					</div>
+					<div class="item-service3 white">
+						<a class="service-icon" href="#"><img src="static/images/theme/for3.png" alt="" /></a>
+						<h2 class="title14">پرداخت امن</h2>
+						<p> با درگاه های فعال در یونی بید امن ترین نوع پرداخت را تجربه کنید </p>
+					</div>
+					<div class="item-service3 white">
+						<a class="service-icon" href="#"><img src="static/images/theme/for4.png" alt="" /></a>
+						<h2 class="title14">فروشگاهی با اعتبار</h2>
+						<p> یونی بید فروشگاهی با اعتبار است که برای شما تجربه یک حراجی و خرید امن را فراهم می آورد </p>
+					</div>
+					<div class="item-service3 white">
+						<a class="service-icon" href="#"><img src="static/images/theme/for5.png" alt="" /></a>
+						<h2 class="title14">پشتیبانی ۲۴ ساعته</h2>
+						<p>شما به صورت شبانه روزی می توانید در سامانه یونی بید ثبت نام کنید</p>
+					</div>
+					<div class="item-service3 white">
+						<a class="service-icon" href="#"><img src="static/images/theme/for6.png" alt="" /></a>
+						<h2 class="title14">اپلیکیشن موبایل</h2>
+						<p>بزودی پلتفرم یونی بید در دو نسخه اندروید و ios عرضه خواهد شد.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div v-if="categories.length > 0" class="container" data-bind="foreach:categories">
+		<template v-for="category in categories">
+			{%raw%}
+			<div class="deal-box18" v-if="category.auctions.length > 0">
+				<h2 class="white title30 text-center"><span>{{category.title}}</span></h2>
+
+				<div class="deal-slider18 poly-slider border bg-white">
+					<div v-wrapitemend data-bind ='foreach : auctions' data-itemscustom="[[0,1],[768,3],[1024,4]]" data-navigation="true" data-pagination="false">
+						<template v-for="auction in category.auctions">
+
+							<div class="deal-pro18">
+								<div class="product-thumb">
+									<a v-bind:href="auction.instance_link" class="quickview-link fancybox.iframe product-thumb-link zoomout-thumb">
+										<img v-bind:src="auction.image" alt="">
+										<img v-bind:src="auction.image" alt="">
+									</a>
+									<a v-bind:href="auction.instance_link" class="quickview-link plus pos-middle fancybox.iframe">مشاهده سریع</a>
+								</div>
+								<h2 class="title14"><a v-bind:href="auction.view_link">{{auction.title}}</a></h2>
+								<div class="product-info">
+									<div class="product-price">
+										<ins>شروع حراجی : {{auction.base_price}}<br>سقف حراجی : {{auction.max_price}}</ins>
+										{%endraw%}
+
+										{%if current_user.is_authenticated%}
+										<div v-if="auction.is_participant">
+											<a v-bind:href="auction.link" class="btn-rect white bg-color5 radius"><span>ورود به حراجی</span></a>
+										</div>
+										<div v-if="!auction.is_participant">
+											<a v-bind:href="auction.link" class="quickview-link fancybox.iframe btn-rect white bg-color1 radius"><span>ثبت نام در حراجی</span></a>
+										</div>
+										{%else%}
+											<a v-bind:href="auction.link" class="quickview-link fancybox.iframe btn-rect white bg-color3 radius"><span>ورود</span></a>
+										{%endif%}
+										{%raw%}
+									</div>
+								</div>
+								<!-- <div class="deal-timer18 poly-box">
+									<div v-flashtimer class="flash-countdown timer auction" v-bind:data-timer ="auction.deadline" v-bind:data-auctionid="auction.id"></div>
+								</div> -->
+								<div class="poly-timer">
+									<div class="poly-text">{{auction.start_date}}</div>
+									<span class="poly-logo"></span>
+								</div>
+
+							</div>
+						</template>
+
+					</div>
+				</div>
+			</div>
+			{%endraw%}
+		</template>
+
+		<!-- End Deal -->
+	</div>
+
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/libs/persian-date.min.js')}}"></script>
+<!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script> -->
+
+<script>
+
+	start_loading(loading_element);
+
+	// var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
+
+	app = new Vue({
+
+		el : "#app",
+
+		data:{
+
+			ad_auctions : [],
+			ad_products : [],
+			events :[],
+			today_auctions : [] ,
+			best_auctions : [] ,
+			popular_auctions : [] ,
+			categories : [],
+			current_user_hash : "{{current_user}}".hashCode(),
+			interval :null,
+			index_socket : io.connect(location.protocol + '//' + document.domain + ':' + location.port),
+
+		},
+		created:function () {
+
+			this.index_socket.on('connect', function() {
+					console.log('connected index socket');
+			});
+
+			this.index_socket.emit('sync_timers_join',{room:this.current_user_hash});
+
+      this.index_socket.on('sync_timers_join', function() {
+          console.log('joined to sync timer room');
+      });
+
+			this.interval = setInterval(()=>{
+				this.index_socket.emit('sync_timers',{room:this.current_user_hash});
+			}, 10000);
+
+			this.index_socket.on('sync_timers', function(data) {
+
+				data.auctions.forEach(item => {
+
+					auction = app.today_auctions.find(x => x.id == item.id);
+
+					if (auction){
+						auction.title = item.title;
+						auction.deadline = item.remained_time;
+						auction.participant_count = ToPersian(item.participants.length);
+						auction.max_members = ToPersian(item.max_members);
+						auction.base_price = ToPersian(formatCurrency(item.base_price));
+						auction.max_price = ToPersian(formatCurrency(item.max_price));
+						auction.price = ToPersian(formatCurrency(item.main_price));
+						auction.image = product_image_path + ClearifyNames(item.images)[0];
+						auction.is_participant = item.participants.find(x => x.id == "{{current_user.id}}") ? true : false;
+
+						$.each($("[data-auctionid="+auction.id+"]"),function(item,value) {
+
+							$(value).data('timer', auction.deadline).TimeCircles({
+									"total_duration": auction.deadline
+							}).restart();
+						});
+
+					}
+					else {
+						participated = item.participants.find(x => x.id == "{{current_user.id}}") ? true : false;
+						app.today_auctions.push({
+							id : item.id,
+							title : item.title ,
+							deadline : item.remained_time,
+							participant_count :ToPersian(item.participants.length),
+							max_members :ToPersian(item.max_members),
+							base_price : ToPersian(formatCurrency(item.base_price)),
+							max_price : ToPersian(formatCurrency(item.max_price)),
+							price : ToPersian(formatCurrency(item.main_price)),
+							image : product_image_path + ClearifyNames(item.images)[0],
+							instance_link : "/instantview/"+ item.id,
+							link : participated ? "/view/auction/"+item.id : "/participate/"+ item.id,
+							is_participant : participated,
+						});
+					}
+
+
+
+				});
+
+				app.today_auctions.forEach(item => {
+					if(!data.auctions.find(x => x.id == item.id)){
+						var elementPos = app.today_auctions.map(function(x) {return x.id; }).indexOf(item.id);
+						app.today_auctions.splice( elementPos, 1 );
+					}
+
+				});
+
+			});
+
+		},
+		methods:{
+			prepare_ad_images(images){
+				return ad_image_path + ClearifyNames(images)[0];
+			},
+			prepare_auction_images(images){
+				return product_image_path + ClearifyNames(images)[0];
+			},
+			_ToPersian(number){
+				return ToPersian(number);
+			},
+
+			_createAuctionLink(id){
+				return "/view/auction/"+id;
+			},
+			_updateTimer(date){
+				return new Date(date).format("yyyy-M-d hh:mm:ss");
+			},
+			_invalidate(){
+					$('.wrap-item').each(function() {
+							var data = $(this).data();
+							// console.log(data);
+							$(this).owlCarousel({
+									addClassActive:true,
+									stopOnHover:true,
+									itemsCustom:data.itemscustom,
+									autoPlay:data.autoplay,
+									transitionStyle:data.transition,
+									beforeInit:background,
+									afterAction:animated,
+									navigationText:['<i class="fa fa-angle-left" aria-hidden="true"></i>','<i class="fa fa-angle-right" aria-hidden="true"></i>'],
+							});
+							$(this).find('.owl-controls').css('left',data.control+'px');
+					});
+			},
+			background(){
+				$('.bg-slider .item-banner').each(function(){
+					var src=$(this).find('.banner-thumb a img').attr('src');
+					$(this).css('background-image','url("'+src+'")');
+				});
+			},
+			animated(){
+				$('.banner-slider .owl-item').each(function(){
+					var check = $(this).hasClass('active');
+					if(check==true){
+						$(this).find('.animated').each(function(){
+							var anime = $(this).attr('data-animated');
+							$(this).addClass(anime);
+						});
+					}else{
+						$(this).find('.animated').each(function(){
+							var anime = $(this).attr('data-animated');
+							$(this).removeClass(anime);
+						});
+					}
+				});
+			},
+
+		},
+		mounted: function(){
+				axios.get("{{url_for('siteauctioncarouselads')}}")
+					.then((response) => {
+						response.data.forEach( ad => {
+							this.ad_auctions.push(ad);
+						});
+					})
+					.catch((error)=>{
+						console.log(error.response.data);
+				});
+				axios.get("{{url_for('siteproductcarouselads')}}")
+					.then((response) => {
+						this.ad_products = response.data[0];
+					})
+					.catch((response)=>{
+						console.error(response);
+					});
+				axios.get("{{url_for('sitetodayevents')}}")
+					.then((response) => {
+						this.events = response.data;
+					})
+					.catch((response)=>{
+						console.error(response);
+					});
+				axios.get("{{url_for('sitetodayauctions')}}")
+					.then((response) => {
+						response.data.forEach( auction => {
+							participated = auction.participants.find(x => x.id == "{{current_user.id}}") ? true : false;
+							this.today_auctions.push({
+								id : auction.id,
+								title : auction.title ,
+								description : auction.description ,
+								deadline : auction.remained_time,
+								participant_count :ToPersian(auction.participants.length),
+								max_members :ToPersian(auction.max_members),
+								base_price : ToPersian(formatCurrency(auction.base_price)),
+								max_price : ToPersian(formatCurrency(auction.max_price)),
+								price : ToPersian(formatCurrency(auction.main_price)),
+								image : product_image_path + ClearifyNames(auction.images)[0],
+								instance_link : "/instantview/"+ auction.id,
+								link : participated ? "/view/auction/"+auction.id : "/participate/"+ auction.id,
+								is_participant : participated,
+							});
+						});
+					})
+					.catch((response)=>{
+						console.error(response);
+					});
+				axios.get("{{url_for('sitemostpopularauctions')}}")
+					.then((response) => {
+						response.data.forEach( auction => {
+							participated = auction.participants.find(x => x.id == "{{current_user.id}}") ? true : false;
+							this.popular_auctions.push({
+								id : auction.id,
+								title : auction.title ,
+								deadline : auction.remained_time,
+								participant_count :ToPersian(auction.participants.length),
+								max_members :ToPersian(auction.max_members),
+								base_price : ToPersian(formatCurrency(auction.base_price)),
+								max_price : ToPersian(formatCurrency(auction.max_price)),
+								price : ToPersian(formatCurrency(auction.main_price)),
+								image : product_image_path + ClearifyNames(auction.images)[0],
+								instance_link : "/instantview/"+ auction.id,
+								link : participated ? "/view/auction/"+auction.id : "/participate/"+ auction.id,
+								is_participant : participated,
+							});
+						});
+					})
+					.catch((response)=>{
+						console.error(response);
+					});
+				axios.get("{{url_for('sitemostviewedauctions')}}")
+					.then((response) => {
+						response.data.forEach( auction => {
+							participated = auction.participants.find(x => x.id == "{{current_user.id}}") ? true : false;
+							this.best_auctions.push({
+								id : auction.id,
+								title : auction.title ,
+								deadline : auction.remained_time,
+								participant_count :ToPersian(auction.participants.length),
+								max_members :ToPersian(auction.max_members),
+								base_price : ToPersian(formatCurrency(auction.base_price)),
+								max_price : ToPersian(formatCurrency(auction.max_price)),
+								price : ToPersian(formatCurrency(auction.main_price)),
+								image : product_image_path + ClearifyNames(auction.images)[0],
+								instance_link : "/instantview/"+ auction.id,
+								link : participated ? "/view/auction/"+auction.id : "/participate/"+ auction.id,
+								is_participant : participated,
+							});
+						});
+					})
+					.catch((response)=>{
+						console.error(response);
+					});
+				axios.get("{{url_for('sitecategoryforauctions')}}")
+					.then((response) => {
+						response.data.forEach(item => {
+							auctions = [];
+							item.auctions.forEach(auction =>{
+								participated = auction.participants.find(x => x.id == "{{current_user.id}}") ? true : false;
+								auctions.push
+									({id : auction.id,
+										title : auction.title,
+										deadline : auction.remained_time,
+										image : product_image_path + ClearifyNames(auction.images)[0],
+										instance_link : "/instantview/"+ auction.id,
+										view_link : "/view/auction/"+ auction.id,
+										link : participated ? "/view/auction/"+auction.id : "/participate/"+ auction.id,
+										is_participant : participated,
+										start_date:new persianDate(new Date(new Date(auction.start_date).format("yyyy/M/d HH:mm:ss","UTC"))).format("dddd D MMMM ماه YY ساعت HH:mm:ss"),
+										base_price : ToPersian(formatCurrency(auction.base_price)),
+										max_price : ToPersian(formatCurrency(auction.max_price))});
+							});
+							this.categories.push({
+								title : item.title,
+								auctions : auctions,
+							});
+						});
+					})
+					.catch((error)=>{
+						console.log(error.response);
+				});
+
+		},
+		updated:function() {
+			// this._invalidate();
+			// stop_loading(loading_element);
+		},
+		directives: {
+			flashtimer:{
+				inserted:function(el) {
+					if($('.flash-countdown').length>0){
+						$(".flash-countdown").TimeCircles({
+							fg_width: 0.01,
+							bg_width: 1.2,
+							text_size: 0.07,
+							circle_bg_color: "#ffffff",
+							time: {
+								Days: {
+									show: true,
+									text: "روز",
+									color: "#f9bc02"
+								},
+								Hours: {
+									show: true,
+									text: "ساعت",
+									color: "#f9bc02"
+								},
+								Minutes: {
+									show: true,
+									text: "دقیقه",
+									color: "#f9bc02"
+								},
+								Seconds: {
+									show: true,
+									text: "ثانیه",
+									color: "#f9bc02"
+								}
+							}
+						});
+					}
+				},
+			},
+			bigtimer:{
+				inserted:function(el) {
+					if($('.deals-cowndown').length>0){
+						 $(".deals-cowndown").TimeCircles({
+							 fg_width: 0.01,
+							 bg_width: 1.2,
+							 text_size: 0.07,
+							 circle_bg_color: "#ffffff",
+							 time: {
+								 Days: {
+									 show: true,
+									 text: "روز",
+									 color: "#f9bc02"
+								 },
+								 Hours: {
+									 show: true,
+									 text: "ساعت",
+									 color: "#f9bc02"
+								 },
+								 Minutes: {
+									 show: true,
+									 text: "دقیقه",
+									 color: "#f9bc02"
+								 },
+								 Seconds: {
+									 show: true,
+									 text: "ثانیه",
+									 color: "#f9bc02"
+								 }
+							 }
+						 });
+					 	}
+				}
+			},
+			wrapitem:{
+				inserted:function(el) {
+						var data = $(el).data();
+						$(el).owlCarousel({
+								addClassActive:true,
+								stopOnHover:true,
+								itemsCustom:data.itemscustom,
+								autoPlay:data.autoplay,
+								transitionStyle:data.transition,
+								beforeInit:background,
+								afterAction:animated,
+								navigationText:['<i class="fa fa-angle-left" aria-hidden="true"></i>','<i class="fa fa-angle-right" aria-hidden="true"></i>'],
+						});
+						$(el).find('.owl-controls').css('left',data.control+'px');
+				}
+			},
+			wrapitemhot:{
+				inserted:function(el) {
+						var data = $(el).data();
+						setTimeout(function(){
+							$(el).owlCarousel({
+									addClassActive:true,
+									stopOnHover:true,
+									itemsCustom:data.itemscustom,
+									autoPlay:data.autoplay,
+									transitionStyle:data.transition,
+									beforeInit:background,
+									afterAction:animated,
+									navigationText:['<i class="fa fa-angle-left" aria-hidden="true"></i>','<i class="fa fa-angle-right" aria-hidden="true"></i>'],
+							});
+							$(el).find('.owl-controls').css('left',data.control+'px');
+							stop_loading(loading_element);
+						},1000);
+						// },Math.floor(Math.random() * 1000) + 100 );
+				}
+			},
+			wrapitemend:{
+				inserted:function(el) {
+						var data = $(el).data();
+						$(el).owlCarousel({
+								addClassActive:true,
+								stopOnHover:true,
+								itemsCustom:data.itemscustom,
+								autoPlay:data.autoplay,
+								transitionStyle:data.transition,
+								beforeInit:background,
+								afterAction:animated,
+								navigationText:['<i class="fa fa-angle-left" aria-hidden="true"></i>','<i class="fa fa-angle-right" aria-hidden="true"></i>'],
+						});
+						$(el).find('.owl-controls').css('left',data.control+'px');
+				}
+			},
+
+		},
+
+	});
+
+</script>
+
+{% endblock scripts %}

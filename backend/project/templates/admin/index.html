@@ -1,0 +1,291 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+{{ super() }}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+      <small> کنترل پنل ادمین</small>
+      یونی بید
+      </h1>
+  <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li class="active">داشبورد ادمین یونی بید</li>
+  </ol>
+</section>
+
+<section class="content direction">
+  <!-- Small boxes (Stat box) -->
+  <div class="row">
+    <!-- ./col -->
+    <div class="col-lg-2 col-md-4 col-xs-12">
+        <!-- small box -->
+        <div class="small-box bg-green">
+          <div class="inner">
+            <h3>{{auctions}}</h3>
+            <p>تعداد کل حراجی های سایت</p>
+        </div>
+        <div class="icon">
+            <i class="ion ion-bag"></i>
+        </div>
+        <a href="auction" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+
+    <!-- ./col -->
+    <div class="col-lg-2 col-md-4 col-xs-12">
+        <!-- small box -->
+        <div class="small-box bg-red">
+          <div class="inner">
+            <h3>{{passed_auctions}}</h3>
+            <p>تعداد حراجی های برگزار شده</p>
+        </div>
+        <div class="icon">
+            <i class="ion ion-bag"></i>
+        </div>
+        <a href="auction" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+
+    <div class="col-lg-2 col-md-4 col-xs-12">
+        <!-- small box -->
+        <div class="small-box bg-blue">
+          <div class="inner">
+            <h3>{{user_auction_participants}}</h3>
+            <p> تعداد شرکت کنندگان حراجی </p>
+        </div>
+        <div class="icon">
+            <i class="ion ion-bag"></i>
+        </div>
+        <a href="userauctionparticipation" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+
+    <div class="col-lg-2 col-md-4 col-xs-12">
+      <!-- small box -->
+      <div class="small-box bg-purple">
+        <div class="inner">
+          <h3>{{avg_auction_users}}</h3>
+          <p>میانگین شرکت در همه حراجی ها</p>
+      </div>
+      <div class="icon">
+          <i class="ion ion-stats-bars"></i>
+      </div>
+      <a href="userauctionparticipation" class="small-box-footer">اطلاعات بیشتر<i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+    </div>
+
+    <div class="col-lg-2 col-md-4 col-xs-12">
+      <!-- small box -->
+      <div class="small-box bg-purple">
+        <div class="inner">
+          <h3>{{avg_participated_auction_users}}</h3>
+          <p>میانگین شرکت در حراجی های برگزار شده</p>
+      </div>
+      <div class="icon">
+          <i class="ion ion-stats-bars"></i>
+      </div>
+      <a href="userauctionparticipation" class="small-box-footer">اطلاعات بیشتر<i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+    </div>
+
+    <div class="col-lg-2 col-md-4 col-xs-12">
+      <!-- small box -->
+      <div class="small-box bg-navy">
+        <div class="inner">
+          <h3>{{free_payments}}</h3>
+          <p>تعداد حراجی های با پلن رایگان</p>
+      </div>
+      <div class="icon">
+          <i class="ion ion-person-add"></i>
+      </div>
+      <a href="auction_plan" class="small-box-footer">اطلاعات بیشتر<i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <!-- ./col -->
+    <div class="col-lg-3 col-md-6 col-xs-12">
+      <!-- small box -->
+      <div class="small-box bg-yellow">
+        <div class="inner">
+          <h3>{{users}}</h3>
+          <p>تعداد کاربران سایت</p>
+      </div>
+      <div class="icon">
+          <i class="ion ion-person-add"></i>
+      </div>
+      <a href="user" class="small-box-footer">اطلاعات بیشتر<i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-xs-12">
+      <!-- small box -->
+      <div class="small-box bg-green">
+        <div class="inner">
+          <h3>{{payments}}</h3>
+          <p>تعداد پرداخت های سایت</p>
+      </div>
+      <div class="icon">
+          <i class="ion ion-stats-bars"></i>
+      </div>
+      <a href="payment" class="small-box-footer">اطلاعات بیشتر<i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-xs-12">
+      <!-- small box -->
+      <div class="small-box bg-red">
+        <div class="inner">
+          <h3>{{orders}}</h3>
+          <p>تعداد سفارشات سایت</p>
+      </div>
+      <div class="icon">
+          <i class="ion ion-pie-graph"></i>
+      </div>
+      <a href="order" class="small-box-footer">اطلاعات بیشتر<i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+    </div>
+
+    <!-- ./col -->
+    <div class="col-lg-3 col-md-6 col-xs-12">
+      <!-- small box -->
+      <div class="small-box bg-maroon">
+        <div class="inner">
+          <h3>{{online_payments}}</h3>
+          <p>کل مبلغ ورودی به سایت</p>
+      </div>
+      <div class="icon">
+          <i class="ion ion-cash"></i>
+      </div>
+      <a href="payment" class="small-box-footer">اطلاعات بیشتر<i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+    </div>
+    <!-- ./col -->
+  </div>
+
+  <div class="row">
+    <!-- ./col -->
+    <div class="col-lg-3 col-md-6 col-xs-12">
+        <!-- small box -->
+        <div class="small-box bg-fuchsia">
+          <div class="inner">
+            <h3>{{buy_plan}}</h3>
+            <p>مجموع ورودی از فروش پلن حراجی</p>
+        </div>
+        <div class="icon">
+            <i class="ion ion-bag"></i>
+        </div>
+        <a href="userauctionparticipation" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-md-6 col-xs-12">
+      <!-- small box -->
+      <div class="small-box bg-orange">
+        <div class="inner">
+          <h3>{{buy_product}}</h3>
+          <p>مجموع ورودی از فروش محصول</p>
+      </div>
+      <div class="icon">
+          <i class="ion ion-stats-bars"></i>
+      </div>
+      <a href="payment" class="small-box-footer">اطلاعات بیشتر<i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-md-6 col-xs-12">
+      <!-- small box -->
+      <div class="small-box bg-olive">
+        <div class="inner">
+          <h3>{{wallet_charge}}</h3>
+          <p>مجموع ورودی از شارژ آنلاین کیف پول</p>
+      </div>
+      <div class="icon">
+          <i class="ion ion-pie-graph"></i>
+      </div>
+      <a href="payment" class="small-box-footer">اطلاعات بیشتر<i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-md-6 col-xs-12">
+      <!-- small box -->
+      <div class="small-box bg-teal">
+        <div class="inner">
+          <h3>{{total_shipment_online}}</h3>
+          <p>ورودی پرداخت آنلاین برای ارسال کالا</p>
+      </div>
+      <div class="icon">
+          <i class="ion ion-pie-graph"></i>
+      </div>
+      <a href="shipment" class="small-box-footer">اطلاعات بیشتر<i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+    </div>
+    <!-- ./col -->
+  </div>
+
+  <div class="row">
+    <!-- ./col -->
+    <div class="col-lg-3 col-md-6 col-xs-12">
+        <!-- small box -->
+        <div class="small-box bg-aqua">
+          <div class="inner">
+            <h3>{{total_shipment_walet}}</h3>
+            <p>ورودی پرداخت از کیف پول برای ارسال کالا</p>
+        </div>
+        <div class="icon">
+            <i class="ion ion-bag"></i>
+        </div>
+        <a href="shipment" class="small-box-footer">اطلاعات بیشتر <i class="fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-md-6 col-xs-12">
+      <!-- small box -->
+      <div class="small-box bg-green">
+        <div class="inner">
+          <h3>{{paid_shipment}}</h3>
+          <p>ارسال های معوقه</p>
+      </div>
+      <div class="icon">
+          <i class="ion ion-stats-bars"></i>
+      </div>
+      <a href="shipment" class="small-box-footer">اطلاعات بیشتر<i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-md-6 col-xs-12">
+      <!-- small box -->
+      <div class="small-box bg-yellow">
+        <div class="inner">
+          <h3>{{online_payment_discounts}}</h3>
+          <p>مجموع تخفیف های سایت</p>
+      </div>
+      <div class="icon">
+          <i class="ion ion-aperture"></i>
+      </div>
+      <a href="payment" class="small-box-footer">اطلاعات بیشتر<i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-md-6 col-xs-12">
+      <!-- small box -->
+      <div class="small-box bg-red">
+        <div class="inner">
+          <h3>{{potantial_discounts}}</h3>
+          <p>مجموع تخفیف های بالقوه سایت</p>
+      </div>
+      <div class="icon">
+          <i class="ion ion-contrast"></i>
+      </div>
+      <a href="payment" class="small-box-footer">اطلاعات بیشتر<i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+    </div>
+    <!-- ./col -->
+  </div>
+
+</section>
+
+ {% endblock body %}

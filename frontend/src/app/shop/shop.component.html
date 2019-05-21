@@ -1,0 +1,105 @@
+<div class="cfnLoaderWrapper" *ngIf="loading">
+  <div class="cfnLoader"></div>
+</div>
+<div class="shop-wrapper" #shopWrapper>
+  <div class="shop-container">
+    <div class="shop-header">
+      <span class="config-close">
+        &#10006;
+      </span>
+      <p class="shop-header-title">فروشگاه یونی‌بید</p>
+      <img src="../../assets/resources/images/assets/png/shopHeader.png" alt="" srcset="../../assets/resources/images/assets/png/shopHeader@2x.png 2x, ../../assets/resources/images/assets/png/shopHeader@3x.png 3x">
+    </div>
+    <ng-template [ngIf]="items?.chest">
+      <p class="shop-cart-title">پیشنهاد ویژه</p>
+      <div class="shop-banner">
+        <img [src]="Link.chest(items.chest.image)" alt="">
+        <div class="shop-banner-info">
+          <p class="shop-banner-info-title">
+            {{items.chest.title}}
+          </p>
+          <p class="shop-banner-text">{{items.chest.description}}</p>
+          <span class="cfnButton cfnButton-primary"
+          (click)='buyItem(items.chest.chestId,"chest",items.chest.title,Link.chest(items.chest.image),items.chest.price)'>
+
+          خرید</span>
+        </div>
+        <div class="shop-banner-off">
+          <p>{{items.chest.discount | currency : ' ' : 'symbol' : '1.0-0'}}%</p>
+          <span>تخفیف</span>
+        </div>
+      </div>
+    </ng-template>
+    <p class="shop-cart-title">خرید بسته های سکه برای رقابت در حراجی...</p>
+    <div class="shop-cart-wrapper">
+      <div class="shop-cart-container" *ngFor="let coin of items?.coins">
+        <span class="shop-cart-oval">
+          <img src="../../assets/resources/images/assets/png/coins.png" alt="">
+        </span>
+        <p><span>{{coin.title}}</span><span>({{coin.price | currency : ' ' : 'symbol' : '1.0-0'}} تومان)</span></p>
+        <p>{{coin.quantity}} عدد سکه به قیمت {{coin.price | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+        <span class="cfnButton cfnButton-primary"
+        (click)='buyItem(coin.coinId,"coin",coin.title,"../../assets/resources/images/assets/png/coins.png",coin.price)'>
+          خرید</span>
+      </div>
+    </div>
+    <p class="shop-cart-title">خرید بسته های الماس یونی بید...</p>
+    <div class="shop-cart-wrapper">
+      <div class="shop-cart-container" *ngFor="let gem of items?.cheapGems">
+        <span class="shop-cart-oval shop-cart-oval-diamond">
+          <img src="../../assets/resources/images/assets/png/slot-machine@2x.png" alt="">
+        </span>
+        <p><span>{{gem.title}}</span><span>({{gem.price | currency : ' ' : 'symbol' : '1.0-0'}} تومان)</span></p>
+        <p>{{gem.quantity}} عدد الماس به قیمت {{gem.price | currency : ' ' : 'symbol' : '1.0-0'}} تومان با {{gem.discount | currency : ' ' : 'symbol' : '1.0-0'}} درصد تخفیف</p>
+        <span class="cfnButton cfnButton-primary"
+        (click)='buyItem(gem.gemId,"gem",gem.title,"../../assets/resources/images/assets/png/slot-machine@2x.png",gem.price)'>
+        خرید</span>
+      </div>
+
+    </div>
+    <div class="shop-cart-wrapper">
+      <div class="shop-cart-container" *ngFor="let gem of items?.expGems">
+        <span class="shop-cart-oval shop-cart-oval-diamond-red">
+          <img src="../../assets/resources/images/assets/png/slot-machine@2x.png" alt="">
+        </span>
+        <p><span>{{gem.title}}</span><span>({{gem.price | currency : ' ' : 'symbol' : '1.0-0'}} تومان)</span></p>
+        <p>{{gem.quantity}} عدد الماس به قیمت {{gem.price | currency : ' ' : 'symbol' : '1.0-0'}} تومان با {{gem.discount | currency : ' ' : 'symbol' : '1.0-0'}} درصد تخفیف</p>
+        <span class="cfnButton cfnButton-primary"
+        (click)='buyItem(gem.gemId,"gem",gem.title,"../../assets/resources/images/assets/png/slot-machine@2x.png",gem.price)'>
+        خرید</span>
+      </div>
+
+    </div>
+    <p class="shop-cart-title">پکیج آواتر یونی‌بید</p>
+    <div class="shop-cart-wrapper">
+
+      <div class="shop-cart-container" *ngFor="let avatar of items?.avatars">
+        <span class="shop-cart-oval shop-cart-oval-diamond-regular">
+          <img [src]="Link.avatar(avatar.image)" alt="">
+        </span>
+        <p><span>{{avatar.title}}</span></p>
+        <p>با {{avatar.neededGems}} عدد الماس به ارزش {{avatar.price | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+        <span class="cfnButton cfnButton-primary"
+        (click)='buyItem(avatar.avatarId,"avatar",avatar.title,Link.avatar(avatar.image),avatar.neededGems)'>
+        خرید</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="confirm-wrapper" *ngIf="dialog">
+    <div class="confirm-box">
+      <span class="config-close" (click)="close()">
+        &#10006;
+      </span>
+      <img src="{{buy.picture}}" alt="">
+      <p class="confirm-text">{{buy.title}}</p>
+      <div style="display: flex; justify-content: space-between; width: 100%;">
+        <span class="confirm-trackingTitle">قیمت نهایی</span>
+        <span class="confirm-trackingTitle" style="color:#212121;">{{buy.price | currency : ' ' : 'symbol' : '1.0-0'}} تومان</span>
+      </div>
+      <a style="width: 80%;" class="cfnButton cfnButton-primary" *ngIf="buy.type!='avatar'">ورود به درگاه بانک و پرداخت نهایی</a>
+      <a style="width: 80%;" class="cfnButton cfnButton-primary" *ngIf="buy.type=='avatar'">خرید با الماس</a>
+    </div>
+  </div>

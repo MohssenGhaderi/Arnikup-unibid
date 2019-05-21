@@ -1,0 +1,257 @@
+.shop-container {
+    margin-bottom: 200px;
+    background-color: #f5f5f5;
+    width: 1200px;
+    box-sizing: border-box;
+    border-radius: 16px;
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.08);
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.shop-wrapper {
+    position: absolute;
+    z-index: 1000000;
+    padding-top: 42px;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .shop-header {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      color:#fff;
+      margin-bottom: 50px;
+  }
+
+  .shop-header-title {
+      position: absolute;
+      text-align: center;
+      font-size: 16px;
+  }
+
+  .shop-header > img {
+      margin-top: -3px;
+      margin-left: -6px;
+      margin-right: -6px;
+  }
+
+  .config-close {
+      color: #fff;
+      font-size: 20px;
+      right: -10px;
+  }
+
+  .config-close:hover {
+      color: #eee;
+  }
+
+  .shop-cart-title {
+      font-size: 18px;
+      color: #212121;
+      text-align: center;
+      margin-bottom: 40px;
+  }
+
+  .shop-cart {
+    width: 360px;
+    height: 219px;
+    border-radius: 16px;
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.08);
+    background-color: #ffffff;
+  }
+
+  .shop-cart-wrapper {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 60px;
+  }
+
+  .shop-cart-container {
+    width: 360px;
+    height: 222px;
+    border-radius: 16px;
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.08);
+    background-color: #ffffff;
+    margin:10px;
+    margin-bottom: 90px;
+    position: relative;
+    color: #707070;
+    font-size: 13px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .shop-cart-container  p  {
+      display: flex;
+      align-items: center;
+  }
+
+  .shop-cart-container  p  span:first-of-type{
+    font-size: 18px;
+    margin-left: 5px;
+    color: #212121;
+  }
+  .shop-cart-oval {
+    width: 85px;
+    height: 85px;
+    background-color: rgba(255, 217, 73, 0.3);
+    border-radius: 50%;
+    position: absolute;
+    top:0;
+    z-index: 99999999;
+    left:50%;
+    transform: translateX(-50%);
+    top:-42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .shop-cart-oval > img {
+    max-width: 46px;
+  }
+
+  .shop-cart-oval-diamond {
+    background-color: rgba(179, 229, 252, 0.3);
+  }
+
+  .shop-cart-oval-diamond-red {
+    background-color: rgba(255, 124, 185, 0.3);
+  }
+
+  .shop-cart-oval-diamond-regular {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .cfnButton {
+      width: 110px;
+      height: 42px;
+  }
+
+  .shop-banner {
+    border-radius: 16px;
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .shop-banner-info {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 120px;
+  }
+
+  .shop-banner-off {
+    position: absolute;
+    transform: translateY(-50%);
+    left: 120px;
+    top: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .shop-banner-off > p {
+  font-size: 45px;
+  color: #212121;
+  margin: 0;
+  }
+
+  .shop-banner-off > span {
+    font-size: 14px;
+    color: #212121;
+    }
+
+  .shop-banner-info-title {
+    font-size: 42px;
+    color: #212121;
+    margin: 10px 0;
+  }
+
+  .shop-banner-text {
+    font-size: 14px;
+    color: #707070;
+  }
+
+  .confirm-wrapper {
+    z-index: 1000000;
+    position: fixed;
+    top:0;
+    left: 0;
+    right: 0;
+    bottom:0;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /*display: none;*/
+}
+
+.confirm-box {
+  width: 570px;
+  border-radius: 16px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.08);
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 30px;
+  position: relative;
+  animation: fadeInHoriz 0.8s ease forwards;
+}
+
+.config-close {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  font-size: 25px;
+  color: #888;
+  cursor: pointer;
+}
+
+.config-close:hover {
+  color: #212121;
+}
+
+.confirm-box > img {
+  max-width: 100%;
+}
+
+.confirm-trackingTitle {
+  font-size: 20px;
+  color: #707070;
+  margin-bottom: 15px;
+}
+
+.confirm-trackingCode {
+  font-size: 36px;
+  color: #212121;
+}
+
+.confirm-text {
+  font-size: 28px;
+  color: #212121;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 50px;
+  border-bottom: solid 1px #ebebeb;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.confirm-text > img {
+  margin-left: 12px;
+}

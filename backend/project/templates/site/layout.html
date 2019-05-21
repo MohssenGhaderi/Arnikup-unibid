@@ -1,0 +1,1115 @@
+<!doctype html>
+<html lang="en-US" ng-app='bidbazi'>
+  <head>
+    {% block head_meta %}
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    	<meta content="fa" http-equiv="Content-Language"/>
+    	<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    	<meta name="description" content=""/>
+    	<meta name="keywords" content=""/>
+    	<meta name="robots" content="noodp,index,follow"/>
+    	<meta name="enamad" content="168699"/>
+      <meta name="google-site-verification" content="QY_hSHE2T8uULuCap_fi3nA-indtctkjy4lLkZEat3s" />
+    {% endblock head_meta %}
+    <title>حراجی آنلاین یونی بید |{% block title %} صفحه اصلی {% endblock %}</title>
+    {% block head_css %}
+
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/libs/animate.min.css') }}"/>
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/libs/sweetalert2.min.css') }}"/>
+
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/solid.css" integrity="sha384-wnAC7ln+XN0UKdcPvJvtqIH3jOjs9pnKnq9qX68ImXvOGz2JuFoEiCjT8jyZQX2z" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/fontawesome.css" integrity="sha384-HbmWTHay9psM8qyzEKPc8odH4DsOuzdejtnr+OFtDmOcIVnhgReQ4GZBH7uwcjf6" crossorigin="anonymous">
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/libs/font-awesome.min.css') }}"/>
+    	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}"/>
+    	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/libs/bootstrap-theme.css') }}"/>
+    	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/libs/jquery.fancybox.css') }}"/>
+    	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/libs/jquery-ui.min.css') }}"/>
+    	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/libs/owl.carousel.css') }}"/>
+    	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/libs/owl.transitions.css') }}"/>
+    	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/libs/owl.theme.css') }}"/>
+    	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/libs/fontiran.css') }}" media="all"/>
+    	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/libs/jquery.mCustomScrollbar.css') }}"/>
+    	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/libs/animate.css') }}"/>
+    	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/libs/hover.css') }}"/>
+    	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/color-purple.css') }}" media="all"/>
+      <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/theme.css') }}" media="all"/> -->
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/theme-purple.css') }}" media="all"/>
+    	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/responsive.css') }}" media="all"/>
+    	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/browser.css') }}" media="all"/>
+    	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/rtl.css') }}" media="all"/>
+      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/loaderStyle.css') }}">
+
+      <link rel="apple-touch-icon" sizes="57x57" href="{{ url_for('static', filename='images/favicon/apple-icon-57x57.png') }}">
+      <link rel="apple-touch-icon" sizes="60x60" href="{{ url_for('static', filename='images/favicon/apple-icon-60x60.png') }}">
+      <link rel="apple-touch-icon" sizes="72x72" href="{{ url_for('static', filename='images/favicon/apple-icon-72x72.png') }}">
+      <link rel="apple-touch-icon" sizes="76x76" href="{{ url_for('static', filename='images/favicon/apple-icon-76x76.png') }}">
+      <link rel="apple-touch-icon" sizes="114x114" href="{{ url_for('static', filename='images/favicon/apple-icon-114x114.png') }}">
+      <link rel="apple-touch-icon" sizes="120x120" href="{{ url_for('static', filename='images/favicon/apple-icon-120x120.png') }}">
+      <link rel="apple-touch-icon" sizes="144x144" href="{{ url_for('static', filename='images/favicon/apple-icon-144x144.png') }}">
+      <link rel="apple-touch-icon" sizes="152x152" href="{{ url_for('static', filename='images/favicon/apple-icon-152x152.png') }}">
+      <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='images/favicon/apple-icon-180x180.png') }}">
+      <link rel="icon" type="image/png" sizes="192x192"  href="{{ url_for('static', filename='images/favicon/android-icon-192x192.png') }}">
+      <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon/favicon-32x32.png') }}">
+      <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename='images/favicon/favicon-96x96.png') }}">
+      <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/favicon/favicon-16x16.png') }}">
+      <link rel="manifest" href="{{ url_for('static', filename='images/favicon/manifest.json') }}">
+      <meta name="msapplication-TileColor" content="#ffffff">
+      <meta name="msapplication-TileImage" content="{{ url_for('static', filename='images/favicon/ms-icon-144x144.png') }}">
+      <meta name="theme-color" content="#ffffff">
+
+    {% endblock head_css %}
+
+
+    {% block head %}
+    {% endblock head%}
+
+    {% block head_tail %}
+    {% endblock head_tail%}
+
+    <script type="text/javascript">!function(){function t(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,localStorage.getItem("rayToken")?t.src="https://app.raychat.io/scripts/js/"+o+"?rid="+localStorage.getItem("rayToken")+"&href="+window.location.href:t.src="https://app.raychat.io/scripts/js/"+o;var e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(t,e)}var e=document,a=window,o="bfa3f68b-f205-4955-8de2-4339f6259f28";"complete"==e.readyState?t():a.attachEvent?a.attachEvent("onload",t):a.addEventListener("load",t,!1)}();</script>
+
+      <script>
+      !function (t, e, n) {
+              t.yektanetAnalyticsObject = n, t[n] = t[n] || function () {
+                  t[n].q.push(arguments)
+              }, t[n].q = t[n].q || [];
+              var a = new Date, r = a.getFullYear().toString() + "0" + a.getMonth() + "0" + a.getDate() + "0" + a.getHours(),
+                  c = e.getElementsByTagName("script")[0], s = e.createElement("script");
+              s.async = 1, s.type = "text/javascript", s.src = "https://cdn.yektanet.com/rg_woebegone/scripts/6247/rg.complete.js?v=" + r, c.parentNode.insertBefore(s, c)
+          }(window, document, "yektanet");
+      </script>
+    </head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-120307926-1"></script> -->
+  <!-- <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-120307926-1');
+  </script> -->
+
+  <body>
+    <div class="wrap">
+      {% block header %}
+        <div id="header">
+      		<div class="header">
+      			<div class="top-header top-header4">
+      				<div class="container">
+      					<div class="row">
+      						<div class="col-md-12 col-sm-12 col-xs-12">
+      							<div v-cloak class="account-login">
+                      {% if current_user.is_authenticated %}
+      								<a href="/profile"> پنل کاربری {{current_user.username}}  </a>
+                      <div class="notify-bar-box">
+                        {%raw%}<span v-if="has_notification" class="notify-badage">{{_ToPersian(not_seen_notifications)}}</span>{%endraw%}
+                        <a v-if="has_notification" href="#" @click="mark_as_read_all($event)" class="notify-menu"><i class="fa fa-bell"></i></a>
+                        <a v-else href="#" class="notify-menu-regular"><i class="fa fa-bell-o"></i></a>
+                        <div v-if="notifications.length > 0" class="notify-bar">
+                          <i v-if="loading_to_show" class="fa fa-spinner fa-spin"></i>
+                          <ul>
+                            <template v-for="notify in notifications">
+                              {%raw%}<li><a v-bind:class="{'unread':!notify.seen}" href="#" v-bind:title="notify.title"  v-on:click="mark_as_read(notify.id,notify.link,$event)">{{notify.text}}</a></li>{%endraw%}
+                            </template>
+                          </ul>
+                         </div>
+                         <div v-else class="notify-bar">
+                           <i v-if="loading_to_show" class="fa fa-spinner fa-spin"></i>
+                           <p v-else>پیامی برای نمایش وجود ندارد</p>
+                          </div>
+                      </div>
+
+                      {% else %}
+      								<a href="/login">ورود</a>
+      								<a href="/register">ثبت نام</a>
+                      {% endif %}
+      							</div>
+      						</div>
+      					</div>
+      				</div>
+      			</div>
+      			<!-- End Top Header -->
+      			<div class="main-header">
+      				<div class="container">
+      					<div class="row">
+      						<div class="col-md-3 col-sm-3 col-xs-12">
+      							<div class="logo logo4">
+      								<h1 class="hidden">حراجی آنلاین اینترنتی</h1>
+      								<a  class="resWd" href="/"><img src="/static/images/theme/logo.png" alt="" /></a>
+      							</div>
+      						</div>
+      						<div class="col-md-4 col-sm-6 col-xs-12">
+      							<div class="smart-search smart-search4">
+      								<div class="select-category">
+      									<a class="category-toggle-link" href="#"><span>همه دسته بندی ها</span></a>
+      									<ul v-cloak class="list-category-toggle list-unstyled">
+                          <template v-for="cat in allcategories">
+                            {%raw%}
+                            <li><a v-bind:href="_generateCategoryLink(cat.id)">{{cat.title}}</a></li>
+                            {%endraw%}
+                          </template>
+      									</ul>
+      								</div>
+      								<form class="smart-search-form ajax-search" action="/search">
+      									<input type="text"  v-model="search_keyword" onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" value="جستجو کنید..." name="keyword"> <!--onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" value="جستجو کنید..."> -->
+      									<input type="submit" value="">
+
+      									<div class="list-product-search">
+                          <template v-for="auction in searhed_auctions">
+                            {%raw%}
+                              <div class="item-search-pro">
+          											<div class="search-ajax-thumb product-thumb">
+          												<a v-bind:href="_generateAuctionLink(auction.id)" class="product-thumb-link"><img v-bind:src="_generateAuctionImage(auction.images)" alt="" /></a>
+          											</div>
+          											<div class="search-ajax-title"><h3 class="title14"><a v-bind:href="_generateAuctionLink(auction.id)">{{auction.title}}</a></h3></div>
+          											<div class="search-ajax-price">
+          												<span> شروع از {{_ToPersianCurrency(auction.base_price)}} تومان </span>
+          											</div>
+          										</div>
+                            {%endraw%}
+                          </template>
+      									</div>
+      								</form>
+      							</div>
+      						</div>
+      						<div class=".col-12 .col-md-12">
+      							<div class="check-cart check-cart4">
+      								<div v-cloak class="mini-cart-box">
+      									<a class="mini-cart-link" href="#">
+      										<span class="mini-cart-icon"><i class="fa fa-shopping-basket" aria-hidden="true"></i></span>
+                          {%raw%}
+      										  <span class="mini-cart-number">{{total_carts}}</span>
+                          {%endraw%}
+      									</a>
+      									<div class="mini-cart-content">
+                          {%raw%}
+      										<h2>سبد خرید من ({{total_carts}}) </h2>
+        										<ul class="list-mini-cart-item list-unstyled">
+                              <template v-for="cart in mycarts">
+                               <li>
+          												<div class="mini-cart-edit">
+          													<a class="delete-mini-cart-item" href="#" v-on:click="deleteFromCart(cart.id,$event)"><i class="fa fa-trash-o"></i></a>
+          												</div>
+          												<div class="mini-cart-thumb">
+          													<a href="#"><img v-bind:src="cart.image"></a>
+          												</div>
+          												<div class="mini-cart-info">
+          													<h3><a href="#">{{cart.title}}</a></h3>
+          													<div class="info-price">
+          														<span>{{_ToPersianCurrency(cart.discounted_price)}}</span>
+          														<del>{{_ToPersianCurrency(cart.main_price)}}</del>
+          													</div>
+          													<div class="qty-product">
+          														<span class="qty-down" v-on:click="decreaseTotal(cart.id)">-</span>
+          														<span class="qty-num">{{_ToPersian(cart.current_quantity)}}</span>
+          														<span class="qty-up" v-on:click="increaseTotal(cart.id)">+</span>
+          													</div>
+          												</div>
+                                </li>
+                              </template>
+
+        										</ul>
+      										<div class="mini-cart-total">
+      											<label>قیمت نهایی</label>
+      											<span>{{cart_final_price}} تومان </span>
+      										</div>
+      										<div class="mini-cart-button">
+      											<a class="mini-cart-view" href="/cart">مشاهده سبد خرید</a>
+      											<a class="mini-cart-checkout" href="#" @click="_handleCheckout">پرداخت</a>
+      										</div>
+                          {%endraw%}
+      									</div>
+      								</div>
+      								<!-- End Mini Cart -->
+      								<div class="wishlist-box">
+      									<a href="/favorite" class="wishlist-top-link"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+      								</div>
+      								<!-- End Wishlist -->
+      								<div class="checkout-box">
+      									<a href="#" class="checkout-link"><i class="fa fa-lock" aria-hidden="true"></i></a>
+      									<ul class="list-checkout list-unstyled">
+                          {% if current_user.has_role('admin') %}
+                          <li><a href="/admin"><i class="fa fa-cog"></i> پنل مدیریت </a></li>
+                          {% endif %}
+                          {% if not current_user.is_authenticated %}
+      										<li><a href="/login"><i class="fa fa-key" aria-hidden="true"></i>ورود</a></li>
+                          {% else %}
+                          <li><a href="/profile"><i class="fa fa-user"></i> مشاهده پنل</a></li>
+                          <li><a href="/favorite"><i class="fa fa-heart-o"></i> علاقه مندی ها</a></li>
+                          <li><a href="/profile/walet"><i class="fa fa-sign-in"></i> شارژ کیف پول</a></li>
+                          <li><a href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i>خروج</a></li>
+                          {% endif%}
+      									</ul>
+      								</div>
+<!--
+                      <div class="checkout-box" id="infoDivStyle" >
+                        <a href="/howworks" class="info-link">راهنمایی</a>
+                      </div> -->
+
+      								<!-- End Check Out Box -->
+      							</div>
+      						</div>
+      						<!-- <div class="col-md-12 col-sm-12 col-xs-3">
+      							<nav class="main-nav main-nav4">
+      								<ul>
+      									<li class="menu-item-has-children"><a href="#">صفحه اصلی</a></li>
+      									<li class="menu-item-has-children"><a href="#">برندگان گذشته</a></li>
+      									<li class="menu-item-has-children"><a href="#">راهنمایی</a></li>
+      									<li class="menu-item-has-children"><a href="#">تماس با ما</a></li>
+      								</ul>
+      								<a href="#" class="toggle-mobile-menu"><span></span></a>
+      							</nav>
+      						</div> -->
+      					</div>
+      				</div>
+      			</div>
+      			<!-- End Main Header -->
+      			<div class="header-nav6" id="myApp">
+      					<div v-cloak class="container">
+      						<div class="row">
+      							<div class="col-md-3 hidden-sm hidden-xs">
+      								<div class="wrap-cat-icon wrap-cat-icon-hover wrap-cat-icon6">
+      									<h2 class="title14 white title-cat-icon">دسته بندی ها</h2>
+      									<div class="wrap-list-cat-icon">
+      										<ul class="list-cat-icon">
+                            {%raw%}
+                            <template v-for="category in allcategories">
+                              <li><a v-bind:href="_generateCategoryLink(category.id)"><img  v-bind:src="_generateCategoryImage(category.icon)"><span>{{category.title}}</span></a></li>
+                            </template>
+                            {%endraw%}
+      											</ul>
+      									</div>
+      								</div>
+      							</div>
+      							<div class="col-md-9 col-sm-12 col-xs-12">
+      								<nav class="main-nav main-nav6">
+      									<ul>
+      										<li class="menu-item-has-children"><a class="tag" href="/">صفحه اصلی</a></li>
+      										<li class="menu-item-has-children"><a class="tag" href="/view/auctions">حراجی های برگزار شده</a></li>
+      										<li class="menu-item-has-children"><a class="tag" href="/help">راهنمای شرکت در حراجی</a></li>
+      										<!-- <li class="menu-item-has-children"><a href="/help">راهنمایی</a></li> -->
+      										<!-- <li class="menu-item-has-children"><a href="/contact">تماس با ما</a></li> -->
+      									</ul>
+      									<a href="#" class="toggle-mobile-menu"><span></span></a>
+      								</nav>
+      								<!-- End Main Nav -->
+      							</div>
+      						</div>
+      					</div>
+      				</div>
+      				<!-- End Header Nav -->
+      		</div>
+      		<div class="header-ontop">
+      				<div class="container">
+      				<div class="row">
+      					<div class="col-md-2 col-sm-2 col-xs-12">
+      						<div class="logo">
+      							<h1 class="hidden">یونی بید</h1>
+      							<a href="#"><img src="/static/images/theme/logo.png" alt=""></a>
+      						</div>
+      					</div>
+      					<div class="col-md-8 col-sm-8 col-xs-12">
+      						<nav class="main-nav main-nav-ontop">
+      							<ul>
+      								<li class="menu-item-has-children"><a href="/">خانه</a></li>
+      								<li class="menu-item-has-children"><a href="/faq">پرسش و پاسخ</a></li>
+      								<li class="menu-item-has-children"><a href="/help">راهنمای شرکت در حراجی</a></li>
+      								<li class="menu-item-has-children"><a href="/view/auctions">حراجی های برگزار شده</a></li>
+                      <!-- <template v-for="category in allcategories">
+                        <li><a v-bind:href="_generateCategoryLink(category.id)">{%raw%}{{category.title}}{%endraw%}</a></li>
+                      </template> -->
+      							</ul>
+      						</nav>
+      						<!-- End Main Nav -->
+      					</div>
+      					<div class="col-md-2 col-sm-2 col-xs-12">
+      						<div class="check-cart check-cart-ontop">
+      							<div class="checkout-box">
+      								<a href="#" class="checkout-link"><i class="fa fa-lock" aria-hidden="true"></i></a>
+      								<ul class="list-checkout list-unstyled">
+                        {% if not current_user.is_authenticated %}
+      									<li><a href="/login"><i class="fa fa-key" aria-hidden="true"></i>ورود</a></li>
+                        {% else %}
+                        <li><a href="/profile"><i class="fa fa-user"></i> مشاهده پنل</a></li>
+                        <li><a href="/favorite"><i class="fa fa-heart-o"></i> علاقه مندی ها</a></li>
+                        <li><a href="/profle/walet"><i class="fa fa-sign-in"></i> پرداخت</a></li>
+                        <li><a href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i>خروج</a></li>
+                        {% endif %}
+      								</ul>
+      							</div>
+      							<!-- End Check Out Box -->
+      							<div class="search-hover-box">
+      								<a href="#" class="search-hover-link"><i class="fa fa-search" aria-hidden="true"></i></a>
+      								<form class="search-form-hover" action="/search">
+                        <input onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" type="text" value="جستجو کنید..." name="keyword">
+      									<!-- <input onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" value="جستجو کنید..." type="text"> -->
+      									<input value="" type="hidden">
+      								</form>
+      							</div>
+
+                    <!-- <div class="checkout-box" >
+                      <a href="/howworks" class="info-link">راهنمایی</a>
+      								<a href="#" class="info-link1"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
+      								<ul class="list-checkout list-unstyled">
+      									<li><a href="/help"> راهنمایی</a></li>
+      									<li><a href="/howworks">چگونگی شرکت در حراجی</a></li>
+      									<li><a href="/about">درباره ما</a></li>
+      								</ul>
+      							</div> -->
+
+      							<!-- End Wishlist -->
+      							<div v-cloak class="mini-cart-box">
+      								<a class="mini-cart-link" href="#">
+      									<span class="mini-cart-icon"><i class="fa fa-shopping-basket" aria-hidden="true"></i></span>
+                        {%raw%}
+                          <span class="mini-cart-number">{{total_carts}}</span>
+                        {%endraw%}
+      								</a>
+                      <div class="mini-cart-content">
+                        {%raw%}
+                        <h2>سبد خرید من ({{total_carts}}) </h2>
+                          <ul class="list-mini-cart-item list-unstyled">
+                            <template v-for="cart in mycarts">
+                             <li>
+                                <div class="mini-cart-edit">
+                                  <a class="delete-mini-cart-item" href="#" v-on:click="deleteFromCart(cart.id,$event)"><i class="fa fa-trash-o"></i></a>
+                                </div>
+                                <div class="mini-cart-thumb">
+                                  <a href="#"><img v-bind:src="cart.image"></a>
+                                </div>
+                                <div class="mini-cart-info">
+                                  <h3><a href="#">{{cart.title}}</a></h3>
+                                  <div class="info-price">
+                                    <span>{{_ToPersianCurrency(cart.discounted_price)}}</span>
+                                    <del>{{_ToPersianCurrency(cart.main_price)}}</del>
+                                  </div>
+                                  <div class="qty-product">
+                                    <span class="qty-down" v-on:click="decreaseTotal(cart.id)">-</span>
+                                    <span class="qty-num">{{_ToPersian(cart.current_quantity)}}</span>
+                                    <span class="qty-up" v-on:click="increaseTotal(cart.id)">+</span>
+                                  </div>
+                                </div>
+                              </li>
+                            </template>
+
+                          </ul>
+                        <div class="mini-cart-total">
+                          <label>قیمت نهایی</label>
+                          <span>{{cart_final_price}} تومان </span>
+                        </div>
+                        <div class="mini-cart-button">
+                          <a class="mini-cart-view" href="/cart">مشاهده سبد خرید</a>
+                          <a class="mini-cart-checkout" href="#" @click="_handleCheckout">پرداخت</a>
+                        </div>
+                        {%endraw%}
+                      </div>
+      							</div>
+      							<!-- End Mini Cart -->
+      						</div>
+      					</div>
+      				</div>
+      				</div>
+      			</div>
+      			<!-- End Header On Top -->
+    	  </div>
+      {% endblock header %}
+
+      <div id="content">
+        {% block content %}
+
+        {% endblock %}
+      </div>
+
+      <div id="footer">
+        {% block footer %}
+          <div class="footer footer4">
+
+          <div class="container">
+          {% if current_user.is_authenticated %}
+            <template v-if="viewed.length > 0">
+              <h3 class="title24 title-flash"><span class="bg-color white">حراجی های دیده شده</span></h3>
+              <div class="hot-cat-slider">
+              <div v-wrapitem data-pagination="false" data-navigation="true" data-itemscustom="[[0,1],[375,2],[560,3],[768,4],[980,5],[1200,6]]">
+                <template v-for="auction in viewed">
+                  {%raw%}
+                  <div class="item-hot-cat">
+                    <div class="hot-cat-info">
+                      <h3 class="product-title"><a v-bind:href="_generateAuctionLink(auction.id)">{{auction.title}}</a></h3>
+                      <p class="price-from">شروع از {{_ToPersianCurrency(auction.base_price)}}</p>
+                    </div>
+                    <div class="hot-cat-thumb"><img v-bind:src="'/static/images/products/'+_clearNames(auction.images)" alt="" />
+                      <a href="#" v-bind:href="_generateAuctionInstanceLink(auction.id)" class="quickview-link fancybox.iframe shopnow"><span>مشاهده</span></a>
+                    </div>
+                  </div>
+                  {%endraw%}
+                </template>
+              </div>
+              </div>
+            </template>
+          {% endif %}
+            <!-- End List Cat Price -->
+            <div class="footer-list-box">
+              <div class="row">
+                <div class="col-md-2 col-sm-3 col-xs-6">
+                  <!-- <div class="newsletter-form footer-box">
+                    <h2 class="title14">خبرنامه</h2>
+                    <form>
+                      <input type="text" onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" value="لطفا ایمیل خود را وارد کنید">
+                      <input type="submit" value="ثبت">
+                    </form>
+                  </div> -->
+                  <div class="social-footer footer-box">
+                    <h2 class="title14">اشتراک گذاری</h2>
+                    <div class="list-social">
+                      <a href="https://www.instagram.com/unibid.official/"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                      <!-- <a href="https://www.facebook.com/officialunibid/"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                      <a href="https://twitter.com/unibid2?lang=en"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                      <a href="https://www.linkedin.com/company/unibid/"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                      <a href="mailto:officialunibid@gmail.com"><i class="fa fa-google-plus" aria-hidden="true"></i></a> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-1 col-sm-3 col-xs-6">
+                  <div class="menu-footer-box footer-box">
+                    <h2 class="title14">سایر خدمات</h2>
+                    <ul class="list-unstyled">
+                      <!-- <li><a href="/support">پشتیبانی</a></li> -->
+                      <!-- <li><a href="/news">اخبار</a></li> -->
+                      <li><a href="/about">درباره ما</a></li>
+                      <li><a href="/contact">تماس با ما</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-md-2 col-sm-3 col-xs-6">
+                  <div class="menu-footer-box footer-box">
+                    <h2 class="title14">سایر لینک ها</h2>
+                    <ul class="list-unstyled">
+                      <li><a href="/help">راهنمای شرکت در حراجی</a></li>
+                      <li><a href="/faq">پرسش و پاسخ</a></li>
+                      <li><a href="/roles">قوانین و مقررات</a></li>
+                      <li><a href="/howworks">مراحل شرکت در حراجی</a></li>
+                      <li><a href="/private">حریم خصوصی</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-md-2 col-sm-3 col-xs-6">
+                  <div class="contact-footer-box footer-box">
+                    <!-- <h2 class="title14">یونی بید</h2> -->
+                    <h2 class="title14">تماس با یونی بید</h2>
+                    <p class="formule-address">
+                      <!-- شهرک غرب – بلوار دادمان – نبش هرمزان – برج طوبی – طبقه شانزدهم – واحد ۳ -->
+                      تهران - وزرا - کوچه ششم - پلاک ۴ - واحد ۳
+                    </p>
+                    <!-- <p class="formule-phone">۰۲۱-۹۶۶۶۷۵۰۱</p> -->
+                    <p class="formule-phone">۰۲۱-۸۸۷۱۱۶۷۲</p>
+                    <!-- <p class="formule-email"><a href="mailto:info@bidbazi.com">info@bidbazi.com</a></p> -->
+                    <p class="formule-email"><a href="mailto:info@unibid.ir">info@unibid.ir</a></p>
+                  </div>
+                </div>
+                <div class="col-md-2 col-sm-4 col-xs-6">
+                     <img id='jxlzesgtjxlzapfuwlaonbqeapfu' style='cursor:pointer' onclick='window.open("https://logo.samandehi.ir/Verify.aspx?id=1015425&p=rfthobpdrfthdshwaodsuiwkdshw", "Popup","toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")' alt='logo-samandehi' src='https://logo.samandehi.ir/logo.aspx?id=1015425&p=nbpdlymanbpdujynshwlodrfujyn'/>
+                </div>
+                <div class="col-md-2 col-sm-4 col-xs-6">
+                    <img style="width:120px;height:120px;border:1px solid #555" src="https://trustseal.enamad.ir/logo.aspx?id=105976&amp;p=AzwRWoUcoldpc3pi" alt="" onclick="window.open(&quot;https://trustseal.enamad.ir/Verify.aspx?id=105976&amp;p=AzwRWoUcoldpc3pi&quot;, &quot;Popup&quot;,&quot;toolbar=no, location=no, statusbar=no, menubar=no, scrollbars=1, resizable=0, width=580, height=600, top=30&quot;)" style="cursor:pointer" id="AzwRWoUcoldpc3pi">
+                 </div>
+                <div class="col-md-1 col-sm-4 col-xs-6">
+                   <script src="https://cdn.zarinpal.com/trustlogo/v1/trustlogo.js" type="text/javascript"></script>
+                 </div>
+              </div>
+            </div>
+            <!-- End Footer List Box -->
+          </div>
+
+          <div class="payment-method text-center">
+            <a href="#" class="wobble-vertical"><img src="{{url_for('static',filename='images/theme/sibapp.png')}}" alt="" /></a>
+            <a href="#" class="wobble-vertical"><img src="{{url_for('static',filename='images/theme/googleplay.png')}}" alt="" /></a>
+          </div>
+
+          <div class="footer-copyright">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                  <!-- <p class="copyright" style="text-align:center">تمام حقوق مادی و معنوی متعلق به شرکت ایده گستر بهتا می باشد </p> -->
+                  <p class="copyright"> تمامی كالاها و خدمات این فروشگاه، حسب مورد دارای مجوزهای لازم از مراجع مربوطه می باشند و فعالیت های این سایت تابع قوانین و مقررات جمهوری اسلامی ایران است. © 2018 unibid.ir</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Footer Copyright -->
+        </div>
+        {% endblock %}
+      </div>
+  </div>
+
+  <a href="#" class="radius scroll-top active"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
+
+  <div id="myModal" class="modal">
+      <div class="modals">
+          <div class="loader"></div>
+      </div>
+  </div>
+  {% block scripts %}
+
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/libs/bootstrap.min.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/libs/jquery.fancybox.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/libs/jquery-ui.min.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/libs/owl.carousel.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/libs/jquery.mCustomScrollbar.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/libs/wow.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/libs/popup.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/libs/TimeCircles1.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/libs/flipclock.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/site.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/theme.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/libs/jquery.jcarousellite.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/libs/jquery.elevatezoom.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/libs/vue.min.js')}}"></script>
+  <!-- <script type="text/javascript" src="{{ url_for('static', filename='js/libs/vue-dev.js')}}"></script> -->
+  <script type="text/javascript" src="{{ url_for('static', filename='js/libs/axios.min.js')}}"></script>
+  <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script> -->
+  <script type="text/javascript" src="{{ url_for('static', filename='js/libs/socket.io.dev.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/libs/sweetalert2.all.min.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/libs/persian-date.min.js')}}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/libs/jquery.progressTimer.js')}}"></script>
+
+
+<!-- <script>
+
+  var myapp = new Vue({
+    el :"#header",
+    data:{
+      allcategories : [],
+      mycarts : [],
+      searhed_auctions : [] ,
+      search_keyword : "جستجو کنید...",
+      category :"{{category_id}}",
+      intervalTimer :null,
+      current_user_hash :"{{current_user.id}}".hashCode(),
+      base_socket : io.connect(location.protocol + '//' + document.domain + ':' + location.port),
+      notifications :[],
+      has_notification : false,
+      not_seen_notifications : 0,
+      loading_to_show :true,
+    },
+    watch:{
+      search_keyword:function() {
+        if(this.category != ""){
+          axios.get("/api/site/search/auctions/category/"+this.category+"/"+this.search_keyword)
+      			.then((response) => {
+      				this.searhed_auctions = response.data;
+      			})
+      			.catch((response)=>{
+      				console.error(response);
+      			});
+        }
+        else {
+          axios.get("/api/site/search/auctions/"+this.search_keyword)
+      			.then((response) => {
+      				this.searhed_auctions = response.data;
+      			})
+      			.catch((response)=>{
+      				console.error(response);
+      			});
+        }
+      },
+    },
+
+    mounted: function(){
+
+    		axios.get("{{url_for('sitecategorymenuitems')}}")
+    			.then((response) => {
+    				this.allcategories = response.data[0];
+    			})
+    			.catch((response)=>{
+    				console.error(response);
+    			});
+
+        axios.get("{{url_for('usercartorder')}}")
+    			.then((response) => {
+
+            if(response.data.length > 0)
+            {
+              response.data.forEach(cart => {
+  							this.mycarts.push({
+                  "id" : cart.id,
+                  "title" : cart.title,
+                  "item_title" : cart.item_title,
+                  "product_title" : cart.product_title,
+                  "fulltitle" : cart.fulltitle,
+                  "item_id" : cart.item_id ,
+                  "image" : '/static/images/products/' + ClearifyNames(cart.images)[0],
+                  "discounted_price" : parseInt(cart.discounted_price),
+                  "main_price" : parseInt(cart.main_price),
+                  "min_quantity" : 1,
+                  "max_quantity" : cart.quantity,
+                  "current_quantity" : cart.total,
+                  "status" : cart.status,
+                  "discount_status" : cart.discount_status,
+  							});
+  						});
+            }
+    			})
+    			.catch((error)=>{
+    				console.error(error.response.data);
+    			});
+
+        axios.get("{{url_for('usernotifications')}}",
+        {
+          headers:
+          {
+            'Content-Type': 'application/json',
+            "X-CSRF-TOKEN" : getCookie('csrf_access_token'),
+          }
+        })
+          .then((response) => {
+            this.loading_to_show = false;
+            this.notifications = response.data;
+            this.has_notification = this.notifications.find(x=>x.seen == false);
+            this.notifications.forEach(item=>{
+              if(!item.seen)
+                this.not_seen_notifications++;
+            });
+          })
+          .catch((error)=>{
+            console.log(error.response.data.error);
+          });
+  	},
+
+
+    created:function() {
+
+    },
+
+    methods:{
+      _handleCheckout: function(){
+        axios.post("{{url_for('usercheckoutinit')}}")
+        .then((response) => {
+          if(response.data.type=="redirect_to_invoice"){
+            swal({
+              title: 'تایید سفارش',
+              text: response.data.message,
+              type: 'success',
+              confirmButtonColor: '#3085d6',
+              confirmButtonText: 'باشه...'
+            }).then((result) => {
+              if (result.value) {
+               window.parent.location = "/checkout/payment/"+response.data.pid;
+              }
+            })
+          }
+        })
+        .catch((error) => {
+          swal(
+            'مشکلی پیش اومد',
+            error.response.data.message,
+            'error'
+          )
+        });
+
+      },
+
+      mark_as_read(notif_id,link,event){
+        event.preventDefault();
+
+        axios.post("{{url_for('usernotifications')}}",
+					{
+						"nid": notif_id
+					},
+					{
+						headers:
+						{
+							'Content-Type': 'application/json',
+							"X-CSRF-TOKEN" : getCookie('csrf_access_token'),
+						}
+					}).then((response) => {
+            this.notifications = response.data;
+            this.has_notification = this.notifications.find(x=>x.seen == false);
+            this.notifications.forEach(item=>{
+              if(!item.seen)
+                this.not_seen_notifications++;
+            });
+            window.location.href=link;
+        })
+        .catch((error) => {
+          swal(
+            'مشکلی پیش اومد',
+            error.response.data.message,
+            'error'
+          )
+        });
+
+      },
+
+      mark_as_read_all(event){
+        event.preventDefault();
+        axios.put("{{url_for('usernotifications')}}",
+					{
+						headers:
+						{
+							'Content-Type': 'application/json',
+							"X-CSRF-TOKEN" : getCookie('csrf_access_token'),
+						}
+					}).then((response) => {
+            this.has_notification = false;
+            this.not_seen_notifications = 0;
+            this.notifications.forEach(item=>{
+              item.seen = true;
+            });
+        })
+        .catch((error) => {
+          swal(
+            'مشکلی پیش اومد',
+            error.response.data.message,
+            'error'
+          )
+        });
+
+      },
+
+      _generateCategoryLink(id){
+        return "/view/category/"+id+"/products";
+      },
+      _generateCategoryImage(icon){
+        return "/static/images/icons/category/"+ClearifyNames(icon)[0];
+      },
+      _generateAuctionImage(images){
+        return product_image_path +ClearifyNames(images)[0];
+      },
+      _generateAuctionLink(id){
+        return "/view/auction/"+id;
+      },
+      _generateAuctionInstanceLink(id){
+        return "/instantview/"+id;
+      },
+      _ToPersian(number){
+  			return ToPersian(number);
+  		},
+      _ToPersianCurrency(number){
+  			return ToPersian(formatCurrency(number));
+  		},
+      _clearNames(input){
+  			return ClearifyNames(input)[0];
+  		},
+      decreaseTotal(id){
+        cart = this.mycarts.find(x => x.id == id);
+        if(cart.current_quantity ==1){
+          return ;
+        }
+        cart.current_quantity-- ;
+        this.updateCarts();
+      },
+
+      increaseTotal(id){
+        cart = this.mycarts.find(x => x.id == id);
+        if(cart.max_quantity - cart.current_quantity === 0 ){
+          swal('محدودیت سفارش','شما مجاز به سفارش بیش از موجودی محصول نیستید');
+          return ;
+        }
+
+
+
+        if (cart.discount_status == 0 || cart.discount_status == undefined) {
+          cart.current_quantity++ ;
+          this.updateCarts();
+        }
+        else {
+          swal("محدودیت افزایش سفارش","تخفیف داده شده برای این محصول فقط برای یک آیتم است");
+        }
+      },
+
+      updateCarts(){
+        axios.patch("{{url_for('usercartorder')}}",
+          {
+            "order_id": cart.id,
+        		"total": cart.current_quantity
+          },
+          {
+            headers:
+            {
+              'Content-Type': 'application/json'
+            }
+          }).then((response) => {
+            if(response){
+              this.mycarts = [];
+              app.user_orders = [];
+              if(response.data && response.data.length > 0){
+                   response.data.forEach(cart => {
+                     this.mycarts.push({
+                       "id" : cart.id,
+                       "title" : cart.title,
+                       "item_title" : cart.item_title,
+   										 "product_title" : cart.product_title,
+   										 "fulltitle" : cart.fulltitle,
+                       "item_id" : cart.item_id ,
+                       "image" : '/static/images/products/' + ClearifyNames(cart.images)[0],
+                       "discounted_price" : parseInt(cart.discounted_price),
+                       "main_price" : parseInt(cart.main_price),
+                       "min_quantity" : 1,
+                       "max_quantity" : cart.quantity,
+                       "current_quantity" : cart.total,
+                       "status" : cart.status,
+                       "discount_status" : cart.discount_status,
+                    });
+                  });
+                }
+            }
+            app.user_orders = this.mycarts;
+          })
+          .catch((error)=>{
+            console.log(error.response.data);
+          });
+
+      },
+
+      deleteFromCart:function(id,event){
+        event.preventDefault();
+        self = this;
+        swal({
+          title: 'حذف سفارش',
+          text: "آیا از حذف سفارش خود از سبد خرید هستید؟",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'آره مطمئنم!',
+          cancelButtonText: 'نه بیخیال',
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          reverseButtons: true
+        }).then((result) => {
+          if (result.value) {
+
+            cart = self.mycarts.find(x => x.id == id);
+
+            axios.delete("{{url_for('usercartorder')}}",
+              {
+                data:{"order_id": cart.id},
+                headers:
+                {
+                  'Content-Type': 'application/json'
+                }
+              }).then((response) => {
+                swal(
+                  'انجام شد',
+                  'سفارش مورد نظر از سبد خرید حذف شد',
+                  'success'
+                )
+              })
+              .catch((response)=>{
+                swal(
+                  'مشکلی پیش اومد',
+                  'حذف سفارش با مشکل مواجه شد',
+                  'error'
+                )
+              });
+            var elementPos1 = self.mycarts.map(function(x) {return x.id; }).indexOf(id);
+            self.mycarts.splice( elementPos1, 1 );
+            if (app.user_orders!=undefined){
+              var elementPos2 = app.user_orders.map(function(x) {return x.id; }).indexOf(id);
+              app.user_orders.splice( elementPos2, 1 );
+            }
+          } else if (result.dismiss === swal.DismissReason.cancel) {
+            swal({
+              title:'عملیات کنسل شد',
+              text:'هنوز میتونید این محصول رو خریداری کنید',
+              type:'warning',
+              confirmButtonText: 'حله...',
+            });
+          }
+        });
+      },
+
+    },
+
+    computed:{
+      cart_final_price:function() {
+        final_price = 0;
+        this.mycarts.forEach(cart => {
+          final_price += parseInt(cart.discounted_price);
+        });
+        return ToPersian(formatCurrency(final_price));
+      },
+      total_carts:function() {
+        return ToPersian(this.mycarts.length);
+      },
+    }
+  });
+
+  myapp.base_socket.on('connect', function() {
+      console.log('connected base_socket');
+  });
+
+  myapp.base_socket.emit('sync_carts_join',{room:myapp.current_user_hash});
+
+  myapp.base_socket.on('sync_carts_join', function() {
+      console.log('joined to sync cart room');
+      myapp.intervalTimer = setInterval(()=>{
+        myapp.base_socket.emit('sync_carts',{room:myapp.current_user_hash});
+        myapp.base_socket.emit('sync_notifications',{room:myapp.current_user_hash});
+      }, 2000);
+  });
+
+  myapp.base_socket.on('sync_carts', function(data) {
+    if(data.orders == undefined)
+      return ;
+
+    data.orders.forEach(cart => {
+      if (!myapp.mycarts.find(x=>x.id == cart.id)){
+         myapp.mycarts.push({
+           "id" : cart.id,
+           "title" : cart.title,
+           "item_title" : cart.item_title,
+           "product_title" : cart.product_title,
+           "fulltitle" : cart.fulltitle,
+           "item_id" : cart.item_id ,
+           "image" : '/static/images/products/' + ClearifyNames(cart.images)[0],
+           "discounted_price" : parseInt(cart.discounted_price),
+           "main_price" : parseInt(cart.main_price),
+           "min_quantity" : 1,
+           "max_quantity" : cart.quantity,
+           "current_quantity" : cart.total,
+           "status" : cart.status,
+           "discount_status" : cart.discount_status,
+          });
+        }
+    });
+
+    myapp.mycarts.forEach(item => {
+      if(!data.orders.find(x => x.id == item.id)){
+        var elementPos = myapp.mycarts.map(function(x) {return x.id; }).indexOf(item.id);
+        myapp.mycarts.splice( elementPos, 1 );
+      }
+
+    });
+
+  });
+
+  myapp.base_socket.on('sync_notifications', function(data) {
+    myapp.notifications = data.notifications;
+    myapp.not_seen_notifications = 0;
+    myapp.has_notification = myapp.notifications.find(x=>x.seen == false);
+    myapp.notifications.forEach(item=>{
+      if(!item.seen)
+        myapp.not_seen_notifications++;
+    });
+    // myapp.not_seen_notifications = 0;
+    // data.notifications.forEach(notif => {
+    //   if (!myapp.notifications.find(x=>x.id == notif.id && x.title == notif.title)){
+    //     if (!notif.seen)
+    //       myapp.not_seen_notifications++;
+    //
+    //      myapp.notifications.push({
+    //        "id" : notif.id,
+    //        "title" : notif.title,
+    //        "text" : notif.text,
+    //        "seen" : notif.seen,
+    //        "link" : notif.link,
+    //       });
+    //     }
+    // });
+    //
+    // myapp.notifications.forEach(item => {
+    //   if(!data.notifications.find(x => x.id == item.id && x.title == item.title)){
+    //     var elementPos = myapp.notifications.map(function(x) {return x.id; }).indexOf(item.id);
+    //     myapp.notifications.splice( elementPos, 1 );
+    //   }
+    // });
+    // myapp.has_notification = myapp.notifications.find(x=>x.seen == false);
+  });
+
+
+  var footer_app = new Vue({
+    el :"#footer",
+    data:{
+      viewed : [],
+    },
+    mounted: function(){
+
+      axios.get("{{url_for('auctionuserviewed')}}")
+        .then((response) => {
+          if(response.data){
+            this.viewed = response.data;
+          }
+        })
+        .catch((response)=>{
+          console.error(response);
+        });
+    },
+    methods:{
+      _generateCategoryLink(id){
+        return "/view/category/"+id+"/products";
+      },
+      _generateCategoryImage(icon){
+        return "/static/images/icons/category/"+ClearifyNames(icon)[0];
+      },
+      _generateAuctionLink(id){
+        return "/view/auction/"+id;
+      },
+      _generateAuctionInstanceLink(id){
+        return "/instantview/"+id;
+      },
+      _ToPersian(number){
+        return ToPersian(number);
+      },
+      _ToPersianCurrency(number){
+        return ToPersian(formatCurrency(number));
+      },
+      _clearNames(input){
+        return ClearifyNames(input)[0];
+      },
+
+    },
+    directives:{
+      wrapitem:{
+				inserted:function(el) {
+					setTimeout(function() {
+						var data = $(el).data();
+						$(el).owlCarousel({
+								addClassActive:true,
+								stopOnHover:true,
+								itemsCustom:data.itemscustom,
+								autoPlay:data.autoplay,
+								transitionStyle:data.transition,
+								beforeInit:background,
+								afterAction:animated,
+								navigationText:['<i class="fa fa-angle-left" aria-hidden="true"></i>','<i class="fa fa-angle-right" aria-hidden="true"></i>'],
+						});
+						$(el).find('.owl-controls').css('left',data.control+'px');
+					},2000);
+				}
+			},
+    }
+  });
+  //
+  // $(document).on('click','.notify-menu',function() {
+  //
+  //     $('.notify-bar').show();
+  //
+  // });
+  //
+  // $(document).mouseup(function(e)
+  // {
+  //     var container = $('.notify-bar');
+  //
+  //     // if the target of the click isn't the container nor a descendant of the container
+  //     if (!container.is(e.target) && container.has(e.target).length === 0)
+  //     {
+  //         container.hide();
+  //     }
+  // });
+
+  </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127836074-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-127836074-1');
+  </script> -->
+
+  {% endblock scripts %}
+
+  </body> -->
+</html>

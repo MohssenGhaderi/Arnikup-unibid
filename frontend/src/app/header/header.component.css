@@ -1,0 +1,152 @@
+
+/* =header */
+header {
+  color: var(--whiteColor);
+  padding-top: 0;
+  padding-bottom: 0;
+  box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.08);
+}
+
+.header-top, .header-content, main {
+  padding: 0 100px;
+}
+
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 32px;
+  background-color: #f06292;
+  box-sizing: border-box;
+}
+
+.header-top-text {
+  font-weight: 100;
+}
+
+.header-top-info {
+  display: flex;
+  align-items: center;
+}
+
+.header-top-info > img {
+  margin-right: 14px;
+  object-fit: contain;
+}
+
+.question {
+  margin-left: 5px;
+}
+
+.header-top-info .twitter {
+  margin-right: 0;
+}
+
+.line {
+  width: 2px;
+  height: 17px;
+  opacity: 0.4;
+  border-right: solid 1px #fff;
+  display: block;
+  box-sizing: border-box;
+  margin-left: 13px;
+  margin-right: 12px;
+}
+
+
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  height: 68px;
+  background-color: #ec407a;
+}
+
+.header-content .logo {
+  margin-left: 16px;
+}
+
+.header-content-loginInfo {
+  display: flex;
+  flex: 1;
+  align-items: center;
+}
+
+.header-content-loginInfo-pic {
+  position: relative;
+}
+
+.header-content-loginInfo-pic > img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+}
+
+.header-content-loginInfo-stats {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  margin-left: 24px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+}
+
+.header-content-loginInfo-stats > li {
+  display: flex;
+  align-items: center;
+}
+
+.header-content-loginInfo-stats > li:not(:first-of-type) {
+  margin-left: 24px;
+}
+
+.header-content-loginInfo-stats > li > span {
+  margin-left: 6px;
+}
+
+.header-content-loginInfo-stats > .coin {
+  width: 28px;
+  height: 25px;
+}
+
+.header-content-loginInfo-pic > .badge {
+  background-color: #4caf50;
+  width: 24px;
+  height: 24px;
+  top:-5px;
+  right: -10px;
+  display: inline-block;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+}
+
+.header-content-unauthorized {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+}
+
+.header-content-unauthorized > span {
+  cursor: pointer;
+  outline: none;
+}
+
+.header-content-unauthorized-register {
+  width: 100px;
+  height: 42px;
+  border-radius: 28px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ec407a;
+  margin-left: 16px;
+}

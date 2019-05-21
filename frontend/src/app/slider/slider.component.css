@@ -1,0 +1,150 @@
+.swiper-wrapper {
+  margin-top: 30px;
+  min-height: 700px;
+}
+
+.swiper-slide-image {
+  max-width: 100%;
+}
+
+.swiper-slide {
+  max-width: calc(100vw - 190px);
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  width: 56px;
+  height: 56px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  color: #212121;
+  background-image: url('../../assets/resources/images/assets/png/left-arrow@3x.png');
+  background-size: 20%;
+}
+
+.swiper-button-prev {
+  background-image: url('../../assets/resources/images/assets/png/right-arrow@3x.png');
+}
+
+.swiper-slide-content {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  position: absolute;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.swiper-slide-content-title {
+  font-size: 45px;
+  margin-bottom: 30px;
+}
+
+.swiper-slide-content-info {
+  width: max-content;
+  margin-left: 80px;
+}
+
+.swiper-slide-content-startAuction {
+  font-size: 14px;
+  color: #ec407a;
+  margin-bottom: 20px;
+}
+
+.swiper-slide-content-price {
+  font-size: 14px;
+  color: #212121;
+  margin-bottom: 30px;
+}
+
+
+.cart-timer {
+  display: flex;
+  margin-bottom: 15px
+}
+
+.cart-timer-part {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cart-timer-part:not(:last-of-type) {
+  margin-left: 20px;
+  font-weight: 400;
+}
+
+.cart-time {
+  width: 56px;
+  height: 56px;
+  border: solid 1px rgba(0,0, 0, 0.08);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: #212121;
+  margin-bottom: 10px;
+}
+
+.cart-time-text {
+  font-weight: 400;
+  font-size: 13px;
+}
+
+.cfnButton {
+  margin: 0;
+  margin-right: 18px;
+}
+
+.swiper-slider-footer {
+  height: 68px;
+  border-top: 1px solid rgba(0,0,0, 0.06);
+  position: absolute;
+  bottom: 30px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  font-size: 13px;
+  color: #666;
+}
+
+
+.cart-footer-contributer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.cart-footer-contributer > span {
+  margin-left: 15px;
+}
+
+.cart-footer-contributer  > img{
+  border-radius: 50%;
+  position: relative;
+  max-width: 42px;
+}
+
+.cart-footer-contributer  > img:nth-of-type(3){
+  margin-left: -10px;
+}
+
+.cart-footer-contributer  > img:nth-of-type(2){
+  margin-left: -10px;
+}
+
+.swiper-slider-footer-favWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.swiper-slider-footer-fav {
+  margin-right: -10px;
+}

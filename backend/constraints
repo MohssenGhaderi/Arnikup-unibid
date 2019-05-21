@@ -1,0 +1,21 @@
+alter table bids
+drop constraint bids_user_plan_id_fkey,
+add constraint bids_user_plan_id_fkey
+   foreign key (user_plan_id)
+   references user_plans(id)
+   on delete cascade;
+
+alter table user_plan_coin_payments
+drop constraint user_plan_coin_payments_user_plan_id_fkey,
+add constraint user_plan_coin_payments_user_plan_id_fkey
+   foreign key (user_plan_id)
+   references user_plans(id)
+   on delete cascade;
+
+
+ alter table user_plan_gem_payments
+ drop constraint user_plan_gem_payments_user_plan_id_fkey,
+ add constraint user_plan_gem_payments_user_plan_id_fkey
+    foreign key (user_plan_id)
+    references user_plans(id)
+    on delete cascade;

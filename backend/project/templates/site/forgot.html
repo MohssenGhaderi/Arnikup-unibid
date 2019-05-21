@@ -1,0 +1,95 @@
+{% extends 'site/layout.html' %}
+{% block title %} فراموشی رمز عبور {% endblock %}
+{% block content %}
+
+	<div class="container" id="app">
+		<div class="row">
+		<div class="col-md-12">
+			<h2 class="title-shop-page"> ریکاوری رمز عبور حساب کاربری یونی بید</h2>
+			<div class="register-content-box">
+				<div class="row">
+					<div class="form">
+					<div class="thumbnail"><img src="/static/images/theme/login-icon.svg"/></div>
+					<form class="code-login-form" @submit.prevent="handleSubmit">
+						<input type="text" v-on:keypress="isNumber($event)" v-model="mobile" placeholder="شماره موبایل (فقط اعداد بصورت انگلیسی)"/>
+						<input type="submit" value="دریافت رمز عبور موقت" />
+					</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+
+<script>
+
+app = new Vue({
+
+	el : "#app",
+
+	data:{
+		mobile : "",
+	},
+	methods:{
+
+		handleSubmit:function() {
+
+			var obj = {"mobile":this.mobile};
+
+			for (var propName in obj) {
+				if (obj[propName] === "null" || obj[propName] === undefined || obj[propName]==="" || obj[propName]===-1) {
+					delete obj[propName];
+				}
+			}
+
+			axios.post("{{url_for('userforgotpassword')}}",obj,
+				{
+					headers:
+					{
+						'Content-Type': 'application/json'
+					}
+				}).then(function (response) {
+
+					swal({
+						 title: "فراموشی رمز عبور",
+						 text:response.data.message['text'],
+						 type:"success",
+						 confirmButtonText: 'حله...',
+					 }).then((result)=>{
+						 if(result.value){
+							 window.location ="/login";
+						 }
+					 });
+
+				 }).catch((error)=>{
+					 err = error.response.data.message.text ? error.response.data.message.text : error.response.data.message.mobile;
+					 swal({
+						 title:'مشکل درعملیات فراموشی رمزعبور',
+						 text :err,
+						 type: 'error',
+					 });
+
+				 });
+		},
+
+		isNumber: function(evt) {
+			evt = (evt) ? evt : window.event;
+			var charCode = (evt.which) ? evt.which : evt.keyCode;
+			// if ((charCode > 31 && (charCode < 48 || charCode > 57)) && (charCode < 1776 || charCode > 1785) && charCode !== 46) {
+			if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+				evt.preventDefault();
+			}
+			else {
+				return true;
+			}
+		},
+	},
+
+});
+
+</script>
+{% endblock scripts %}

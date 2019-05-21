@@ -1,0 +1,61 @@
+/* =progress */
+
+.progress  {
+  display: flex;
+  direction: ltr;
+  margin-top: 36px;
+}
+.progressItem {
+  height: 2px;
+  margin: 0 1px;
+  flex:1;
+  background-color: #ec407a;
+  display: inline-block;
+  position: relative;
+}
+/*
+margin: 25px 50px 75px 100px;
+top margin is 25px
+right margin is 50px
+bottom margin is 75px
+left margin is 100px
+*/
+
+.progressItem:first-child , .progressItemNone:first-child{
+  margin: 0px 1px 0px 0px;
+}
+.progressItem:last-child , .progressItemNone:last-child {
+  margin: 0px 0px 0px 1px;
+}
+
+.progressItemNone {
+  height: 2px;
+  margin: 0 1px;
+  flex:1;
+  background-color: #fbd1df;
+  display: inline-block;
+  position: relative;
+}
+
+.progressItem-empty {
+  overflow: hidden;
+}
+
+.progressItem-empty > span {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #fbd1df;
+  animation: progress 1s linear forwards;
+}
+
+@keyframes progress {
+  0% {
+    left: 100%;
+  }
+  100% {
+    left: 0;
+  }
+}

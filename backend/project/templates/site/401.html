@@ -1,0 +1,18 @@
+{% extends 'site/layout.html' %}
+{% block title %} درخواست نامعتبر {% endblock %}
+{% block content %}
+<div class="content-page">
+	<div class="container">
+		<div class="bread-crumb radius">
+			<a href="/">خانه</a>
+		</div>
+		<div class="content-404">
+				<h3 class="alert-danger"> متاسفانه شما مجوز دسترسی به این صفحه را ندارید! لطفا پس از  <a href="/login">ورود به سایت و اهراز هویت مجدد</a> مجددا امتحان کنید </h3>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+
+{% endblock scripts %}
