@@ -1,0 +1,29 @@
+.cfnStarRatings {
+  display: flex;
+  align-items: center;
+}
+
+input.cfnStarRating { display: none; }
+
+label.cfnStarRating {
+  float: right;
+  padding: 5px;
+  font-size: 120%;
+  color: #777;
+  transition: all .2s;
+}
+
+input.cfnStarRating:checked ~ label.cfnStarRating:before {
+  content: '\f005';
+  color: #eeee00;
+  transition: all .25s;
+}
+
+label.cfnStarRating:before {
+  content: '\f006';
+  font-family: 'FontAwesome';
+}
+
+.cfnStarRating-rank {
+  color: #f15a22;
+}

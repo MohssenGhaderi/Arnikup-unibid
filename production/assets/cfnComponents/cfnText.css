@@ -1,0 +1,23 @@
+.cfnText{
+  box-sizing: border-box;
+  color: #959595;
+  font-size: 14px;
+  height: 56px;
+  padding: 15px;
+  transition: all 0.15s;
+  width: 100%;
+  outline: none;
+  border-radius: 28px;
+  border: solid 1px #dcdbdc;
+  margin-top: 24px;
+  font-family: inherit;
+ }
+
+ .cfnText::placeholder {
+   color: #959595;
+ }
+
+ 
+.cfnText:focus {
+   border-color: #bbb;
+ }

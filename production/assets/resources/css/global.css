@@ -1,0 +1,11 @@
+@import url(../../components/cfnComponents/cfnAnimations.css);
+@import url(../../components/vendors/normalize.css);
+@import url(../../components/cfnComponents/cfnText.css);
+@import url(../../components/cfnComponents/cfnCheckbox.css);
+@import url(../../components/cfnComponents/cfnButton.css);
+@import url(../../resources/css/variables.css);
+@import url(../../resources/css/base.css);
+@import url(../fonts/Iransans/css/fontiran.css);
+@import url(../fonts/themifyIcons/css/themifyIcons.css);
+@import url(../../resources/fonts/fontAwesome-4.7.0/css/font-awesome.min.css);
+@import url(../../resources/fonts/roboto/css/roboto.css);

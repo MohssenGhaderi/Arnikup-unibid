@@ -1,0 +1,83 @@
+/* Table of contents
+  -fadeInHoriz
+  -fadeIn
+*/
+
+/* =fadeInHoriz */
+@keyframes fadeInHoriz {
+  0% {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(25px);
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.Animation-fadeInHoriz {
+  animation: fadeInHoriz 0.8s ease;
+}
+
+/* =fadeIn */
+@keyframes fadeIn {
+  0% {
+    visibility: hidden;
+    opacity: 0;
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.cfnAnimation-fadeIn {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.cfnAnimation-slideup {
+  animation: slidedown .7s ease both;
+  display: block !important;
+}
+
+.cfnAnimation-slidedown {
+  animation: slidedownNone .7s ease both;
+}
+
+.cfnAnimation-slidedown-none {
+  animation: slideupNone .7s ease both;
+}
+
+@keyframes slideupNone {
+  from {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes slidedownNone {
+  from {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0px);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+@keyframes slidedown {
+  to { opacity: 0; -webkit-transform: translateY(100%) rotateX(-90deg); transform: translateY(100%) rotateX(-90deg); }
+}
+
+@keyframes slideup {
+  from { opacity: 0; -webkit-transform: translateY(100%) rotateX(-90deg); transform: translateY(100%) rotateX(-90deg); }
+}

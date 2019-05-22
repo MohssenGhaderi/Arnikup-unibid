@@ -1,0 +1,64 @@
+.cfnButton {
+  background-color: #333;
+  height: 56px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: inherit;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 28px;
+  text-align: center;
+  text-decoration: none;
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+border: none;
+}
+
+.cfnButton:disabled {
+  filter: grayscale(100%);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.cfnButton:hover {
+  opacity: 0.9;
+}
+
+.cfnButton-success {
+  background-color: #02a578;
+}
+
+.cfnButton-primary {
+  background-color: #ec407a;
+}
+
+.cfnButton-danger {
+  background-color: #d9534f;
+}
+
+.cfnButton-themeColor {
+  background-color: var(--themeColor);
+}
+
+.cfnButton-light {
+  background-color: #ddd;
+  color: #111;
+}
+
+.cfnButton-light:hover {
+  background-color: #ccc;
+}
+
+.cfnButton-disabled {
+  background-color: #ddd;
+  pointer-events: none;
+}
+
+.cfnButton-empty {
+  background-color: #fff;
+  border: 1px solid #ebebeb;
+  color: #212121;
+}

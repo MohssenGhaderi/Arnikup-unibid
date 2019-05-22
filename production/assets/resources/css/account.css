@@ -1,0 +1,103 @@
+@import url(../../resources/fonts/Lalezar/css/lalezar.css);
+.wrapper {
+  justify-content: center;
+  align-items: center;
+}
+.account-container {
+  box-sizing: border-box;
+  background-color: var(--whiteColor);
+  width: 680px;
+  padding: 32px 115px;
+  border-radius: 24px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 80px;
+}
+
+.account-container form {
+  align-self: stretch;
+}
+
+.account-logo {
+  font-family: Lalezar;
+  font-size: 5.09em;
+  color: #ec407a;
+  display: inline-block;
+}
+
+.account-pic {
+  display: flex;
+  width: 9.09em;
+  height: 9.09em;
+  /*opacity: 0.1;*/
+  border-radius: 50%;
+  background-color: #c68d6d69;
+  margin-top: 1.3em;
+  justify-content: center;
+  align-items: center;
+}
+.account-pic >img {
+  z-index: 99999999;
+}
+.account-regularText {
+  font-size: 1.27em;
+  color:#707070;
+  margin-top: 0.6em;
+}
+
+.account-footer {
+  display: flex;
+  justify-content: space-between;
+  margin: 24px 0;
+  width: 680px;
+}
+
+.account-footer > span {
+  font-size: 13px;
+  font-family: roboto;
+  color: #707070;
+}
+
+.account-footer-list {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+}
+
+.account-footer-list > li {
+  padding: 3px 0;
+}
+
+.account-footer-list > li > a {
+  color: #707070;
+  text-decoration: none;
+}
+
+.account-footer-list > li:not(:last-of-type) {
+  padding-left: 12px;
+  border-left: solid 1px #e1e1e1;
+}
+
+.account-footer-list > li:last-of-type {
+  margin-right: 12px;
+}
+
+.account-timedown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #959595;
+  font-size: 12px;
+  margin-top: 25px;
+}
+
+.account-timer {
+  color: #212121;
+  margin-top: 10px;
+}

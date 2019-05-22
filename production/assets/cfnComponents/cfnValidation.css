@@ -1,0 +1,18 @@
+.cfnError {
+  background-color: #f8d7da;
+  position: fixed;
+  padding: 1rem 1.25rem;
+  border: 1px solid #f5c6cb;
+  color:#721c24;
+  left: 0;
+  right: 0;
+  font-size: 125%;
+  top: 0;
+  text-align: center;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.inputInvalid {
+  border: 1px solid #ec407a;
+}

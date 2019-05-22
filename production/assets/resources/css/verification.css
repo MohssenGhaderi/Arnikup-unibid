@@ -1,0 +1,20 @@
+
+.account-retry {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  margin-top: 36px;
+  margin-bottom: 36px;
+}
+
+.account-retry > span {
+  color: #707070;
+  font-size: 12px;
+}
+
+.account-retry > a {
+  color: #ec407a;
+  font-size: 16px;
+  margin-top: 12px;
+  text-decoration: none;
+}
