@@ -1,0 +1,62 @@
+<div *ngIf="states.iceAge;then iceAge"></div>
+<div *ngIf="states.holliDay || states.hotSpot;then holliDayOrHotSpot"></div>
+<div *ngIf="states.feniTto || auction?.done;then feniTto"></div>
+
+<ng-template #iceAge>
+  <div class="contributer-wrapper">
+    <p class="contributer-title">شرکت کنندگان: <span>{{auction?.participants?.length}} / {{auction?.maxMembers}}</span></p>
+    <div class="contributer-item-warpper">
+      <div *ngFor="let participant of participants">
+        <div class="contributer">
+          <div class="contributer-image-wrapper">
+            <img [src]="Link.avatar(participant.avatar)"/>
+          </div>
+          <p class="contributer-item-name">{{participant.name}}</p>
+          <div class="details-heder-top-level">
+            <img src="assets/resources/images/assets/png/star.png" alt="" class="details-heder-bottom-level">
+            <span class="details-heder-bottom-level-text">{{participant.level}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #holliDayOrHotSpot>
+  <div class="contributer-wrapper">
+    <p class="contributer-title">شرکت کنندگان: <span>{{auction?.participants?.length}} / {{auction?.maxMembers}}</span></p>
+    <div class="contributer-item-warpper">
+      <div *ngFor="let participant of participants">
+        <div class="contributer">
+          <div class="contributer-image-wrapper">
+            <img [src]="Link.avatar(participant.avatar)"/>
+            <span class="contributer-badge">{{participant.row}}</span>
+          </div>
+          <p class="contributer-item-name">{{participant.name}}</p>
+          <p class="contributer-item-follower">{{participant.bidPrice | currency : ' ' : 'symbol' : '1.0-0'}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #feniTto>
+  <div class="contributer-wrapper">
+    <p class="contributer-title">شرکت کنندگان: <span>{{auction?.participants?.length}} / {{auction?.maxMembers}}</span></p>
+    <div class="contributer-item-warpper">
+      <div *ngFor="let participant of participants">
+        <div class="contributer">
+          <div class="contributer-image-wrapper">
+            <img [src]="Link.avatar(participant.avatar)"/>
+            <span class="contributer-badge">{{participant.row}}</span>
+          </div>
+          <p class="contributer-item-name">{{participant.name}}</p>
+          <div class="details-heder-top-level">
+            <img src="assets/resources/images/assets/png/star.png" alt="" class="details-heder-bottom-level">
+            <span class="details-heder-bottom-level-text">{{participant.level}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

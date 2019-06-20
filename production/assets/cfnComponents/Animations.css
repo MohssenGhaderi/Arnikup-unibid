@@ -28,6 +28,36 @@
   }
 }
 
+.myCfnAnimation-swap-in {
+  animation: swapin 0.5s linear;
+}
+
+.myCfnAnimation-swap-out {
+  animation: swapout 0.5s linear;
+}
+
+@keyframes swapin {
+  from {
+    opacity: 0;
+    visibility: hidden;
+  }
+  to {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@keyframes swapout {
+  from {
+    opacity: 1;
+    visibility: visible;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
 .myCfnAnimation-fadeIn {
   animation: fadeIn 0.8s ease;
 }
@@ -49,7 +79,6 @@
 
 .myCfnAnimation-slideright {
   animation: slideRight .5s ease both;
-  /*animation : progress 1s linear forwards;*/
   display:  block;
 }
 
@@ -59,7 +88,7 @@
 }
 
 .myCfnAnimation-slideright-none {
-  animation: slideRightNone .5s ease both;
+  animation: slideRightNone .7s ease both;
   display:  block;
 }
 
@@ -89,10 +118,12 @@
 @keyframes slideRightNone {
   from {
     opacity: 1;
+    visibility: visible;
     transform: translateX(0px);
   }
   to {
     opacity: 0;
+    visibility: hidden;
     transform: translateX(100%);
   }
 }

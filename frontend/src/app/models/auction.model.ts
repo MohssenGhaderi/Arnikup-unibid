@@ -1,14 +1,13 @@
 import { Charity } from './charity.model';
 import { Participants } from './participants.model';
-import { StartedAuction } from './startedAuction.model';
 import { Coin } from './coin.model';
 import { AuctionPlan } from './auctionPlan.model';
-import { StartedAuction } from './startedAuction.model';
+import { AuctionStatus } from './auctionStatus.model';
+
 
 export class Auction {
   charity: Charity;
   participants: Participants;
-  startedAuction: StartedAuction;
   coins: Coin[];
   auctionId: number;
   level: number;
@@ -19,7 +18,8 @@ export class Auction {
   likeCount: number;
   participated: boolean;
   plan: AuctionPlan;
-  started: StartedAuction;
+  status: AuctionStatus;
+  bids : number;
   tag: string;
   title: string;
   basePrice: number;

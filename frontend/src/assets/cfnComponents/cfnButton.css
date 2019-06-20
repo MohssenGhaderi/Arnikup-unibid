@@ -56,3 +56,9 @@ border: none;
   background-color: #ddd;
   pointer-events: none;
 }
+
+.cfnButton-empty {
+  background-color: #fff;
+  border: 1px solid #ebebeb;
+  color: #212121;
+}

@@ -1,0 +1,28 @@
+<div class="off-wrapper">
+  <div *ngIf="auction?.product?.discount > 0;then content else other_content"></div>
+
+  <ng-template #content>
+    <p class="off-title" >
+      شما می توانید همین محصول را با تخفیف {{auction?.product?.discount}} درصدی خریداری کنید.
+    </p>
+  </ng-template>
+  <ng-template #other_content>
+    <p class="off-title" >
+      شما می توانید همین محصول را مستقیما از یونی بید خریداری کنید.
+    </p>
+  </ng-template>
+
+  <div class="off-content">
+    <div class="off-content-text-container">
+      <input type="text" class="cfnText off-content-text"/>
+      <a href="" class="cfnButton cfnButton-primary">بررسی</a>
+    </div>
+    <div class="btnBuyWrapper">
+      <p>قیمت محصول : {{auction?.product?.price | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+      <a href="" class="cfnButton cfnButton-success" style="background-color: #4caf50;" (click)="addToBasket($event, auction?.auctionId)">افزودن به سبد خرید</a>
+    </div>
+  </div>
+</div>
+<app-success></app-success>
+<app-error></app-error>
+<app-loading></app-loading>

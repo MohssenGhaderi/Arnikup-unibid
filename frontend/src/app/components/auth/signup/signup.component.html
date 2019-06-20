@@ -1,0 +1,39 @@
+
+<div class="account-container">
+  <span class="account-logo">یونی‌بید</span>
+  <p class="account-regularText">ثبت نام</p>
+  <span class="account-pic">
+      <img src="assets/resources/images/assets/svg/userIcon.svg">
+  </span>
+<form [formGroup]="registerForm"  (ngSubmit)="onSubmit()">
+  <input class="cfnText" [ngClass]="{'inputInvalid': this.submitted && this.formFields.username.errors}" formControlName="username" type="text" placeholder="نام کاربری">
+  <input class="cfnText" [ngClass]="{'inputInvalid': this.submitted && this.formFields.password.errors}" formControlName="password" type="password" placeholder="رمز عبور">
+  <input class="cfnText" [ngClass]="{'inputInvalid': this.submitted && this.formFields.confirmPassword.errors}" formControlName="confirmPassword" type="password" placeholder="تکرار رمز عبور">
+  <input class="cfnText" [ngClass]="{'inputInvalid': this.submitted && this.formFields.mobile.errors}" formControlName="mobile"  type="number" min="0" max="99999999999" placeholder="شماره موبایل">
+  <input class="cfnText" formControlName="invitor" type="number" placeholder="کد معرف">
+  <button  href="" class="cfnButton cfnButton-primary">ثبت نام</button>
+</form>
+  <div class="account-register">
+    <span>قبلا ثبت نام کرده اید؟</span>
+    <a href="" routerLink="/signin">ورود</a>
+  </div>
+</div>
+<div class="account-footer">
+  <ul class="account-footer-list">
+    <li><a href="">قوانین و مقررات</a></li>
+    <li><a href="">حریم خصوصی</a></li>
+  </ul>
+  <span dir="ltr">Copyright © unibid allrights reserved.</span>
+</div>
+
+<div class="cfnLoaderWrapper" *ngIf="loading">
+  <div class="cfnLoader"></div>
+</div>
+
+<div class="cfnError" #errorMessage>
+  <ng-template [ngIf]="errorObj">
+  <div>
+    {{errorObj.error.message}}
+  </div>
+</ng-template>
+</div>

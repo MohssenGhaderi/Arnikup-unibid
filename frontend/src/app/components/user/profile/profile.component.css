@@ -1,0 +1,659 @@
+.accountProfile {
+  position: absolute;
+  top: 58px;
+  width: 400px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  background-color: #ffffff;
+  z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #212121;
+  font-size: 12px;
+  direction: rtl;
+  padding: 15px 0;
+  padding-top: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.accountProfile > p {
+  align-self: stretch;
+}
+
+.accountProfile-title {
+  font-size: 16px;
+  text-align: center;
+  margin: 0;
+  padding: 15px;
+  position: relative;
+}
+
+.accountProfile-title > img {
+  position: absolute;
+  right: 10px;
+  top: 13px;
+}
+
+.accountProfile-title > span {
+  position: absolute;
+  left: 10px;
+  top: 18px;
+  color: #ec407a;
+}
+
+.accountProfile-shippingSteps {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  border-top: 1px solid #ebebeb;
+  border-bottom: 1px solid #ebebeb;
+  margin: 0 -10px;
+  padding: 15px 0;
+
+}
+
+.accountProfile-shippingSteps > div {
+  display: flex;
+  align-items: center;
+}
+
+.accountProfile-shippingSteps > div > div{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #ec407a;
+}
+
+.accountProfile-shippingSteps-line {
+  width: 48px;
+  height: 2px;
+  background-color:  #ec407a;
+  margin: 0 7px;
+  margin-bottom: 23px;
+}
+
+.accountProfile-shippingSteps-check {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid #ec407a;
+  margin-bottom: 10px;
+}
+
+.accountProfile-shippingSteps-check-checked {
+  background-color: #ec407a;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 115%;
+}
+
+.accountProfile-shippingSteps-check-checked::before {
+  content: '\2713';
+}
+
+.accountProfile-shippingSteps-disabled {
+  pointer-events: none;
+  opacity: 0.2;
+  filter:grayscale(100%);
+}
+
+.accountProfile-location {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  font-size: 13px;
+  border-bottom: 1px solid #ebebeb;
+  margin-bottom: 15px;
+}
+
+.accountProfile-location > img {
+  margin-left: 12px;
+  margin-bottom: 15px;
+}
+
+.accountProfile-location p {
+  line-height: 1.7em;
+}
+
+.accountProfile-location a {
+  color: #ec407a;
+  text-decoration: none;
+}
+
+.accountProfile .cfnButton-empty {
+  position: relative;
+  margin-top: 17px;
+  width: 90%;
+}
+
+.accountProfile .cfnButton-empty > img{
+  left: 20px;
+  position: absolute;
+}
+
+.accountProfile-priceWrapper {
+  width: 100%;
+}
+
+.accountProfile-priceItem {
+  border-bottom: 1px solid #ebebeb;
+  padding: 15px;
+}
+
+.accountProfile-priceItem-title {
+  font-size: 16px;
+}
+
+.accountProfile-priceItem-after {
+  color: #ec407a;
+  font-size: 12px;
+}
+
+.accountProfile-priceItem-before {
+  color: #707070;
+  font-size: 12px;
+}
+
+.accountProfile-priceTotal {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 15px;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.accountProfile-priceTotal > span:last-of-type {
+  font-size: 16px;
+}
+
+.accountProfile-footer-tittle {
+  font-size: 16px;
+  text-align: center;
+  margin-top: 45px;
+   margin-bottom: 0;
+}
+
+.accountProfile-address,
+.accountProfile-profile-editProfile {
+  width: 100%;
+  border-bottom: 1px solid #ebebeb;
+  padding: 0 20px;
+  box-sizing: border-box;
+  padding-top: 25px;
+}
+
+.accountProfile-address  .cfnButton-empty,
+.accountProfile-profile-editProfile .cfnButton-empty {
+  width: 100%;
+}
+
+.accountProfile-profile-editProfile {
+  border: 0;
+  margin-top: 10px;
+}
+
+.accountProfile-address .cfnText,
+.accountProfile-profile-editProfile .cfnText {
+  text-align: center;
+  color: #212121;
+  font-size: 14px;
+}
+
+.cfnTextSign {
+  position: absolute;
+  left: 15px;
+  font-size: 20px;
+  color: #959595;
+  top: 50%;
+  transform: translateY(-50%);
+  border-right: 1px solid #ebebeb;
+  display: inline-block;
+  padding-right: 10px;
+}
+
+.cfnTextSign > img {
+  max-width: 100%;
+}
+
+.accountProfile-address > div,
+.accountProfile-profile-editProfile > div {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.accountProfile-address > div > .cfnText,
+.accountProfile-profile-editProfile > div > .cfnText{
+  margin: 0;
+}
+
+.accountProfile-financialCredit-title {
+  font-size: 14px;
+  color: #707070;
+  padding: 15px;
+  padding-bottom: 0;
+  border-top: 1px solid #ebebeb;
+  margin-top: 0;
+}
+
+.accountProfile-financialCredit-wrapper {
+  width: 100%;
+  box-sizing: border-box;
+  padding-bottom: 50px;
+}
+
+.accountProfile-financialCredit-item {
+  display: flex;
+  font-size: 13px;
+  border-bottom: 1px solid #ebebeb;
+  padding: 15px;
+  padding-bottom: 30px;
+
+}
+
+.accountProfile-financialCredit-item-img {
+  width: 80px;
+  height: 80px;
+  border: solid 2px #ebebeb;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 16px;
+}
+
+.accountProfile-financialCredit-item-info {
+  height: 115px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.accountProfile-financialCredit-item-info-wide {
+  height: initial;
+}
+
+.accountProfile-readmore {
+  color: #ec407a;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.accountProfile-readmore > img {
+  margin-left: 5px;
+  pointer-events: none;
+}
+
+.accountProfile-readmore > a {
+  pointer-events: none;
+}
+
+.accountProfile-financialCredit-item-info > p {
+  margin: 0;
+  margin-bottom: 15px;
+}
+
+.accountProfile-financialCredit-item-info-title {
+  font-size: 14px;
+}
+
+.accountProfile-financialCredit-item-info-caption {
+  color: #959595;
+  margin-left: 5px;
+}
+
+.accountProfile-financialCredit-item-info-caption-theme {
+  color: #ec407a;
+  margin-left: 5px;
+}
+
+.accountProfile-financialCredit-footer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 12px;
+  padding: 0 15px;
+  position: absolute;
+  bottom: 0;
+  height: 60px;
+  border-top: 1px solid #ebebeb;
+  align-items: center;
+}
+
+.accountProfile-financialCredit-footer > span:last-of-type {
+  color: #ec407a;
+  font-size: 16px;
+}
+
+.accountProfile-yourScoreWrapper {
+  width: 100%;
+  padding: 0 15px;
+  box-sizing: border-box;
+}
+
+.accountProfile-yourScoreItem {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #ebebeb;
+  padding: 15px;
+  margin: 0 -15px;
+}
+
+.accountProfile-yourScoreItem-active {
+  background-color: #fef5f8;
+}
+
+.accountProfile-yourScoreItem-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 10px;
+}
+
+.accountProfile-yourScoreItem-info-name {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.accountProfile-yourScoreItem-info-score {
+  color: #ec407a;
+  font-size: 15px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.accountProfile-yourScoreItem-info-score > img {
+  margin-left: 7px;
+}
+
+.accountProfile-profile-header {
+  width: 100%;
+}
+
+.accountProfile-profile-headerTop {
+  display: flex;
+  padding: 30px;
+  padding-bottom: 0;
+  justify-content: space-between;
+}
+
+.accountProfile-profile-headerTop-rank {
+  width: 52px;
+  height: 52px;
+  border: solid 1px #ebebeb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.accountProfile-profile-headerTop-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.accountProfile-profile-headerTop-item > p > span {
+  color: #ec407a;
+}
+
+.accountProfile-profile-headerTop-item-image {
+  width: 90px;
+  height: 90px;
+  position: relative;
+}
+
+.accountProfile-profile-headerTop-item-image > img {
+  border-radius: 50%;
+}
+
+
+
+.accountProfile-profile-headerTop-item-image-pic {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #212121;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top:-5px;
+  right: -5px;
+}
+
+.accountProfile-profile-headerTop-basket {
+  width: 52px;
+  height: 52px;
+  border: solid 1px #ebebeb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  position: relative;
+}
+
+.accountProfile-profile-headerTop-basket > span {
+  width: 24px;
+  height: 24px;
+  background-color: #4caf50;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  position: absolute;
+  top: -7px;
+  right: -7px;
+}
+
+.accountProfile-profile-headerBottom > p {
+  text-align: center;
+}
+
+.accountProfile-profile-headerBottom > p:first-of-type {
+  font-size: 16px;
+}
+
+.accountProfile-profile-headerBottom > p:nth-of-type(2) {
+  font-size: 15px;
+  color: #707070;
+}
+
+.accountProfile-profile-headerBottom > p:last-of-type {
+  color: #ec407a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+}
+.accountProfile-profile-headerBottom > p:last-of-type > img {
+  margin-left: 10px;
+}
+
+.accountProfile-profile-items {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.accountProfile-profile-items > li {
+  border-top: solid 1px #ebebeb;
+  padding: 19px 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  position: relative;
+  cursor: pointer;
+}
+
+.accountProfile-profile-items > li > img {
+  margin-right: 15px;
+  margin-left: 7px;
+}
+
+.accountProfile-profile-items > li > img:last-of-type {
+  position: absolute;
+  left: 10px;
+  opacity: 0.5;
+}
+
+.accountProfile-profile-editProfile-headerTop {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: solid 1px #ebebeb;
+  padding: 15px 0;
+  position: relative;
+}
+
+.accountProfile-profile-editProfile-headerTop > img {
+  border-radius: 50%;
+}
+
+.accountProfile-profile-editProfile {
+  padding-top: 0;
+}
+
+.accountProfile-profile-editProfile-headerTop-avatar {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  right: 65px;
+  margin-top: 5px;
+}
+
+.accountProfile-profile-editProfile-headerTop-avatar > div {
+  width: 48px;
+  height: 48px;
+  background-color: #212121;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.accountProfile-profile-editProfile-headerTop-avatar > div > img {
+  max-width: 20px;
+}
+
+.accountProfile-footer-title {
+  text-align: center;
+  font-size: 16px;
+  margin-top: 50px;
+  margin-bottom: 0;
+}
+
+.accountProfile-basketImage-wrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 14px;
+  border: solid 1px #ebebeb;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+  position: relative;
+}
+
+.accountProfile-basketImage-wrapper > img {
+  max-width: 60px;
+}
+
+.accountProfile-priceItem-wrapper{
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.accountProfile-basket .accountProfile-priceItem {
+  border-bottom: initial;
+}
+
+.accountProfile-basketWrapper {
+  align-self: stretch;
+}
+
+.accountProfile-basket .accountProfile-title {
+  border-bottom: 1px solid #ebebeb;
+}
+
+.accountProfile-basketImage-remove {
+  width: 20px;
+  height: 20px;
+  background-color: #212121;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 120%;
+  padding-top: 2px;
+  box-sizing: border-box;
+  color: #f5f5f5;
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  cursor: pointer;
+}
+
+.accountProfile-basket .accountProfile-priceTotal {
+  border: initial;
+  align-self: stretch;
+justify-content: center;
+border-top: 1px solid #ebebeb;
+padding-top: 35px;
+}
+
+.accountProfile-basket .accountProfile-priceTotal > span:first-of-type {
+  margin-left: 10px;
+  color: #707070;
+}
+
+.accountProfile-basket .cfnButton {
+  border: initial;
+  margin: 0;
+}
+
+.accountProfile-basket-off {
+  align-self: stretch;
+  position: relative;
+  margin: 0 30px;
+  margin-top: 20px;
+  box-sizing: border-box;
+  padding-bottom: 20px;
+}
+
+.accountProfile-basket-off > input {
+  margin: 0;
+}
+
+.accountProfile-basket-offButton {
+  position: absolute;
+  left: 5px;
+  top: 3px;
+  width: 83px;
+  height: 49px;
+  opacity: 0.4;
+  border-radius: 24px;
+  background-color: #212121;
+
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.accountProfile-basket .accountProfile-title > img {
+  top: 18px;
+}

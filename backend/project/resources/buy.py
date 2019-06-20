@@ -30,7 +30,7 @@ class BuyChest(Resource):
         if 'chestId' not in buy_ns.payload:
             return make_response(jsonify({"success":False,"reason":"chestId","message":BUY_REQUIRED['chestId']}),400)
 
-        chest = Chest.query.get(payload['chestId'])
+        chest = Chest.query.get(buy_ns.payload['chestId'])
 
         if not chest:
             return make_response(jsonify({"success":False,"reason":"chest","message":BUY_NOT_FOUND['chest']}),400)
@@ -52,14 +52,16 @@ class BuyChest(Resource):
             payment.discount = chest_main_price - chest_discount_price
             payment.type = PaymentType.CHEST
             user_chest.payment = payment
+            payment.user = current_user
             db.session.add(payment)
             db.session.add(user_chest)
             db.session.commit()
+            return make_response(jsonify({"success":True,"message":BUY_CONFIRM ,'GUID':payment.GUID}),200)
         else:
             user_chest.payment.status = PaymentStatus.RETRY
             db.session.add(user_chest)
             db.session.commit()
-
+            return make_response(jsonify({"success":True,"message":BUY_CONFIRM ,'GUID':user_chest.payment.GUID}),200)
 
 
 buy_coin_fields = buy_ns.model('BuyCoinModel', {
@@ -75,7 +77,33 @@ class BuyCoin(Resource):
     @buy_ns.response(200, 'Success')
     @token_required
     def post(self,current_user):
-        pass
+
+        if 'coinId' not in buy_ns.payload:
+            return make_response(jsonify({"success":False,"reason":"coinId","message":BUY_REQUIRED['coinId']}),400)
+
+        coin = Coin.query.get(buy_ns.payload['coinId'])
+
+        if not coin:
+            return make_response(jsonify({"success":False,"reason":"coinNotFound","message":BUY_NOT_FOUND['coin']}),400)
+
+        payment = Payment()
+        payment.amount = coin.price
+        payment.type = PaymentType.COIN
+        payment.status = PaymentStatus.UNPAID
+        payment.discount = 0
+        payment.user = current_user
+
+        user_coin = UserCoin()
+        user_coin.user = current_user
+        user_coin.coin = coin
+        user_coin.payment = payment
+
+        db.session.add(payment)
+        db.session.add(user_coin)
+        db.session.commit()
+
+        return make_response(jsonify({"success":True,"message":BUY_CONFIRM ,'GUID':payment.GUID}),200)
+
 
 buy_gem_fields = buy_ns.model('BuyGemModel', {
     "gemId":fields.Integer()
@@ -90,19 +118,52 @@ class BuyGem(Resource):
     @buy_ns.response(200, 'Success')
     @token_required
     def post(self,current_user):
-        pass
+        if 'gemId' not in buy_ns.payload:
+            return make_response(jsonify({"success":False,"reason":"gemId","message":BUY_REQUIRED['gemId']}),400)
 
-buy_avatar_fields = buy_ns.model('BuyAvatarModel', {
-    "avatarId":fields.Integer()
-})
+        gem = Gem.query.get(buy_ns.payload['gemId'])
 
-@buy_ns.route('/avatar')
-class BuyAvatar(Resource):
+        if not gem:
+            return make_response(jsonify({"success":False,"reason":"gemNotFound","message":BUY_NOT_FOUND['gem']}),400)
+
+        payment = Payment()
+        payment.amount = gem.price
+        payment.type = PaymentType.GEM
+        payment.status = PaymentStatus.UNPAID
+        payment.discount = 0
+        payment.user = current_user
+
+        user_gem = UserGem()
+        user_gem.user = current_user
+        user_gem.gem = gem
+        user_gem.payment = payment
+
+        db.session.add(payment)
+        db.session.add(user_gem)
+        db.session.commit()
+
+        return make_response(jsonify({"success":True,"message":BUY_CONFIRM ,'GUID':payment.GUID}),200)
+
+
+@buy_ns.route('/product')
+class BuyProduct(Resource):
     parser = rest_api.parser()
     parser.add_argument('Authorization',type=str,location='headers',help='Bearer Access Token (using example: "Bearer token")',required=True)
     @buy_ns.header('Authorization: Bearer', 'JWT TOKEN', required=True)
-    @buy_ns.doc('buy avatar api.', parser=parser, body=buy_avatar_fields, validate=True)
+    @buy_ns.doc('buy product api.', parser=parser, validate=True)
     @buy_ns.response(200, 'Success')
     @token_required
     def post(self,current_user):
-        pass
+        unpaid_orders = Order.query.filter_by(user_id = current_user.id,status = OrderStatus.UNPAID).order_by(Order.created.desc())
+        if not unpaid_orders:
+            return make_response(jsonify({"success":False,"message":PAYMENT['NOORDERS']}),403)
+
+        payment = unpaid_orders.first().payment
+        if not payment:
+            payment = Payment()
+        payment.type = PaymentType.PRODUCT
+
+        payment.amount = 0
+        payment.discount = 0
+
+        return make_response(jsonify({"success":True,"message":BUY_CONFIRM ,'GUID':1}),200)

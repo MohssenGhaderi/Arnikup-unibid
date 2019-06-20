@@ -1,0 +1,59 @@
+<div class="cfnLoaderWrapper" *ngIf="loading">
+    <div class="cfnLoader"></div>
+  </div>
+<swiper [config]="config">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide" *ngFor="let slider of sliderAuctions?.sliderAuctions">
+        <!-- <div class="cart-tag" *ngIf="slider.tag"></div> -->
+        <!-- <span class="cart-tag-content" *ngIf="slider.tag">{{slider.tag}}</span> -->
+
+        <img class="swiper-slide-image" src="http://dev.unibid.ir/static/images/ads/{{slider.image}}" />
+        <div class="swiper-slide-content">
+          <div class="swiper-slide-content-info">
+          <p class="swiper-slide-content-title">{{slider.title}}</p>
+          <p class="swiper-slide-content-startAuction">شروع حراجی: {{slider.basePrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان</p>
+          <p class="swiper-slide-content-price">قیمت محصول: {{slider.maxPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان</p>
+          <div style="display: flex; align-items: flex-start;">
+              <div class="cart-timer">
+                  <div class="cart-timer-part">
+                    <span class="cart-time">۵۴</span>
+                    <span class="cart-time-text">ثانیه</span>
+                  </div>
+                  <div class="cart-timer-part">
+                      <span class="cart-time">۲۶</span>
+                      <span class="cart-time-text">دقیقه</span>
+                  </div>
+                  <div class="cart-timer-part">
+                      <span class="cart-time">۱۶</span>
+                      <span class="cart-time-text">ساعت</span>
+                  </div>
+                  <div class="cart-timer-part">
+                      <span class="cart-time">۲</span>
+                      <span class="cart-time-text">روز</span>
+                  </div>
+
+                </div>
+                <button class="cfnButton cfnButton-primary">ثبت نام در حراجی</button>
+          </div>
+
+
+        </div>
+        </div>
+        <div class="swiper-slider-footer">
+          <div class="swiper-slider-footer-favWrapper">
+              <div class="heart" [ngClass]="{'is_animating': toggleHeart || (toggleHeart && auction.liked)}" (click)="toggleClick($event)"></div>
+            <span class="swiper-slider-footer-fav">{{slider.likeCount}} نفر پسندیدن</span>
+            <img style="margin-right: 25px; margin-left: 15px;" src="assets/resources/images/assets/png/share.png">
+            <span>اشتراک با دوستان</span>
+          </div>
+            <div class="cart-footer-contributer" dir="ltr">
+                <img *ngFor="let pic of slider.participants.icons" src="http://dev.unibid.ir/static/images/avatars/{{pic}}" alt="" class="">
+               <span>شرکت کنندگان: {{slider.participants.count}} از {{slider.maxMembers}}</span>
+             </div>
+        </div>
+      </div>
+  </div>
+  <!-- Add Arrows -->
+  <div class="swiper-button-next"></div>
+  <div class="swiper-button-prev"></div>
+</swiper>

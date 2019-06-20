@@ -1,0 +1,31 @@
+<div class="details-header-top">
+  <div class="breadCrumb">
+    <img class="breadCrumb-home" src="assets/resources/images/assets/png/home.png" alt="">
+    <a href="">صفحه نخست</a>
+    <img class="breadCrumb-arrow" src="assets/resources/images/assets/png/arrow.png" alt="">
+    <a>{{auction?.title}}</a>
+  </div>
+
+  <div class="details-heder-top-level">
+    <span style="font-size: 12px; color: #707070;">سطح حراجی:</span>
+    <img src="assets/resources/images/assets/png/star.png" alt="" style="margin: 0 10px;">
+    <span style="font-size: 16px; color: #212121;">{{auction?.level}} / {{auction?.maxLevel}}</span>
+  </div>
+</div>
+<div class="details-header-bottom">
+  <div class="details-header-bottom-right">
+    <span class="details-button">مشخصات محصول</span>
+    <span class="details-button details-button-heart"><img src="assets/resources/images/assets/svg/heart-red.svg"/> {{auction?.likeCount}} </span>
+    <span class="details-button"><img src="assets/resources/images/assets/png/share.png"/> اشتراک گذاری </span>
+  </div>
+
+  <div class="details-header-bottom-left">
+    <div *ngIf="auction?.charity;then content"></div>
+    <ng-template #content>
+      <span>{{auction.charity?.description}}</span>
+    </ng-template>
+
+    <span class="details-header-bottom-left-textSeperator">اتوبید</span>
+    <label class="switch"><input type="checkbox" checked><span class="switch-slider"></span><span class="switch-text">10</span></label>
+  </div>
+</div>

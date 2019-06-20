@@ -1,0 +1,263 @@
+{% extends 'site/iframes/ilayout.html' %}
+{% block title %} فعال سازی حساب کاربری{% endblock %}
+{% block content %}
+<div class="container" id="app">
+	<div class="row"  v-cloak>
+	<div class="col-md-12">
+		<h2 class="title-shop-page">فعال سازی حساب کاربری یونی بید</h2>
+		<div class="register-content-box">
+			<div class="row">
+				<div class="form">
+				<div class="thumbnail"><img src="/static/images/theme/login-icon.svg"/></div>
+				<form class="code-login-form" @submit.prevent="handleSubmit">
+					<input type="number" class="rounded-text" v-model="verification.code" v-on:keypress="isNumber($event)" placeholder="- - - - - -"/>
+					{%raw%}
+					<p> کد فعال سازی شما تا <span>{{_ToPersian(remained_seconds_live)}}</span> ثانیه دیگر معتبر است . </p>
+					<div id="progress"></div>
+					<p class="message">موفق به دریافت کد فعال سازی نشدید؟<a href="#" v-on:click="resend=true; get_activation_code();"> دریافت مجدد کد فعال سازی </a></p>
+					<h5>{{_ToPersian(max_attempts)}} بار دیگر جهت دریافت کد فعال سازی فرصت دارید.</h5>
+					<input type="submit" value="تایید کد فعال سازی"  />
+					{%endraw%}
+				</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+
+<script type="text/javascript" src="{{url_for('static',filename='js/libs/progressbar.min.js')}}"></script>
+
+<script>
+
+
+	app = new Vue({
+
+		el : "#app",
+
+		data:{
+			verification:{
+				mobile : null,
+				code : null,
+				attempts : 0,
+			},
+			remained_seconds_live : 0,
+			remained_seconds : 0,
+			ttl : 0,
+			max_attempts : 0,
+			resend :false,
+		},
+
+		methods:{
+
+			get_activation_code:function() {
+				start_loading(loading_element);
+				data = {"resend":this.resend}
+				axios.put("{{url_for('userverification')}}", data ,
+					{
+						headers:
+						{
+							'Content-Type': 'application/json'
+						}
+					}).then((response) => {
+						stop_loading(loading_element);
+						window.location.href="/iverify";
+
+					}).catch((error)=>{
+						stop_loading(loading_element);
+						swal(
+							'مشکلی پیش اومد',
+							error.response.data.message.text,
+							'error'
+						)
+					});
+			},
+
+			verify_activation_code:function() {
+				this.verification.code = $("#verification_code").val();
+				start_loading(loading_element);
+
+				var obj = this.verification;
+
+				for (var propName in obj) {
+					if (obj[propName] === "null" || obj[propName] === undefined || obj[propName]==="" || obj[propName]===-1) {
+						delete obj[propName];
+					}
+				}
+
+				axios.post("{{url_for('userverification')}}",obj,
+					{
+						headers:
+						{
+							'Content-Type': 'application/json'
+						}
+					}).then(function (response) {
+						stop_loading(loading_element);
+
+						swal({
+							 title: "فعال سازی حساب کاربری",
+							 text:response.data.text,
+							 type:"success",
+							 confirmButtonText: 'حله...',
+						 }).then((result)=>{
+							 if(result.value){
+								 window.parent.location.reload();
+							 }
+						 });
+
+					 }).catch((error)=>{
+						 stop_loading(loading_element);
+						 err = error.response.data.message.code ? error.response.data.message.code : error.response.data.message.text;
+						 swal({
+							 title:'مشکل در عملیات فعال سازی',
+							 text :err,
+							 type: 'error',
+						 }).then((result)=>{
+							 if(result.value && error.response.data.message.type == "invalid"){
+								 window.location.href="/iverify";
+							 }
+						 });
+
+					 });
+			},
+
+			_ToPersian(number){
+				return ToPersian(number);
+			},
+
+			handleSubmit:function() {
+				start_loading(loading_element);
+
+					var obj = this.verification;
+
+					for (var propName in obj) {
+						if (obj[propName] === "null" || obj[propName] === undefined || obj[propName]==="" || obj[propName]===-1) {
+							delete obj[propName];
+						}
+					}
+
+					axios.post("{{url_for('userverification')}}",obj,
+						{
+							headers:
+							{
+								'Content-Type': 'application/json'
+							}
+						}).then(function (response) {
+							stop_loading(loading_element);
+							swal({
+								 title: "فعال سازی حساب کاربری",
+								 text:response.data.text,
+								 type:"success",
+								 confirmButtonText: 'حله...',
+							 }).then((result)=>{
+								 if(result.value){
+									 window.parent.location = "/profile/modify";
+								 }
+							 });
+
+						 }).catch((error)=>{
+							 stop_loading(loading_element);
+							 err = error.response.data.message.code ? error.response.data.message.code : error.response.data.message.text;
+							 swal({
+								 title:'مشکل در عملیات فعال سازی',
+								 text :err,
+								 type: 'error',
+							 }).then((result)=>{
+								 if(result.value && error.response.data.message.type == "expire"){
+									 this.resend = true;
+									 this.get_activation_code();
+								 }
+							 });
+
+						 });
+			},
+
+			isNumber: function(evt) {
+	      evt = (evt) ? evt : window.event;
+	      var charCode = (evt.which) ? evt.which : evt.keyCode;
+				// if ((charCode > 31 && (charCode < 48 || charCode > 57)) && (charCode < 1776 || charCode > 1785) && charCode !== 46) {
+	      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+	        evt.preventDefault();
+	      }
+				else {
+	        return true;
+	      }
+	    },
+
+		},
+
+		mounted: function(){
+			start_loading(loading_element);
+
+			axios.get("{{url_for('userverification')}}")
+			.then((response) => {
+				this.ttl = response.data.message_ttl;
+			});
+
+			axios.put("{{url_for('userverification')}}",
+				{
+					headers:
+					{
+						'Content-Type': 'application/json'
+					}
+				}).then((response) => {
+					stop_loading(loading_element);
+					this.remained_seconds = response.data.remained_to_expire;
+					this.remained_seconds_live = response.data.remained_to_expire;
+					this.max_attempts = response.data.send_attempts;
+					apply_progress();
+					bar = null;
+
+				}).catch((error)=>{
+					stop_loading(loading_element);
+					swal(
+						'مشکلی پیش اومد',
+						error.response.data.message.text,
+						'error'
+					)
+				});
+		},
+
+	});
+
+	var bar = null;
+
+	function apply_progress() {
+		  bar = new ProgressBar.Line(progress, {
+			color: '#000',
+			strokeWidth: 10,
+			trailWidth: 10,
+			easing: 'linear',
+			duration: app.remained_seconds * 1000,
+			from: { color: '#000', width: 15 },
+			to: { color: '#fff', width: 15},
+			step: function(state, circle) {
+				circle.path.setAttribute('stroke', state.color);
+				circle.path.setAttribute('stroke-width', state.width);
+
+				var value = Math.round(circle.value() * app.ttl);
+				app.remained_seconds_live = value;
+
+				if (value < 10) {
+					circle.setText("فقط " + ToPersian(value) + " ثانیه ...");
+				} else {
+					circle.setText(ToPersian(value)+" ثانیه ...");
+				}
+
+			}
+		});
+		bar.set(app.remained_seconds/app.ttl);
+		bar.animate(0);
+	}
+
+$('.close').on('click',function(event){
+	event.preventDefault();
+	$(this).parent().removeClass('show').addClass('hide');
+});
+
+</script>
+{% endblock scripts %}

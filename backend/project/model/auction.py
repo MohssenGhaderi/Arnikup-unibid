@@ -9,6 +9,7 @@ class Auction(Base):
     tag = db.Column(db.String(255))
     description = db.Column(db.Text, nullable=False)
     is_active = db.Column(db.Boolean,nullable =False,default=True)
+    done = db.Column(db.Boolean,default=False)
     have_extra_gems = db.Column(db.Boolean,nullable =False,default=False)
     start_date = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False)
     base_price = db.Column(db.DECIMAL(precision=20, scale=4), nullable=False)

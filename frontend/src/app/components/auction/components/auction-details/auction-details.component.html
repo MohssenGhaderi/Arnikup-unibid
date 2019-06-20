@@ -1,0 +1,128 @@
+<div *ngIf="states.iceAge;then iceAge"></div>
+<div *ngIf="states.holliDay;then holliDay"></div>
+<div *ngIf="states.hotSpot;then hotSpot"></div>
+<div *ngIf="states.feniTto || auction?.done;then feniTto"></div>
+
+<ng-template #iceAge>
+
+  <div class="details-auction-wrapper">
+    <div class="details-auction-right">
+      <p class="details-auction-right-title">{{auction?.title}}</p>
+      <div class="details-cart-off">
+        <span class="details-cart-off-percent">٪{{auction?.discount}}</span>
+        <div class="details-cart-off-info">
+          <p class="details-cart-off-after">شروع حراجی : {{auction?.basePrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+          <p class="details-cart-off-before">سقف حراجی : {{auction?.maxPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+        </div>
+      </div>
+    </div>
+    <div class="cart-timer">
+      <div class="cart-timer-part">
+        <span class="cart-time">{{remainedTime?.seconds}}</span>
+        <span class="cart-time-text">ثانیه</span>
+      </div>
+      <div class="cart-timer-part">
+        <span class="cart-time">{{remainedTime?.minute}}</span>
+        <span class="cart-time-text">دقیقه</span>
+      </div>
+      <div class="cart-timer-part">
+        <span class="cart-time">{{remainedTime?.hour}}</span>
+        <span class="cart-time-text">ساعت</span>
+      </div>
+      <div class="cart-timer-part">
+        <span class="cart-time">{{remainedTime?.day}}</span>
+        <span class="cart-time-text">روز</span>
+      </div>
+    </div>
+  </div>
+  <div class="cart-timer-border"></div>
+</ng-template>
+
+<ng-template #holliDay>
+  <div class="details-auction-wrapper">
+    <div class="details-auction-right">
+      <p class="details-auction-right-title">{{auction?.title}}</p>
+      <div class="details-cart-off">
+        <span class="details-cart-off-percent">٪{{auction?.discount}}</span>
+        <div class="details-cart-off-info">
+          <p class="details-cart-off-after">شروع حراجی : {{auction?.basePrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+          <p class="details-cart-off-before">سقف حراجی : {{auction?.maxPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+        </div>
+      </div>
+    </div>
+    <div class="details-auction-left">
+      <p style="font-size: 13px; margin-bottom: 0; text-align: center;">آخرین پیشنهاد : {{auction?.status?.bidPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+
+      <a (click)="handleBid($event,auction.auctionId)" class="cfnButton cfnButton-primary"> {{auction?.bids}} پیشنهاد </a>
+    </div>
+  </div>
+    <app-progress [current]="tryParseInt(auction?.remainedTime/1000)" [total]="tryParseInt(auction?.remainedTime/1000)" [fixed]="true" style="margin: 60px 0;"></app-progress>
+</ng-template>
+
+<ng-template #hotSpot>
+  <div class="details-auction-wrapper">
+    <div class="details-auction-right">
+      <p class="details-auction-right-title">{{auction?.title}}</p>
+      <div class="details-cart-off">
+        <span class="details-cart-off-percent">٪{{auction?.discount}}</span>
+        <div class="details-cart-off-info">
+          <p class="details-cart-off-after">شروع حراجی : {{auction?.basePrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+          <p class="details-cart-off-before">سقف حراجی : {{auction?.maxPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+        </div>
+      </div>
+    </div>
+    <div class="details-auction-left">
+      <p style="font-size: 13px; margin-bottom: 0; text-align: center;">آخرین پیشنهاد : {{auction?.status?.bidPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+
+      <a (click)="handleBid($event,auction.auctionId)" class="cfnButton cfnButton-primary"> {{auction?.bids}} پیشنهاد </a>
+    </div>
+  </div>
+    <app-progress [current]="tryParseInt(auction?.remainedTime/1000)" [total]="10" style="margin: 60px 0;"></app-progress>
+</ng-template>
+
+<ng-template #feniTto>
+  <div class="details-auction-wrapper">
+    <div class="details-auction-right">
+      <p class="details-auction-right-title">{{auction?.title}}</p>
+      <div class="details-cart-off">
+        <span class="details-cart-off-percent">٪{{auction?.discount}}</span>
+        <div class="details-cart-off-info">
+          <p class="details-cart-off-after">شروع حراجی : {{auction?.basePrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+          <p class="details-cart-off-before">سقف حراجی : {{auction?.maxPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+        </div>
+      </div>
+    </div>
+      <div class="details-auction-left" *ngIf="auction?.status?.bidPrice > 0">
+        <p style="font-size: 13px; margin-bottom: 0; text-align: center;">این حراجی با مبلغ {{auction?.status?.bidPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان به پایان رسید.</p>
+        <a href="" class="cfnButton cfnButton-primary cfnButton-disabled">پایان حراجی</a>
+      </div>
+  </div>
+
+    <div class="details-winner" *ngIf="auction?.status?.bidPrice > 0">
+      <div class="details-winner-content">
+        <div class="details-winner-main-content">
+          <p class="details-winner-main-content-title">برنده حراجی</p>
+          <div class="details-winner-main-content-image">
+            <div class="details-winner-main-content-imageWrapper">
+                <img class="details-winner-main-content-imageImg" [src]="Link.avatar(auction?.status?.avatar)" alt="">
+            </div>
+            <p style="font-size: 14px;">{{auction?.status?.name}}</p>
+            <div class="details-winner-main-content-star">
+              <img src="assets/resources/images/assets/png/star.png"/>
+              <span>۹</span>
+            </div>
+          </div>
+          <div class="details-winner-main-content-imageSideWrapper">
+            <img class="details-winner-main-content-imageImg" src="assets/resources/images/assets/svg/Coin.svg" alt="">
+          </div>
+          <div class="details-winner-main-content-footer">
+            مبلغ {{auction?.status?.bidPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان
+          </div>
+        </div>
+      </div>
+    </div>
+</ng-template>
+
+<app-error></app-error>
+<app-success></app-success>
+<app-loading></app-loading>

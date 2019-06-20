@@ -4,19 +4,44 @@ from datetime import datetime
 '''
 return auction millisecond remained time
 '''
-def auctionMillisecondsDeadline(start_date):
-    now = datetime.now()
-    days = (start_date - now).days
+
+def secondDiff(start_date,end_date):
+    days = (start_date - end_date).days
     sign = lambda x: (1, -1)[x < 0]
-    millisecond = (start_date - now).seconds * 1000
-    microsecond = (start_date - now).microseconds
-    return sign(days) * (millisecond + microsecond/1000)
+    if(start_date > end_date):
+        millisecond = (start_date - end_date).seconds * 1000
+        microsecond = (start_date - end_date).microseconds
+        seconds = (sign(days) * (millisecond + microsecond/1000)) / 1000
+    else:
+        millisecond = (end_date - start_date).seconds * 1000
+        microsecond = (end_date - start_date).microseconds
+        seconds = (sign(days) * (millisecond + microsecond/1000)) / 1000
+    return seconds
+
+def auctionMillisecondsDeadline(start_date):
+    end_date = datetime.now()
+    days = (start_date - end_date).days
+    sign = lambda x: (1, -1)[x < 0]
+    if(start_date > end_date):
+        millisecond = (start_date - end_date).seconds * 1000
+        microsecond = (start_date - end_date).microseconds
+        seconds = (sign(days) * (millisecond + microsecond/1000))
+    else:
+        millisecond = (end_date - start_date).seconds * 1000
+        microsecond = (end_date - start_date).microseconds
+        seconds = (sign(days) * (millisecond + microsecond/1000))
+    return seconds
 
 def auctionSecondsDeadline(start_date):
-    now = datetime.now()
-    days = (start_date - now).days
+    end_date = datetime.now()
+    days = (start_date - end_date).days
     sign = lambda x: (1, -1)[x < 0]
-    millisecond = (start_date - now).seconds * 1000
-    microsecond = (start_date - now).microseconds
-    seconds = (sign(days) * (millisecond + microsecond/1000)) / 1000
+    if(start_date > end_date):
+        millisecond = (start_date - end_date).seconds * 1000
+        microsecond = (start_date - end_date).microseconds
+        seconds = (sign(days) * (millisecond + microsecond/1000)) / 1000
+    else:
+        millisecond = (end_date - start_date).seconds * 1000
+        microsecond = (end_date - start_date).microseconds
+        seconds = (sign(days) * (millisecond + microsecond/1000)) / 1000
     return seconds

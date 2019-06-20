@@ -1,0 +1,232 @@
+{% extends 'site/iframes/ilayout.html' %}
+{% block title %}   شرکت در حراجی {% endblock %}
+{% block content %}
+<div class="Package">
+	<div class="container" id="app">
+		<div v-cloak class="product-quickview woocommerce">
+			<div class="row">
+				<h3 class="order_review_heading">ثبت نام در حراجی</h3>
+				<div class="woocommerce-checkout-review-order" id="order_review">
+					<div class="table-responsive">
+						<table class="shop_table woocommerce-checkout-review-order-table">
+							<thead>
+								<tr>
+									<th class="product-name">بسته ها</th>
+									<th class="product-total"> هزینه و تعداد پیشنهاد</th>
+								</tr>
+							</thead>
+							<tbody>
+								<template v-for="(item,index) in plans">
+									{%raw%}
+										<tr class="cart_item">
+										<td class="product-name">
+											<ul id="shipping_method" class="list-none">
+												<li>
+													<input v-planradio type="radio" v-on:click="_updatePrices(item.id,item.price)" class="shipping_method" value="free_shipping" v-bind:id="item.plan.id" v-bind:data-index="index" name="plan">
+													<label v-bind:for="item.plan.id">{{item.plan.title}}</label>
+												</li>
+											</ul>
+										</td>
+										<td class="product-total">
+											<span class="amount">{{_ToPersian(_formatCurrency(item.price))}} تومان با  {{_ToPersian(item.max_offers)}} عدد پیشنهاد و کوپن تخفیف {{_ToPersian(_formatCurrency(item.discount))}} تومانی </span>
+										</td>
+									</tr>
+									{%endraw%}
+								</template>
+							</tbody>
+							<tfoot>
+								<tr class="cart-subtotal">
+									<th>هزینه بسته انتخابی</th>
+									<td class="product-total">{%raw%}{{_ToPersian(_formatCurrency(selected_plan_price))}}{%endraw%} تومان </td>
+								</tr>
+
+								<tr class="order-total">
+									<th>موجودی حساب شما</th>
+									<td><strong><span class="amount">{%raw%}{{_ToPersian(_formatCurrency(credit))}}{%endraw%} تومان </span></strong> </td>
+								</tr>
+
+								<tr class="cart-subtotal">
+									<th class="text-orange">کسر موجودی</th>
+									<td><strong class="amount text-orange">{%raw%}{{_ToPersian(_formatCurrency(credit_fraction))}}{%endraw%}</strong></td>
+								</tr>
+
+								<tr class="order-total">
+									<th>مبلغ پرداختی نهایی</th>
+									<td><strong><span class="amount">{%raw%}{{_ToPersian(_formatCurrency(total_plan_price))}}{%endraw%} تومان </span></strong> </td>
+								</tr>
+
+							</tfoot>
+						</table>
+					</div>
+					<div class="woocommerce-checkout-payment" id="payment">
+
+						<ul class="payment_methods methods list-none">
+							<template v-for="(method,index) in payment_methods">
+								<li class="payment_method_cheque">
+									<input v-methodradio v-bind:id="method.id" type="radio" data-order_button_text="" v-on:click="_select_method(method.id)" name="method" class="input-radio">
+									{%raw%}
+										<label v-if="method.type==0" v-bind:for="method.id">{{method.title}}({{_ToPersian(_formatCurrency(credit))}}) </label>
+										<label v-else v-bind:for="method.id">{{method.title}}</label>
+									{%endraw%}
+								</li>
+							</template>
+						</ul>
+
+						<div class="form-row place-order">
+							<input type="submit" value="تایید پرداختی" v-on:click="_placePlanOrder" name="woocommerce_checkout_place_order" class="button alt fixed-bottom">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript" src="{{ url_for('static', filename='js/libs/knockout.js')}}"></script>
+<script>
+start_loading(loading_element);
+
+var app = new Vue({
+
+	el: "#app",
+
+	data :{
+		auction_id : "{{auction_id}}",
+		plan_id : 0,
+		payment_method_id : 0,
+		payment_methods : [],
+		plans :[],
+		price : 0,
+		amount : 0,
+		credit : "{{current_user.credit}}",
+		next : "{{next}}" ,
+		selected_plan_price : 0,
+		credit_fraction : 0,
+		total_plan_price : 0,
+	},
+	methods:{
+		_ToPersian: function(data){
+			return ToPersian(data);
+		},
+
+		_formatCurrency: function(number){
+			return formatCurrency(number);
+		},
+		_updatePrices(id,selected_price){
+			this.selected_plan_price = selected_price ;
+			total_price = selected_price - this.credit;
+			this.total_plan_price = selected_price ;
+			this.credit_fraction = this.credit - selected_price ;
+
+			this.plan_id = id;
+			this.price = selected_price;
+		},
+		_select_method(method_id) {
+	 		this.payment_method_id = method_id;
+		},
+		_placePlanOrder(){
+			start_loading(loading_element);
+
+			if (this.amount > this.credit && $("#payment_method_cheque").is(':checked') ){
+					swal(
+						'مشکلی پیش اومد',
+						'مبلغ حساب شما برای پرداخت کافی نمیباشد. لطفا حساب خود را شارژ کنید',
+						'error'
+					)
+					return;
+			}
+
+			axios.post("{{url_for('auctionuserparticipation')}}",
+				{
+					"plan_id":this.plan_id,
+					"auction_id":this.auction_id,
+					"method_id":this.payment_method_id,
+					"amount":this.price
+				},
+				{
+					headers:
+					{
+						'Content-Type': 'application/json',
+						"X-CSRF-TOKEN" : getCookie('csrf_access_token'),
+					}
+				}).then((response) => {
+					stop_loading(loading_element);
+						if(response.data.type=="redirect_to_bank")
+						{
+							swal({
+							  title: 'تایید پرداخت',
+							  text: "به صفحه تایید و انتخاب درگاه پرداخت هدایت می شوید",
+							  type: 'success',
+							  confirmButtonColor: '#3085d6',
+							  confirmButtonText: 'باشه...'
+							}).then((result) => {
+							  if (result.value) {
+							   window.parent.location = "/confirm/payment/"+response.data.pid;
+							  }
+							})
+						}else if (response.data.type=="registered") {
+							swal({
+							  title: 'شرکت در حراجی',
+							  text: "مبلغ پلن انتخابی از کیف پول شما کسر شد و در حراجی شرکت داده شدید",
+							  type: 'success',
+							  confirmButtonColor: '#3085d6',
+							  confirmButtonText: 'باشه...'
+							}).then((result) => {
+							  if (result.value) {
+							   window.parent.location = "/view/auction/"+this.auction_id;
+							  }
+							})
+						}
+			}).catch((error)=>{
+				stop_loading(loading_element);
+					swal(
+						'مشکلی پیش اومد',
+						error.response.data.reason,
+						'error'
+					)
+				});
+		},
+	},
+	mounted: function(){
+		axios.get("{{url_for('auctiongetplans', aid = auction_id )}}")
+			.then((response) => {
+
+				this.plans = response.data.plans[0];
+				this.payment_methods = response.data.methods[0];
+
+				stop_loading(loading_element);
+			})
+			.catch((response)=>{
+				stop_loading(loading_element);
+				swal(
+					'مشکلی پیش اومد',
+					'برای حراجی پلن تعریف نشده است لطفا با پشتیبانی سایت تماس حاصل کنید',
+					'error'
+				)
+			});
+	},
+	updated: function () {
+  	this.$nextTick(function () {
+  	})
+	},
+
+	directives: {
+
+		planradio:{
+			inserted:function(el) {
+				$("input:radio[name=plan]:first").click();
+			}
+		},
+		methodradio:{
+			inserted:function(el) {
+				$("input:radio[name=method]:first").click();
+			}
+		},
+	}
+});
+
+</script>
+{% endblock scripts %}

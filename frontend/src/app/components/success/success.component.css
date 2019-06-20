@@ -1,0 +1,46 @@
+.cfnSuccess {
+  background-color: #ff77c8;
+  position: absolute;
+  padding: 1rem 1.25rem;
+  border: 1px solid #ffffff;
+  color:#ffffff;
+  left: 0;
+  right: 0;
+  font-size: 125%;
+  top: 0;
+  text-align: center;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 9999999999;
+}
+
+.cfnAnimation-fadeIn {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+.cfnAnimation-fadeOut {
+  animation: fadeOut 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    visibility: hidden;
+    opacity: 0;
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    visibility: visible;
+    opacity: 1;
+
+  }
+  100% {
+    visibility: hidden;
+    opacity: 0;
+  }
+}

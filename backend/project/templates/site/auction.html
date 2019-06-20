@@ -1,0 +1,1129 @@
+{% extends 'site/layout.html' %}
+{% block title %} حراجی محصول {% endblock %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/libs/TimeCircles0.css') }}"/>
+
+<div id="app" class="content-page">
+	<div v-cloak class="container">
+		<div class="bread-crumb radius">
+		{%raw%}
+			<a href="/">خانه</a><span>{{auctionTitle}}</span>
+		{%endraw%}
+		</div>
+		<!-- End Bread Crumb -->
+		<div class="row">
+			<div class="col-md-12">
+				<div class="product-detail detail-with-sidebar config-detail border radius">
+
+					<div>
+						<div class="row">
+							<div class="col-md-4 col-sm-12 col-xs-12">
+								<div class="product-extra-link2 rightList">
+									{%raw%}
+									<a class="wishlist-link" href="#"> ضریب <i aria-hidden="true" class="fa fa-times"></i>{{_ToPersian(auctionRatio)}}</a>
+			            <a class="wishlist-link" href="#"><i aria-hidden="true" class="fa fa-users"></i>{{_ToPersian(auctionParticipants.length)}} از {{_ToPersian(auctionMaxMembers)}} </a>
+									{%endraw%}
+			          </div>
+								<div class="detail-gallery">
+									<div class="mid">
+										<img v-bind:src="activeImage" alt=""/>
+									</div>
+									<div class="gallery-control">
+										<a href="#" class="prev"><i class="fa fa-angle-left"></i></a>
+										<div class="carousel">
+											<ul>
+												<template v-for="(image, index) in images">
+													<li><a href="#" v-bind:class="{'active':index==1}"><img v-bind:src="image" alt=""/></a></li>
+												</template>
+
+											</ul>
+										</div>
+										<a href="#" class="next"><i class="fa fa-angle-right"></i></a>
+									</div>
+								</div>
+
+								<!-- End Gallery -->
+								<div class="detail-without-sidebar">
+									<div class="detail-social">
+										<ul class="list-social-detail list-inline-block">
+											<li><a href="#" class="soci-fa soc-tumblr"><i class="fa fa-tumblr" aria-hidden="true"></i></a></li>
+											<li><a href="#" class="soci-fa soc-facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+											<li><a href="#" class="soci-fa soc-twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+											<li><a href="#" class="soci-fa soc-print"><i class="fa fa-print" aria-hidden="true"></i></a></li>
+											<li>
+												<div class="more-social">
+													<a class="soci-fa add-link soc-add" href="#"><i aria-hidden="true" class="fa fa-plus"></i><span>7</span></a>
+													<ul class="list-social-share list-none">
+														<li><a href="#"><i class="fa fa-youtube" aria-hidden="true"></i><span>Youtute</span></a></li>
+														<li><a href="#"><i class="fa fa-linkedin"></i><span>linkedin</span></a></li>
+														<li><a href="#"><i class="fa fa-pinterest"></i><span>pinterest</span></a></li>
+														<li><a href="#"><i class="fa fa-google"></i><span>google</span></a></li>
+														<li><a href="#"><i class="fa fa-instagram"></i><span>instagram</span></a></li>
+														<li><a href="#"><i class="fa fa-flickr"></i><span>flickr</span></a></li>
+														<li><a href="#"><i class="fa fa-reddit"></i><span>reddit</span></a></li>
+													</ul>
+												</div>
+											</li>
+										</ul>
+									</div>
+								</div>
+
+							</div>
+							<div class="col-md-8 col-sm-12 col-xs-12">
+								<div class="tab-detal hoz-tab-detail">
+									<div class="hoz-tab-title">
+										<ul>
+											<li class="active"><a href="#hoz1" data-toggle="tab">حراجی</a></li>
+											<li v-if="auctionParticipants.length>0"><a href="#hoz2" data-toggle="tab">شرکت کنندگان</a></li>
+											<!-- <li><a href="#hoz3" data-toggle="tab">پلی بک</a></li>-->
+											<li v-if="lastWinners.length>0"><a href="#hoz4" data-toggle="tab">برندگان گذشته</a></li>
+											<li><a href="#hoz5" data-toggle="tab">مشخصات محصول</a></li>
+										</ul>
+									</div>
+
+									<div class="tab-content">
+
+										<!-- <div id="hoz1" class="tab-pane active">
+											<div class="hoz-tab-content">
+												<div class="content-detail-tab">
+													<div class="detail-tab-info">
+														{%raw%}
+														<p class="desc">{{auctionDescription}}</p>
+															<ul>
+																<li>{{itemProductdescription}}</li>
+														</ul>
+														{%endraw%}
+													</div>
+												</div>
+											</div>
+										</div> -->
+
+										<div id="hoz1" class="tab-pane active">
+											<div class="hoz-tab-content">
+												<div class="content-detail-tab">
+													<div class="detail-tab-info">
+														<div class="detail-info">
+																	{%raw%}
+															<h2 class="title-detail">{{auctionTitle}}</h2>
+																	{%endraw%}
+															<div class="product-price">
+																<!-- <a href="#" class="shopnow"><span>شرکت در حراجی</span></a> -->
+																<div class="textboX">
+																	{%raw%}
+																	<div class="textboXX"><p> قیمت محصول : <span>{{_ToPersian(_formatCurrency(auctionItemPrice))}}</span> تومان <div> &nbsp  </div></p></div>
+																	{%endraw%}
+																	<div class="upArrow"></div>
+																</div>
+
+																<div class="textboX">
+																	<div class="textboXX">
+																	{%raw%}
+																		<p id="auction_register_price">شروع حراجی : <span>{{_ToPersian(_formatCurrency(auctionBasePrice))}}</span> تومان
+																		<div>  سقف حراجی : <span>{{_ToPersian(_formatCurrency(auctionMaxPrice))}}</span> تومان </p></div>
+																	{%endraw%}
+																	</div>
+																	<div class="upArrow"></div>
+																</div>
+															</div>
+															<div class="detail-extralink">
+																<div class="list-member-bid">
+																	<div v-if="people.length > 0">
+																		<template v-for="(person, index) in people">
+																			{%raw%}
+																				<p class="item-Bid" v-bind:class="{'YOU':person.its_you}"><img v-bind:src="person.avatar"/><br>{{person.name}}<span>{{_ToPersian(index+1)}}</span><b>{{person.price}}</b></p>
+																			{%endraw%}
+																		</template>
+																	</div>
+
+																	<div v-else class="no-auction">
+																		<strong>پیشنهادی موجود نیست!</strong>
+																		<p>آخرین مهلت ثبت نام، ۱ دقیقه مانده به آغاز حراجی</p>
+																	</div>
+
+																</div>
+
+																<div class="product-extra-link2 resWi">
+																	<div class="win-user-final">برنده این حراجی</div>
+																	<div class="boardstyle">
+																		<div class="last-Bid-user">
+																		{%raw%}
+																			<p class="img-price-Bid"><img v-bind:src="auctionCurrentWinnerImage"/></p>
+																			<p class="price-Bid">{{auctionCurrentOffer}} </p>
+																			<p class="name-price-Bid" id="auction_current_winner">{{auctionCurrentWinner}}</p>
+																		{%endraw%}
+																		</div>
+																	</div>
+																	{%raw%}
+																	<div class="countdown-label">{{now_date}}</div>
+																	<div id="countdown">
+																		<div class="my-flash-countdown" id="DateCountdown"></div>
+																	</div>
+																	<a class="addcart-link" href="#" @click.prevent="handleBid" id="offer">پیشنهاد <div class="detail-qty border radius" id="offer_count">{{_ToPersian(offerBidCount)}}</div></a>
+																	{%endraw%}
+																</div>
+
+																<!-- <div v-if="error.show" class="alert alert-danger error_alert">
+																{%raw%}
+																	<a href="#" class="close" aria-label="close">×</a>
+																	<div class="error_container">{{error.message}}</div>
+																</div>
+																{%endraw%} -->
+
+																<div class="alert alert-danger error_alert hide">
+																	<a href="#" class="close" aria-label="close">×</a>
+																	<div class="error_container"></div>
+																</div>
+
+																<div class="alert alert-success alert-dismissable success_alert hide">
+																	<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+																	<div class="success_container"></div>
+																</div>
+																{%raw%}
+
+																<div v-if="!auction_done" class="detail-countdowns">
+																	شروع حراجی : </span>
+									                <span>{{auction_end_date}}</span> یک دقیقه قبل از ساعت
+									                <i aria-hidden="true" class="fa fa-clock-o"></i><span>{{auction_end_time}}</span>
+									              </div>
+
+																<div v-else class="detail-countdowns">
+																	پایان حراجی : </span>
+									                <span>{{auction_end_date}}</span> ساعت
+									                <i aria-hidden="true" class="fa fa-clock-o"></i><span>{{auction_end_time}}</span>
+									              </div>
+
+																{%endraw%}
+															</div>
+															<div class="detail-extralink mt-0">
+																<div class="product-extra-link2">
+																	<a class="addcart-link2" href="#" v-on:click="addToCart(auctionItemId,$event)"><i class="fa fa-shopping-basket" aria-hidden="true"></i> اضافه به سبد</a>
+																	<a class="wishlist-link2" href="#" v-on:click="addToWish(auctionId,$event)"><i aria-hidden="true" v-bind:class="auctionLiked"></i></a>
+																	<a class="wishlist-link2 text-red" href="#"><i aria-hidden="true" class="fa fa-dollar-sign"></i><span id="discount"></span> تومان</a>
+																</div>
+															</div>
+
+
+
+														</div>
+														<!-- Detail Info -->
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div id="hoz2" class="tab-pane" v-if="auctionParticipants.length>0">
+											<div class="hoz-tab-content">
+												<div class="content-detail-tab">
+													<div class="detail-tab-info">
+															<div class="detail-info">
+																		<template v-for="(person, index) in auctionParticipants">
+																			{%raw%}
+																				<p class="item-User" v-bind:class="{'YOU':person.its_you}"><img class="float-left" v-bind:src="person.avatar"/><span class="float-right">{{person.name}}</span></p>
+																			{%endraw%}
+																		</template>
+																</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+										<!-- <div id="hoz3" class="tab-pane">
+											<div class="hoz-tab-content">
+												<div class="content-detail-tab">
+													<div class="detail-tab-info">
+														<div class="detail-info">
+
+															<div class="detail-tab-info-play">
+
+															  <h5 class="under-line">	مشاهده پلی بک آخرین حراجی محصول</h5>
+
+																<div class="detail-extralink">
+																	<div class="list-member-bid">
+																		<template v-for="(person, index) in current_live_users">
+																			{%raw%}
+																				<p class="item-Bid" v-bind:class="{'YOU':person.its_you}"><img v-bind:src="person.avatar"/><br>{{person.name}}<span>{{_ToPersian(index+1)}}</span><b>{{person.price}}</b></p>
+																			{%endraw%}
+																		</template>
+																	</div>
+																	<div class="product-extra-link2 resWi">
+																		<div class="win-user-final">برنده این حراجی</div>
+																		<div class="boardstyle">
+																			<div class="last-Bid-user">
+																			{%raw%}
+																				<p class="img-price-Bid"><img v-bind:src="live.auctionCurrentWinnerImage"/></p>
+																				<p class="price-Bid">{{live.auctionCurrentOffer}} </p>
+																				<p class="name-price-Bid" id="auction_current_winner">{{live.auctionCurrentWinner}}</p>
+																			{%endraw%}
+																			</div>
+																		</div>
+																		{%raw%}
+																		<span class="text-uppercase white"><div id="flash-countdown"  v-bind:data-timer ="100"></div></span>
+
+
+
+																		<a class="addcart-link" href="#" id="offer">پیشنهاد <div class="detail-qty border radius" id="offer_count">{{_ToPersian(live.offerBidCount)}}</div></a>
+																		{%endraw%}
+																	</div>
+																</div>
+
+
+																<div class="player-button">
+																	<i v-if="!playing" class="fas fa-play-circle" v-on:click="apply_progress();"></i>
+																	<i v-else class="fas fa-pause-circle" v-on:click="stop_progress();"></i>
+																	<i class="fas fa-stop-circle" v-on:click="reset_progress();"></i>
+
+																	<div id="timeline"></div>
+
+																</div>
+
+													    </div>
+
+														</div>
+													</div>
+										   </div>
+									   </div>
+								     </div> -->
+
+										<div id="hoz4" class="tab-pane" v-if="lastWinners.length>0">
+											<div class="hoz-tab-content">
+												<div class="content-detail-tab">
+													<div class="detail-tab-info">
+														{%raw%}
+														<!-- <h5 class="under-line">{{_ToPersian(lastWinners.length)}} نفر محصول این حراجی را برنده شده اند.</h5> -->
+															<template v-for="(person, index) in lastWinners">
+																<!-- <p class="item-winner" v-bind:class="{'YOU':person.its_you}"><img class="float-left" v-bind:src="person.avatar"/><span class="float-right">برنده حراجی {{person.name}} با تخفیف {{person.discount}}</span></p> -->
+
+																	<p class="item-winner" v-bind:class="{'YOU':person.its_you}">
+																		<panel class="panel-left">
+																			<span><img v-bind:src="person.avatar"/></span>
+																			<a v-bind:href="_createAuctionLink(person.auction_id)">نمایش حراجی</a>
+																		</panel>
+
+																		<panel class="panel-right">
+																			<span> برنده حراجی : {{person.name}} </span>
+																			<!-- <span> قیمت تمام شده محصول : {{person.price}} تومان </span> -->
+																			<span> تخفیف : {{person.discount}} تومان </span>
+																		  <!-- <span> قیمت واقعی : {{person.main_price}} تومان </span> -->
+																			<!-- <span> تاریخ حراجی : {{person.date}} </span> -->
+																			<!-- <span> زمان پایان : {{person.hour}} </span> -->
+																		</panel>
+
+																	</p>
+
+															</template>
+														{%endraw%}
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div id="hoz5" class="tab-pane">
+											<div class="hoz-tab-content">
+												<div class="content-detail-tab">
+													<div class="detail-tab-info">
+														{%raw%}
+														<p class="desc" >{{auctionDescription}} </p>
+															<ul>
+																<li> {{itemProductdescription}} </li>
+															</ul>
+														{%endraw%}
+													</div>
+												</div>
+											</div>
+										</div>
+
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+
+				</div>
+				<!-- End Main Detail -->
+				<div class="sidebar">
+					<div class="list-detail-adv">
+						<div class="detail-adv">
+							<a href="#"><img class="radius wobble-horizontal" alt="" src="/static/images/theme/pro-adv1.jpg"></a>
+						</div>
+						<div class="detail-adv">
+							<a href="/howworks"><img class="radius wobble-horizontal" alt="" src="/static/images/theme/pro-adv2.jpg"></a>
+						</div>
+						<div class="detail-adv">
+							<a href="/contact"><img class="radius wobble-horizontal" alt="" src="/static/images/theme/pro-adv3.jpg"></a>
+						</div>
+					</div>
+				</div>
+				<!-- End Product Related -->
+			</div>
+		</div>
+
+	</div>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+
+<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue-socket.io@2.1.1-b/dist/build.min.js"></script> -->
+<script type="text/javascript" src="{{url_for('static',filename='js/libs/progressbar.min.js')}}"></script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/libs/TimeCircles0.js')}}"></script>
+
+<div id="myModal" class="modal">
+    <div class="modals">
+        <div class="loader"></div>
+    </div>
+</div>
+<script>
+
+
+
+// var seconds_duration = 0;
+// var bar = null;
+// var player = null;
+// var current_cnt  = 0;
+
+// function forward_progress() {
+// 	console.log(seconds_duration);
+// 	console.log(app.target_points);
+// 	seconds_duration -= 3;
+// 	bar.set(bar.value()+(3.0/100.0));
+// 	bar.animate(1);
+// 	if(seconds_duration < app.target_points[0]){
+// 		app.target_points.splice(0,1);
+// 		current_cnt++;
+// 	}
+// }
+//
+// function backward_progress() {
+// 	seconds_duration += 3;
+// 	bar.set(bar.value()-(3.0/100.0));
+// 	bar.animate(1);
+// }
+
+// function stop_progress() {
+// 	app.playing = !app.playing;
+// 	bar.stop();
+// 	clearInterval(player);
+// }
+
+// function reset_progress() {
+// 	app.playing = false;
+// 	bar.set(0);
+// 	bar.stop();
+// 	bar.destroy();
+// 	bar = null;
+// 	app.live.auctionCurrentWinnerImage="#";
+// 	app.live.auctionCurrentOffer=0;
+// 	app.live.auctionCurrentWinner="";
+// 	app.live.auctionCurrentWinnerImage="";
+// 	app.live.now_date=null;
+// 	app.live.offerBidCount=0;
+// 	app.current_live_users = [];
+// 	app.target_points = [];
+// 	last = app.all_live_users[app.all_live_users.length-1].date.replace("GMT","");
+// 	 app.all_live_users.forEach(user => {
+// 		 first = user.date.replace("GMT","");
+// 		 app.target_points.push((new Date(last).getTime() - new Date(first).getTime())/1000);
+// 	});
+//
+// 	current_cnt  = 0;
+// 	clearInterval(player);
+// }
+//
+// function apply_progress() {
+// 	console.log(app.target_points);
+// 	seconds_duration = app.target_points[0];
+//
+// 	 player = setInterval(()=>{
+//
+// 		 if(app.target_points[0] == seconds_duration){
+// 			app.target_points.splice(0,1);
+// 	 		var user = app.all_live_users[current_cnt];
+// 	 		var current = app._find_person(user.user_id);
+//
+// 	 		if(user.user_id =='{{current_user.id}}')
+// 	 		{
+// 	 			app.live.offerBidCount = user.current_bids;
+// 	 		}
+//
+// 	 		app.live.auctionCurrentOffer = ToPersian(formatCurrency(parseInt(user.current_price))) + " تومان ";
+// 	 		app.live.auctionCurrentWinnerImage = user.avatar ? avatar_path+ClearifyNames(user.avatar)[0] : "#";
+// 	 		app.live.auctionCurrentWinner = user.pretty_name;
+//
+// 	 		if (current){
+// 	 			app.current_live_users.move_to_first(current);
+// 	 		}else{
+// 	 			app.current_live_users.splice(0, 0, {
+// 	 				"id":user.user_id,
+// 	 				"name": user.pretty_name,
+// 	 				"its_you": user.user_id == "{{current_user.id}}" ? true : false,
+// 	 				"avatar": user.avatar ? avatar_path + ClearifyNames(user.avatar)[0] : "#",
+// 	 			});
+//
+// 	 		}
+// 	 		current_cnt++;
+// 		 }
+// 		 seconds_duration-=1;
+// 		//  if (seconds_duration<0){
+// 		// 	 clearInterval(player);
+// 		//  }
+// 	},500);
+//
+// 	app.playing = !app.playing;
+//
+// 	if (bar && bar.value()){
+// 		bar.set(bar.value());
+// 		bar.animate(1);
+// 	}else {
+//
+// 		bar = new ProgressBar.Line(timeline, {
+// 		color: '#000',
+// 		strokeWidth: 10,
+// 		trailWidth: 10,
+// 		easing: 'linear',
+// 		duration: seconds_duration * 1000,
+// 		from: { color: '#f00', width: 15 },
+// 		to: { color: '#f00', width: 15},
+// 		step: function(state, line) {
+// 			line.path.setAttribute('stroke', state.color);
+// 			line.path.setAttribute('stroke-width', state.width);
+// 			var value = Math.round(line.value() * 100);
+// 			line.setText(ToPersian(value));
+// 		}
+// 	});
+// 	bar.set(0);
+// 	bar.animate(1);
+// 	}
+//
+// }
+
+start_loading(loading_element);
+
+var app = new Vue({
+
+	el: "#app",
+
+	data:{
+		error: {
+			show: false,
+			message: ""
+		},
+		auctionCurrentWinner: "",
+		auctionCurrentWinnerImage: null,
+		auctionCurrentOffer: null,
+		offerBidCount: 0,
+		// interval: null,
+		timerSync: null,
+		// remainingTime: null,
+		deadline: null,
+		activeImage: null,
+		images: [],
+		people: [],
+		auctionBasePrice: 0,
+		auctionItemPrice: 0,
+		auctionDescription: "",
+		itemProductdescription:"",
+		auctionId: 0,
+		auctionLiked: "fa fa-heart-o",
+		auctionItemId: 0,
+		auctionMaxMembers: 0,
+		auctionRatio: 0,
+		auctionMaxPrice: 0,
+		auctionTitle: "",
+		auctionParticipants: [],
+		lastWinners:[],
+		auction_done:false,
+		live:{
+			auctionCurrentWinnerImage:"#",
+			auctionCurrentOffer:0,
+			auctionCurrentWinner:"",
+			auctionCurrentWinnerImage:"",
+			now_date:null,
+			offerBidCount:0,
+		},
+		target_points :[],
+		all_live_users : [],
+		current_live_users:[],
+		auction_remained_milliseconds : 10000,
+		playing :false,
+		socket : io.connect(location.protocol + '//' + document.domain + ':' + location.port ,{resource:'A/socket.io', 'force new connection': true}),
+	},
+	watch:{
+
+	},
+	methods: {
+
+		_createAuctionLink(id){
+			return "/view/auction/"+id;
+		},
+
+		_find_person(id){
+
+			return this.current_live_users.find(x=>x.id==id);
+		},
+
+		handleBid: function(){
+			// var current_time = new Date().format("yyyy/M/d HH:mm:ss").toString();
+			//
+			// this.socket.emit("bid", {
+			// 	auction_id: "{{auction_id}}",timestamp : current_time
+			// });
+
+			this.socket.emit("bid", {
+				auction_id: "{{auction_id}}"
+			});
+
+		},
+
+		_ToPersian: function(data){
+			return ToPersian(data);
+		},
+
+		_formatCurrency: function(number){
+			return formatCurrency(number);
+		},
+
+		addToCart:function(item_id,event){
+			event.preventDefault();
+			axios.post("{{url_for('usercartorder')}}",
+				{
+					"item_id": item_id,
+					"total":1
+				},
+				{
+					headers:
+					{
+						'Content-Type': 'application/json'
+					}
+				}).then((response) => {
+					// if(response.data.length > 0){
+					// 	myapp.mycarts = []
+					// 	console.log(data);
+					// 	response.data.forEach(cart => {
+					// 		myapp.mycarts.push({
+					// 			id : cart.id,
+					// 			title : cart.title,
+					// 			item_id : cart.item_id ,
+					// 			image : '/static/images/products/' + ClearifyNames(cart.images)[0],
+					// 			discounted_price : parseInt(cart.discounted_price),
+					// 			main_price : parseInt(cart.main_price),
+					// 			min_quantity : 1,
+					// 			max_quantity : cart.quantity,
+					// 			current_quantity : cart.total,
+					// 			status : cart.status,
+					// 			discount_status : cart.discount_status,
+					// 		});
+					// 	});
+					// 	myapp.total_carts = ToPersian(myapp.mycarts.length);
+					// 	myapp.total_changed = true;
+					//
+					// }
+					swal(
+						'سبد خرید',
+						'محصول موردنظر به سبد خرید شما اضافه شد',
+						'success'
+					)
+				})
+				.catch((error)=>{
+					swal(
+						'مشکلی پیش اومد',
+						error.response.data.reason,
+						'error'
+					)
+				});
+		},
+
+		addToWish:function(auction_id,event){
+			event.preventDefault();
+			axios.post("{{url_for('userauctionlikes')}}",
+				{
+					"auction_id": auction_id
+				},
+				{
+					headers:
+					{
+						'Content-Type': 'application/json',
+						"X-CSRF-TOKEN" : getCookie('csrf_access_token'),
+					}
+				}).then((response) => {
+					this.auctionLiked = this.auctionLiked =="fa fa-heart" ? "fa fa-heart-o" : "fa fa-heart";
+					swal(
+						'علاقمندی محصول',
+						response.data.message,
+						'success'
+					)
+				})
+				.catch((error)=>{
+					swal(
+						'مشکلی پیش اومد',
+						error.response.data.message,
+						'error'
+					)
+				});
+		}
+	},
+
+	created: function(){
+		axios.get("{{url_for('auctioninstanceview', aid=auction_id)}}")
+			.then((response) => {
+
+				var auction = response.data.auction;
+				this.offerBidCount = auction.max_offers ;
+				this.images = [];
+				ClearifyNames(auction.images).forEach(image => {
+					this.images.push(images_path + image.trim());
+				});
+				this.activeImage = this.images[0];
+				this.auctionBasePrice = auction.base_price;
+				this.auctionItemPrice = auction.main_price;
+				this.auctionId = auction.id;
+				this.auctionLiked = auction.liked ? "fa fa-heart" : "fa fa-heart-o";
+				this.auctionItemId = auction.item_id;
+				this.itemProductdescription = auction.product_description;
+				this.auctionDescription = auction.description;
+				this.auctionMaxPrice = auction.max_price
+				this.auctionRatio = auction.ratio;
+				this.auctionTitle = auction.title;
+				this.auctionMaxMembers = auction.max_members;
+
+				this.auctionParticipants = [];
+				auction.participants.forEach(user => {
+					this.auctionParticipants.push({
+						name: user.pretty_name,
+						its_you: user.id == "{{current_user.id}}" ? true : false,
+						avatar: user.avatar ? avatar_path + ClearifyNames(user.avatar)[0] : "#",
+					});
+
+				});
+
+				this.deadline = new Date(auction.start_date).format("yyyy/M/d HH:mm:ss","UTC");
+				$("#DateCountdown").data("timer",auction.remained_time);
+				$("#DateCountdown").TimeCircles().restart();
+			})
+			.catch((error)=>{
+				console.log(error.response.data);
+			});
+
+			axios.post("{{url_for('userauctionview')}}",
+				{
+					"aid" : {{auction_id}}
+				},
+				{
+					headers:
+					{
+						'Content-Type': 'application/json',
+						"X-CSRF-TOKEN" : getCookie('csrf_access_token'),
+					}
+				}).then((response) => {
+						console.log("view confirmed");
+					})
+					.catch((error)=>{
+						console.log(error.response.data);
+					});
+
+
+		// axios.get("{{url_for('auctionusers',aid=auction_id)}}")
+		// .then((response)=>{
+		//
+		// 	this.all_live_users = [];
+		// 	this.target_points = [];
+		// 	last = response.data[response.data.length-1].date.replace("GMT","");
+		// 	 response.data.forEach(user => {
+		// 		 this.all_live_users.push(user);
+		// 		 first = user.date.replace("GMT","");
+		// 		 this.target_points.push((new Date(last).getTime() - new Date(first).getTime())/1000);
+		//
+		// 	});
+		//
+		// }).catch((error)=>{
+		// 	console.log(error.response.data);
+		// });
+
+		axios.get("{{url_for('auctionwinners',aid=auction_id)}}")
+		.then((response)=>{
+
+			this.lastWinners = [];
+			response.data.forEach(user => {
+				this.lastWinners.push({
+					auction_id: user.auction_id,
+					name: user.pretty_name,
+					its_you : user.user_id == "{{current_user.id}}" ? true : false,
+					avatar : user.avatar ? avatar_path + ClearifyNames(user.avatar)[0] : "#",
+					main_price : this._ToPersian(this._formatCurrency(user.main_price)),
+					price : this._ToPersian(this._formatCurrency(user.price)),
+					discount : this._ToPersian(this._formatCurrency(user.discount)),
+					date : new persianDate(new Date(user.date.replace("GMT",""))).format("dddd DD MMMM"),
+					hour : new persianDate(new Date(user.date.replace("GMT",""))).format("HH:mm:ss"),
+				});
+			});
+			console.log(this.lastWinners);
+
+		}).catch((error)=>{
+
+		});
+
+	},
+	computed: {
+		auction_end_date: function(){
+			return  new persianDate(new Date(this.deadline)).format("dddd DD MMMM YYYY");
+		},
+
+		auction_end_time: function(){
+			return  new persianDate(new Date(this.deadline)).format("HH:mm:ss a"); // "شنبه, فروردین ۱۲ ۱۳۹۶, ۵:۵۴:۱۱ ب ظ"
+
+		},
+
+		now_date: function(){
+			return  new persianDate(new Date(this.deadline)).format("dddd DD MMMM YYYY");
+		},
+
+	},
+
+});
+// testcase runner
+// var test_timer = setInterval(() => {
+// 	var rnd = Math.floor(Math.random() * 10000) + 100;
+// 	// var rnd = 1000;
+// 	if (app.auction_remained_milliseconds <= rnd)
+// 		app.handleBid();
+// },1);
+
+app.socket.on('connect', function() {
+		 console.log('connected..');
+ });
+
+ app.socket.emit("join", {auction_id: '{{auction_id}}'});
+
+ app.socket.on('joined', function() {
+	 app.socket.emit("loadview", {auction_id: '{{auction_id}}'});
+ });
+app.socket.emit('sync_auction_join', {room:("{{auction_id}}"+"{{current_user.id}}").hashCode()});
+app.socket.on('sync_auction_join', function() {
+	app.socket.emit('get_remain_time', {room:("{{auction_id}}"+"{{current_user.id}}").hashCode(),auction_id: "{{auction_id}}"});
+		app.timerSync = setInterval(() => {
+		 app.socket.emit('keepAlive', {room:("{{auction_id}}"+"{{current_user.id}}").hashCode()});
+	},1000);
+ });
+app.socket.on('disconnect', function() {
+		 console.log('disconnected..');
+ });
+app.socket.on('alive', function() {
+ 		 console.log('alive...');
+  });
+app.socket.on("update_view", function(data){
+	if(data.users.length==0)
+		return ;
+
+	app.auctionCurrentOffer = ToPersian(formatCurrency(parseInt(data['current_offer_price']))) + " تومان ";
+	app.auctionCurrentWinnerImage = data.users[0].avatar ? avatar_path+ClearifyNames(data.users[0].avatar)[0] : "#";
+	app.auctionCurrentWinner = data.users[0].pretty_name;
+
+	app.people = [];
+	data.users.forEach(user => {
+
+		if(user.id =='{{current_user.id}}'){
+			if(user.current_bids)
+				app.offerBidCount = user.current_bids;
+		}
+
+		app.people.push({
+			name: user.pretty_name,
+			its_you: user.id == "{{current_user.id}}" ? true : false,
+			avatar: user.avatar ? avatar_path + ClearifyNames(user.avatar)[0] : "#",
+			price: ToPersian(formatCurrency(user.current_offer_price))
+		});
+
+	});
+});
+app.socket.on("unauthorized", function(data){
+	console.log("unauthorized");
+});
+app.socket.on("failed", function(data){
+
+	$(".error_alert").removeClass('hide');
+	$(".error_container").html(data.reason);
+});
+app.socket.on('accepted', function(data){
+
+	app.auctionCurrentOffer = ToPersian(formatCurrency(parseInt(data['total_price'])));
+	app.auctionCurrentWinner = data.users[0].pretty_name;
+	app.auctionCurrentWinnerImage = data.users[0].avatar ? avatar_path+ClearifyNames(data.users[0].avatar)[0] : "#";
+
+	app.people = [];
+
+	data.users.forEach(user => {
+		if(user.id =='{{current_user.id}}'){
+				app.offerBidCount = user.current_bids;
+			}
+		app.people.push({
+			name: user.pretty_name,
+			its_you: user.id == "{{current_user.id}}" ? true : false,
+			avatar: user.avatar ? avatar_path + ClearifyNames(user.avatar)[0] : "#",
+			price: ToPersian(formatCurrency(user.current_offer_price))
+		});
+	});
+
+	app.$forceUpdate();
+	// app.socket.emit('get_remain_time', {room:("{{auction_id}}"+"{{current_user.id}}").hashCode(),auction_id: "{{auction_id}}"});
+	console.log("accepted : "+data.remained_time);
+	update_timer(data.remained_time);
+});
+
+function update_timer(milliseconds) {
+	stop_loading(loading_element);
+	app.auction_remained_milliseconds = milliseconds;
+	if(milliseconds > 0 && !running_timer){
+		running_timer = true;
+		timer = setInterval(check_seconds,1000);
+	}
+	$("#DateCountdown").data("timer",Math.ceil(milliseconds/1000));
+	$("#DateCountdown").TimeCircles({
+		"count_past_zero": false,
+		"animation": "smooth",
+		"bg_width": 1,
+		"fg_width": 0.1,
+		"circle_bg_color": "#f1fbdf",
+		"direction":"both",
+		"time": {
+				"Days": {
+						"text": "روز",
+						"color": "#6cdf07",
+						"show": false
+				},
+				"Hours": {
+						"text": "ساعت",
+						"color": "#6cdf07",
+						"show": true
+				},
+				"Minutes": {
+						"text": "دقیقه",
+						"color": "#6cdf07",
+						"show": true
+				},
+				"Seconds": {
+						"text": "ثانیه",
+						"color": "#6cdf07",
+						"show": true
+				}
+		}
+	}).restart();
+}
+
+app.socket.on("remaining_time", function(milliseconds){
+	if(milliseconds > 0){
+		update_timer(milliseconds);
+	}
+	else {
+		console.log('milliseconds',milliseconds);
+	}
+});
+
+var timer = setInterval(check_seconds,1000);
+var running_timer = true;
+
+function check_seconds() {
+	seconds = Math.floor(app.auction_remained_milliseconds / 1000);
+
+	if( seconds <= 4){
+    $("#DateCountdown").TimeCircles({
+        "circle_bg_color": "#fbe5df",
+        "time": {
+            "Days": {
+                "text": "روز",
+                "color": "#f74d2b",
+                "show": true
+            },
+            "Hours": {
+                "text": "ساعت",
+                "color": "#f74d2b",
+                "show": true
+            },
+            "Minutes": {
+                "text": "دقیقه",
+                "color": "#f74d2b",
+                "show": true
+            },
+            "Seconds": {
+                "text": "ثانیه",
+                "color": "#f74d2b",
+                "show": true
+            }
+        }
+    });
+  }else if (seconds <= 7 && seconds > 4){
+    $("#DateCountdown").TimeCircles({
+        "circle_bg_color": "#fbf4df",
+        "time": {
+            "Days": {
+                "text": "روز",
+                "color": "#f5b00a",
+                "show": true
+            },
+            "Hours": {
+                "text": "ساعت",
+                "color": "#f5b00a",
+                "show": true
+            },
+            "Minutes": {
+                "text": "دقیقه",
+                "color": "#f5b00a",
+                "show": true
+            },
+            "Seconds": {
+                "text": "ثانیه",
+                "color": "#f5b00a",
+                "show": true
+            }
+        }
+    });
+  }
+	app.auction_remained_milliseconds -= 1000;
+	running_timer = true;
+
+ 	if(app.auction_remained_milliseconds <= 0){
+		console.log('sentinal');
+		running_timer = false;
+		start_loading(loading_element);
+		app.socket.emit('get_remain_time', {room:("{{auction_id}}"+"{{current_user.id}}").hashCode(),auction_id: "{{auction_id}}"});
+		clearInterval(timer);
+	}
+ }
+
+ app.socket.on("auction_done", function(data){
+	 app.auction_done = true;
+	 stop_loading(loading_element);
+ 	 clearInterval(timer);
+	 clearInterval(app.timerSync);
+ 	 clearInterval(app.interval);
+
+ 	 $("#DateCountdown").TimeCircles({
+  		"count_past_zero": false,
+      "animation": "smooth",
+      "bg_width": 1,
+      "fg_width": 0.1,
+      "circle_bg_color": "#f1fbdf",
+      "direction":"both",
+      "time": {
+          "Days": {
+              "text": "روز",
+              "color": "#6cdf07",
+              "show": false
+          },
+          "Hours": {
+              "text": "ساعت",
+              "color": "#6cdf07",
+              "show": true
+          },
+          "Minutes": {
+              "text": "دقیقه",
+              "color": "#6cdf07",
+              "show": true
+          },
+          "Seconds": {
+              "text": "ثانیه",
+              "color": "#6cdf07",
+              "show": true
+          }
+      }
+  	}).renewTime(0);
+
+ 	 if(data.success){
+
+ 		 $(".error_alert").addClass('hide');
+ 		 $(".success_alert").removeClass('hide');
+ 		 $(".success_container").html(data.reason)
+ 		//  app.remainingTime ="برنده :" + data.winner[0].username;
+ 		//  $(".my-flash-countdown").html(data.winner.username);
+ 		 $('#discount').html(ToPersian(formatCurrency(data.winner.discount)))
+ 	 }else {
+ 		 $(".error_alert").removeClass('hide');
+ 		 $(".error_container").html(data.reason);
+ 	 }
+ 		console.log('here i am done ...');
+ 		app.socket.emit('leave_auction', {room: "{{auction_id}}".hashCode(),auction_id: "{{auction_id}}"});
+ });
+
+ app.socket.on("leave_auction", function(data){
+	stop_loading(loading_element);
+ 	clearInterval(timer);
+ 	clearInterval(app.timerSync);
+ 	clearInterval(app.interval);
+ 	console.log('here i am done ...');
+ 	console.log("leave_auction...");
+ 	app.socket.disconnect();
+ });
+
+$('.close').on('click',function(event){
+	event.preventDefault();
+	$(this).parent().removeClass('show').addClass('hide')
+});
+
+$("#DateCountdown").TimeCircles({
+	"count_past_zero": false,
+	"animation": "smooth",
+	"bg_width": 1,
+	"fg_width": 0.1,
+	"circle_bg_color": "#f1fbdf",
+	"direction":"both",
+	"time": {
+			"Days": {
+					"text": "روز",
+					"color": "#6cdf07",
+					"show": false
+			},
+			"Hours": {
+					"text": "ساعت",
+					"color": "#6cdf07",
+					"show": true
+			},
+			"Minutes": {
+					"text": "دقیقه",
+					"color": "#6cdf07",
+					"show": true
+			},
+			"Seconds": {
+					"text": "ثانیه",
+					"color": "#6cdf07",
+					"show": true
+			}
+	}
+});
+
+if($('.new-lash-countdown').length>0){
+	$(".new-flash-countdown").TimeCircles({
+		fg_width: 0.01,
+		bg_width: 1.2,
+		text_size: 0.07,
+		circle_bg_color: "#ffffff",
+		time: {
+			Days: {
+				show: false,
+				text: "",
+				color: "#f9bc02"
+			},
+			Hours: {
+				show: true,
+				text: "",
+				color: "#f9bc02"
+			},
+			Minutes: {
+				show: true,
+				text: "",
+				color: "#f9bc02"
+			},
+			Seconds: {
+				show: true,
+				text: "",
+				color: "#f9bc02"
+			}
+		}
+	});
+}
+
+
+</script>
+
+{% endblock scripts %}

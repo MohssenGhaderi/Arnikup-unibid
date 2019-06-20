@@ -1,6 +1,7 @@
 @import url(assets/resources/css/variables.css);
 @import url(assets/resources/css/base.css);
 @import url(assets/cfnComponents/cfnAnimations.css);
+@import url(assets/cfnComponents/Animations.css);
 @import url(assets/cfnComponents/cfnText.css);
 @import url(assets/cfnComponents/cfnCheckbox.css);
 @import url(assets/cfnComponents/cfnButton.css);

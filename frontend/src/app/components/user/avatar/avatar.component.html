@@ -1,0 +1,28 @@
+<div class="selectAvatar">
+  <div class="AvatarContainer">
+    <p class="selectAvatar-title">تغییر عکس <img src="assets/resources/images/assets/png/001-down-arrow-copy-5.png" (click)="goBack()"/></p>
+    <!-- <div class="selectAvatar-uploadWrapper">
+    <a href="" class="selectAvatar-upload"><img src="assets/resources/images/assets/png/attach.png"/>آپلود عکس جدید</a>
+  </div> -->
+  <p>انتخاب آواتار</p>
+  <div class="selectAvatar-content">
+    <span #avatarItems *ngFor="let avatar of avatars" class="selecAvatar-item" [ngClass]="{'selectAvatar-item-active':avatar.selected && !firstTime}" (click)="selectAvatar($event, avatar.avatarId)">
+      <!-- <span #avatarItems *ngFor="let avatar of avatars" class="selecAvatar-item" (click)="selectAvatar($event, avatar.avatarId)"> -->
+      <img [src]="Link.avatar(avatar.image)" alt="" />
+      <img *ngIf="avatar.owned" class="avatar-owned" src="assets/resources/images/assets/svg/tick.svg">
+
+    </span>
+  </div>
+  <div class="selectAvatar-footer">
+    <a href="" class="cfnButton cfnButton-primary" (click)="confirmAvatar($event)">
+      <div>
+        <img src="assets/resources/images/assets/png/group-90.png"/>{{selected?.gemsNeed}} الماس
+      </div>
+      <span>تایید</span>
+    </a>
+  </div>
+  <app-error></app-error>
+  <app-success></app-success>
+  <app-loading></app-loading>
+</div>
+</div>

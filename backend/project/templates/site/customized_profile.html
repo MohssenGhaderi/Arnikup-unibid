@@ -1,0 +1,710 @@
+{% extends 'site/layout.html' %}
+{% block title %} پنل کاربری {% endblock %}
+{% block content %}
+<div class="content-page woocommerce">
+	<div class="container" id="app">
+		<div v-cloak class="row">
+			<div class="col-md-12">
+				<!-- <h2 class="title-shop-page">پنل کاربری</h2> -->
+				<div id="tabMenu" class="tab_container">
+						<input class="tabinput" id="tab1" type="radio" name="tabs" :checked="tab_selector==='default'">
+						<label class="tablabel" for="tab1"><i class="fa fa-dashboard"></i><span>داشبورد</span></label>
+
+						<input class="tabinput" id="tab2" type="radio" name="tabs" :checked="tab_selector==='modify'">
+						<label class="tablabel" for="tab2"><i class="fa fa-pencil-square-o"></i><span>ویرایش اطلاعات</span></label>
+
+						<input class="tabinput" id="tab3" type="radio" name="tabs" :checked="tab_selector==='sendmessage'">
+						<label class="tablabel" for="tab3"><i class="fa fa-comments"></i><span>ارسال پیام</span></label>
+
+						<input class="tabinput" id="tab4" type="radio" name="tabs" :checked="tab_selector==='payments'">
+						<label class="tablabel" for="tab4"><i class="fa fa-legal"></i><span>پرداختی ها</span></label>
+
+						<input class="tabinput" id="tab5" type="radio" name="tabs" :checked="tab_selector==='invitor'">
+						<label class="tablabel" for="tab5"><i class="fa fa-code"></i><span>کد معرف</span></label>
+						<input class="tabinput" id="tab6" type="radio" name="tabs" :checked="tab_selector==='walet'">
+						<label class="tab6 tablabel" for="tab6"><span>شارژ موجودی</span></label>
+
+					<section id="content1" class="tab-content">
+						<h3>داشبورد</h3>
+						<div class="row">
+							{%raw%}
+								<div class="col-lg-6 col-md-6">
+									<div class="panel panel-primary">
+									<div class="panel-heading">
+										<div class="row">
+										<div class="col-xs-3">
+											<i class="fa fa-usd fa-5x"></i>
+										</div>
+										<div class="col-xs-9 text-right">
+											<div class="huge">{{_ToPersianCurrency(info.credit)}}</span> تومان</div>
+											<div>موجودی</div>
+										</div>
+										</div>
+									</div>
+										<div class="panel-footer">
+										<span class="pull-left">مبلغ موجود در حسابتان</span>
+										<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+										<div class="clearfix"></div>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-6 col-md-6">
+									<div class="panel panel-primary">
+									<div class="panel-heading">
+										<div class="row">
+										<div class="col-xs-3">
+											<i class="fa fa-percent fa-5x"></i>
+										</div>
+										<div class="col-xs-9 text-right">
+											<div class="huge">{{_ToPersianCurrency(total_discount)}}تومان</div>
+											<div>تخفیف</div>
+										</div>
+										</div>
+									</div>
+										<div class="panel-footer">
+										<span class="pull-left">تخفیف های گرفته شده از یونی بید</span>
+										<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+										<div class="clearfix"></div>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-3 col-md-6">
+									<div class="panel panel-green">
+									<div class="panel-heading">
+										<div class="row">
+										<div class="col-xs-3">
+											<i class="fa fa-trophy fa-5x"></i>
+										</div>
+										<div class="col-xs-9 text-right">
+											<div class="huge">{{_ToPersian(won_auctions)}}</div>
+											<div>برنده</div>
+										</div>
+										</div>
+									</div>
+										<div class="panel-footer">
+										<span class="pull-left">تعداد حراجی های برنده شده</span>
+										<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+										<div class="clearfix"></div>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-3 col-md-6">
+									<div class="panel panel-yellow">
+									<div class="panel-heading">
+										<div class="row">
+										<div class="col-xs-3">
+											<i class="fa fa-shopping-cart fa-5x"></i>
+										</div>
+										<div class="col-xs-9 text-right">
+											<div class="huge">{{_ToPersian(total_boughts)}}</div>
+											<div>خرید</div>
+										</div>
+										</div>
+									</div>
+										<div class="panel-footer">
+										<span class="pull-left">تعداد خرید های انجام شده</span>
+										<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+										<div class="clearfix"></div>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-3 col-md-6">
+									<div class="panel panel-red">
+									<div class="panel-heading">
+										<div class="row">
+										<div class="col-xs-3">
+											<i class="fa fa-gavel fa-5x"></i>
+										</div>
+										<div class="col-xs-9 text-right">
+											<div class="huge">{{_ToPersian(total_enrolled_auctions)}}</div>
+											<div>حراجی ها</div>
+										</div>
+										</div>
+									</div>
+										<div class="panel-footer">
+										<span class="pull-left">تعداد حراجی های شرکت کرده</span>
+										<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+										<div class="clearfix"></div>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-3 col-md-6">
+									<div class="panel panel-purple">
+									<div class="panel-heading">
+										<div class="row">
+										<div class="col-xs-3">
+											<i class="fa fa-street-view fa-5x"></i>
+										</div>
+										<div class="col-xs-9 text-right">
+											<div class="huge">{{_ToPersian(total_invitations)}}</div>
+											<div>دعوت شدگان</div>
+										</div>
+										</div>
+									</div>
+										<div class="panel-footer">
+										<span class="pull-left">تعداد دعوت شدگان توسط شما</span>
+										<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+										<div class="clearfix"></div>
+										</div>
+									</div>
+								</div>
+								</div>
+							{%endraw%}
+					</section>
+
+					<section id="content2" class="tab-content">
+						<h3>ویرایش اطلاعات</h3>
+						<form class="form-my-account" id="profile_form">
+
+							<div class="row">
+								<div class="col-md-6 col-sm-6 col-ms-12">
+									<div class="check-billing">
+										{%raw%}
+											<p><input name="alias-name" v-bind:value="info.alias_name" type="text" onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" placeholder="نام مستعار" /></p>
+											<p class="clearfix box-col2">
+												<input name="last-name"  v-bind:value="info.last_name" type="text" onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" placeholder="نام خانوادگی"/>
+												<input name="first-name" v-bind:value="info.first_name" type="text"  onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" placeholder="نام"/>
+											</p>
+											<p><input name="work-place" v-bind:value="info.work_place" type="text" onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" placeholder="نام محل کار"/></p>
+											<p class="clearfix box-col2">
+												<input name="email" v-bind:value="info.email" type="text"  onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" placeholder="ایمیل"/>
+												<input name="mobile" v-bind:value="info.mobile" type="text" onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" placeholder="شماره تلفن *"/>
+											</p>
+											<p>
+											<select name="state" id="state">
+													<option v-for="state in states" v-bind:value="state.id" :selected="info.address && info.address.state.id == state.id" >{{ state.title }}</option>
+											</select>
+											</p>
+											<p><input name="address" type="text"  v-bind:value="info.address ? info.address.address : '' "  onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" placeholder="آدرس *"/></p>
+											<p class="clearfix box-col2">
+												<input name="postal_code" type="text"  v-bind:value="info.address ? info.address.postal_code : '' " onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" placeholder="کدپستی *"/>
+												<input name="city" type="text" v-bind:value="info.address ? info.address.city : '' "  onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" placeholder="نام شهر *"/>
+											</p>
+										{%endraw%}
+
+								</div>
+							</div>
+							<div class="col-md-6 col-sm-6 col-ms-12">
+								<div class="my-profile-box register-content-box">
+									<div class="form-my-account">
+										<p>
+											<label for="current-password">گذرواژه فعلی (اگر نیاز به تغییر ندارید خالی بگذارید)</label>
+											<input type="password" name="current-password" />
+										</p>
+										<p>
+											<label for="password">رمز عبور جدید (اگر نیاز به تغییر ندارید خالی بگذارید)</label>
+											<input type="password" name="password" />
+										</p>
+										<p>
+											<label for="confirm-password">رمز عبور جدید را تأیید کنید</label>
+											<input type="password" name="c_password" />
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<h3>کد معرف</h3>
+						<div class="row">
+							<div class="col-md-6 col-sm-6 col-ms-12">
+								<div class="">
+
+										<p><input name="invitor-code" type="text" onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" /></p>
+
+									<p class="pText">
+										این قسمت فقط یک بار قابل استفاده است و بعد از زدن کد، شما و معرف شما ۲۰ هزار تومان هدیه دریافت خواهید کرد.
+									</p>
+								</div>
+							</div>
+						</div>
+						<h3>انتخاب آواتار</h3>
+						<input type="hidden" id="avatar_index" name="avatar-index" value="">
+						<div class="avatarUser">
+
+							<img v-for="avatar in avatars" v-bind:src="'/static/images/avatars/'+avatar.name " v-bind:class="{'current': avatar.name == _clearNames(info.avatar)}" />
+							<!-- ko text: triggerAvatars() -->
+							<!-- /ko -->
+						</div>
+						<div class="my-profile-box register-content-box">
+							<input type="submit" class="register-button save-change" name="register" value="ذخیره تغییرات">
+						</div>
+					</form>
+					<div class="alert alert-danger error_alert hide">
+						<a href="#" class="close" aria-label="close">×</a>
+						<div class="error_container"></div>
+					</div>
+					<div class="alert alert-success alert-dismissable success_alert hide">
+						<a href="#" class="close" aria-label="close">×</a>
+						<div class="success_container"></div>
+					</div>
+					</section>
+
+					<section id="content3" class="tab-content">
+						<h3>ارسال پیام</h3>
+						<div class="form-contact">
+							<form class="form-my-account" id="message_form" enctype="multipart/form-data">
+
+								<div class="row">
+									<div class="col-md-6 col-sm-4 col-xs-12">
+										<input type="text" name="title" onfocus="if (this.value==this.defaultValue) this.value = ''" onblur="if (this.value=='') this.value = this.defaultValue" placeholder="عنوان پیام">
+									</div>
+
+									<div class="col-md-3 col-sm-4 col-xs-12">
+										<select name="subject" id="subjects" data-bind="foreach:userInfo.subjects">
+											<option v-for="subject in subjects" v-bind:value="subject.type">{%raw%}{{subject.title}}{%endraw%}</option>
+										</select>
+									</div>
+
+									<div class="col-md-9 col-sm-9 col-xs-12">
+										<textarea name="message" cols="30" rows="8" onfocus="if (this.value==this.defaultValue) this.value = ''" onblur="if (this.value=='') this.value = this.defaultValue" placeholder="متن پیام خود را بنویسید ..."></textarea>
+										<input type="submit" value="ارسال پیام" />
+										<!-- <input type="file" name="file" id="file" class="inputfile" data-multiple-caption="{count} files selected" multiple />
+										<label for="file"><i class="fa fa-upload"></i><span>بارگزاری فایل ضمیمه</span></label> -->
+									</div>
+
+								</div>
+								<div class="alert alert-danger error_alert hide sendmessage_error">
+									<a href="#" class="close" aria-label="close">×</a>
+									<div class="sendmessage_error_container"></div>
+								</div>
+								<div class="alert alert-success alert-dismissable success_alert hide sendmessage_success">
+									<a href="#" class="close" aria-label="close">×</a>
+									<div class="sendmessage_success_container"></div>
+								</div>
+							</form>
+						</div>
+					</section>
+
+					<section id="content4" class="tab-content">
+						<h3>پرداختی ها</h3>
+						<table class="fold-table">
+								<thead>
+									<tr>
+										<th>شماره فاکتور</th>
+										<th>مبلغ</th>
+										<th>تاریخ</th>
+										<th>موضوع</th>
+										<th>وضعیت</th>
+										<th>روش پرداخت</th>
+									</tr>
+								</thead>
+								{%raw%}
+								<tbody v-for="payment in paymentsinfo">
+									<tr class="view">
+										<td>{{_ToPersian(payment.GUID)}}</td>
+										<td>{{_ToPersianCurrency(payment.amount)}} تومان  </td>
+										<td>{{_toLocalDate(payment.created_at)}}</td>
+										<td>{{_convertType(payment.type)}}</td>
+										<td>{{_convertStatus(payment.status)}}</td>
+										<td>{{payment.payment_method.title}}</td>
+									</tr>
+									<tr class="fold">
+										<td colspan="7">
+											<div class="fold-content">
+												<h4> فاکتور خرید : <span data-bind="text:ToPersian(id+payment_method.id)"></span></h4>
+												<div data-bind="foreach:messages">
+													<p data-bind="text:title +' : '+ message"></p>
+												</div>
+												<table class="small-friendly">
+													<thead>
+														<tr>
+														<th>محصول</th>
+														<th>تعداد</th>
+														<th>مبلغ واحد</th>
+														<th>مبلغ کل</th>
+														<th>تخفیف</th>
+														<th>مبلغ پرداختی</th>
+													</tr>
+													</thead>
+													<tbody data-bind="foreach:orders">
+														<tr>
+															<td data-bind="text:item.product.title +' '+item.title"></td>
+															<td data-bind="text:ToPersian(total)"></td>
+															<td data-bind="text:ToPersian(formatCurrency(item.price))"></td>
+															<td data-bind="text:ToPersian(formatCurrency(item.price * total))"></td>
+															<td data-bind="text:ToPersian(formatCurrency(total_discount))"></td>
+															<td data-bind="text:ToPersian(formatCurrency(item.price * total - total_discount))"></td>
+														</tr>
+													</tbody>
+												</table>
+												<div class="checkout-wrap" data-bind="if:status==1">
+														<ul class="checkout-bar">
+															<li class="active">سفارش</li>
+															<li class="next">تایید سفارش</li>
+															<li class="">انبارداری</li>
+															<li class="">تحویل پست</li>
+															<li class="">خریدار</li>
+														</ul>
+												</div>
+												<div class="checkout-wrap" data-bind="if:status==2">
+														<ul class="checkout-bar">
+															<li class="visited first">سفارش</li>
+															<li class="active">تایید سفارش</li>
+															<li class="next">انبارداری</li>
+															<li class="">تحویل پست</li>
+															<li class="">خریدار</li>
+														</ul>
+												</div>
+												<div class="checkout-wrap" data-bind="if:status==3">
+														<ul class="checkout-bar">
+															<li class="visited first">سفارش</li>
+															<li class="previous visited">تایید سفارش</li>
+															<li class="active">انبارداری</li>
+															<li class="next">تحویل پست</li>
+															<li class="">خریدار</li>
+														</ul>
+												</div>
+												<div class="checkout-wrap" data-bind="if:status==4">
+														<ul class="checkout-bar">
+															<li class="visited first">سفارش</li>
+															<li class="previous visited">تایید سفارش</li>
+															<li class="previous visited">انبارداری</li>
+															<li class="active">تحویل پست</li>
+															<li class="next">خریدار</li>
+														</ul>
+												</div>
+												<div class="checkout-wrap" data-bind="if:status==5">
+														<ul class="checkout-bar">
+															<li class="visited first">سفارش</li>
+															<li class="previous visited">تایید سفارش</li>
+															<li class="previous visited">انبارداری</li>
+															<li class="previous visited">تحویل پست</li>
+															<li class="active">خریدار</li>
+
+														</ul>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+
+
+								</table>
+								{%endraw%}
+					</section>
+
+					<section id="content5" class="tab-content">
+						<h3>کد معرفی</h3>
+						<p>با دعوت از دوستان و آشنایان خود به یونی بید از طریق کد معرف خود، ۲۰ هزار تومان هدیه دو طرف از ما دریافت کنید! </p>
+						<p>هدیه کد معرف، پس از اولین شرکت در حراجی توسط شخصی که معرفی شده اعمال میشود.</p>
+						<div class="CodeM">کد معرف : {%raw%}{{info.username}}{%endraw%}</span></div>
+					</section>
+					<section id="content6" class="tab-content">
+						<h3>شارژ موجودی</h3>
+						<p>شما می توانید به هر اندازه که می خواهید موجودی حسابتان را شارژ کنید.</p>
+
+							<table cellspacing="0" class="shop_table cart table">
+								<tbody>
+									<tr>
+										<td class="actions" colspan="12">
+											<label for="charge_amount">افزایش اعتبار : </label>
+											<input type="text" v-model="charge_amount" v-on:keypress="isNumber($event)" placeholder="مبلغ ... " class="input-text">
+											<input type="submit" value="پرداخت" class="button" @click="_ChargeWalet">
+										</td>
+									</tr>
+								</tbody>
+							</table>
+					</section>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript" src="{{ url_for('static', filename='js/libs/persian-date.min.js')}}"></script>
+
+<script>
+
+start_loading(loading_element);
+
+var app = new Vue({
+	el : "#app",
+
+	data:{
+		avatars : [] ,
+		info : [] ,
+		states : [] ,
+		paymentsinfo : [] ,
+		subjects : [] ,
+		total_boughts : 0 ,
+		total_discount : 0 ,
+		total_enrolled_auctions: 0 ,
+		total_invitations: 0 ,
+		won_auctions: 0 ,
+		invitation_code : "",
+		charge_amount : 0,
+		payment_id:0,
+		tab_selector : "{{tab}}" ? "{{tab}}" : "default",
+		is_number : false,
+	},
+
+	mounted: function(){
+		axios.get("{{url_for('userinformation')}}")
+			.then((response) => {
+				console.log(response.data);
+				this.avatars = response.data.avatars;
+				this.info = response.data.info[0];
+				this.states = response.data.states[0];
+				this.subjects = response.data.subjects;
+				this.total_boughts = response.data.total_boughts;
+				this.total_discount = response.data.total_discount;
+				this.total_enrolled_auctions = response.data.total_enrolled_auctions;
+				this.total_invitations = response.data.total_invitations;
+				this.won_auctions = response.data.won_auctions;
+				this.invitation_code = response.data.invitation_code;
+			})
+			.catch((response)=>{
+				console.error(response);
+			});
+
+		axios.get("{{url_for('paymentsinfo',pagenum=1,pagesize=10)}}")
+			.then((response) => {
+				this.paymentsinfo = response.data[0]
+			})
+			.catch((response)=>{
+				console.error(response);
+			});
+	},
+
+	methods:{
+		isNumber: function(evt) {
+			this.tab_selector = "walet";
+
+      evt = (evt) ? evt : window.event;
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+			// if ((charCode > 31 && (charCode < 48 || charCode > 57)) && (charCode < 1776 || charCode > 1785) && charCode !== 46) {
+      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+        evt.preventDefault();
+      } else {
+				this.is_number = true;
+        return true;
+      }
+    },
+		_delete_last_payment:function(){
+			axios.delete("{{url_for('userchargewalet')}}",
+					{
+						data:{"pid": this.payment_id},
+						headers:
+						{
+							'Content-Type': 'application/json'
+						}
+
+					}).then((response) => {
+						swal({
+							title: 'افزایش موجودی',
+							text: response.data.message,
+							type: 'success',
+							confirmButtonColor: '#3085d6',
+							confirmButtonText: 'باشه...',
+						});
+					})
+					.catch((error)=>{
+						swal(
+							'مشکلی پیش اومد',
+							error.response.data.reason,
+							'error'
+						);
+					});
+		},
+		_ChargeWalet:function() {
+
+			if (this.charge_amount == 0) {
+				swal(
+					'دقت در ورود اطلاعات',
+					'لطفا مقداری برای افزایش موجودی وارد کنید',
+					'error'
+				);
+				return ;
+			}
+
+			if (this.charge_amount %500 != 0) {
+				swal(
+					'دقت در ورود اطلاعات',
+					'حداقل مبلغ شارژ کیف پول ۵۰۰تومان است و مبلغ شارژ مورد نظر باید ضریبی از ۵۰۰ تومان باشد',
+					'error'
+				);
+				return ;
+			}
+
+			axios.post("{{url_for('userchargewalet')}}",
+				{
+					"charge_amount":this.charge_amount,
+				},
+				{
+					headers:
+					{
+						'Content-Type': 'application/json'
+					}
+				}).then((response) => {
+					this.payment_id = response.data.pid;
+
+					swal({
+						title: 'تایید شارژ کیف پول',
+						text: response.data.message,
+						type: 'success',
+						confirmButtonColor: '#3085d6',
+						confirmButtonText: 'بله پرداخت می کنم',
+						showCancelButton: true,
+						cancelButtonText: 'خیر منصرف شدم!',
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						reverseButtons: true,
+
+					}).then((result) => {
+						if (result.value){
+							if(response.data.operation=="redirect_to_bank"){
+								window.parent.location = "/confirm/payment/"+this.payment_id;
+							}
+						}
+						else {
+							this._delete_last_payment();
+						}
+					});
+
+				})
+				.catch((error)=>{
+					swal(
+						'مشکلی پیش اومد',
+						error.response.data.reason,
+						'error'
+					);
+				});
+		},
+
+		_ToPersian(number){
+			return ToPersian(number);
+		},
+		_ToPersianCurrency(number){
+			return ToPersian(formatCurrency(number));
+		},
+		_clearNames(input){
+			return ClearifyNames(input)[0];
+		},
+		_toLocalDate(date){
+			return full_date = new persianDate(new Date(date)).format("dddd DD MMMM YYYY ساعت HH:mm:ss a");
+		},
+		_convertStatus(status){
+
+			// PAID = 100
+	    // BANK = 200
+	    // PAYING = 300
+	    // ERROR = 400
+	    // ABORT = 500
+	    // UNPAID = 0
+
+			switch (status) {
+				case 100:
+					return "پرداخت موفق";
+					break;
+				case 200:
+					return "درحال پرداخت بانک";
+					break;
+				case 300:
+					return "درحال تکمیل عملیات پرداخت";
+					break;
+				case 400:
+					return "پرداخت ناموفق";
+					break;
+				case 500:
+					return "لغو شده";
+					break;
+				default:
+					return "پرداخت نشده";
+				}
+			},
+			_convertType(type){
+
+				// NOTITLE = 0
+		    // PLAN = 1000
+		    // WALET = 2000
+		    // PRODUCT = 3000
+
+				switch (type) {
+					case "1000":
+						return "خرید پلن حراجی";
+						break;
+					case "2000":
+						return "شارژ کیف پول";
+						break;
+					case "3000":
+						return "خرید محصول";
+					case "4000":
+						return "خرید رایگان";
+						break;
+					default:
+						return "بدون عنوان";
+
+				}
+		},
+	},
+
+	updated:function() {
+		stop_loading(loading_element);
+		$('.avatarUser img').click( function(){
+		    if ( $(this).hasClass('current') ) {
+		    } else {
+		        $('img.current').removeClass('current');
+		        $(this).addClass('current');
+		    }
+		});
+	},
+});
+
+$(document).on('submit','#profile_form',function(event) {
+   event.preventDefault();
+	 selected_avatar = ($($('.current')).attr('src'));
+	 if(selected_avatar){
+		 selected_avatar = selected_avatar.split('/')
+		 avatar = selected_avatar[selected_avatar.length-1];
+		 $('#avatar_index').val(avatar)
+	 }
+   var $form = $( this );
+   var data = getFormData($form);
+	 var url = "{{url_for('userinformation')}}";
+   var posting = $.post( url, data);
+   posting.done(function( data ) {
+ 		$(".error_alert").addClass('hide');
+ 		$(".success_alert").removeClass('hide');
+ 		$(".success_container").html('اطلاعات شما با موفقیت ثبت شد')
+   });
+ 		posting.fail(function(xhr, status, error) {
+ 		obj = JSON.parse(xhr.responseText);
+ 		$.each(obj.message, function (key, item) {
+ 			$(".error_alert").removeClass('hide');
+ 			$(".error_container").html(item)
+ 			});
+     });
+ });
+
+$(document).on('submit','#message_form',function(event) {
+    event.preventDefault();
+    var $form = $( this );
+    var data = getFormData($form);
+
+ 	  var url = "{{url_for('usercontactus')}}";
+    var posting = $.post( url, data);
+
+    posting.done(function( data ) {
+  		$(".sendmessage_error").addClass('hide');
+  		$(".sendmessage_success").removeClass('hide');
+			$(".sendmessage_success_container").html(data.message.success)
+    });
+
+		posting.fail(function(xhr, status, error) {
+		obj = JSON.parse(xhr.responseText);
+  		$.each(obj.message, function (key, item) {
+  			$(".sendmessage_error").removeClass('hide');
+  			$(".sendmessage_error_container").html(item)
+  			});
+      });
+  });
+
+	$('.close').on('click',function(event){
+		event.preventDefault();
+		$(this).parent().removeClass('show').addClass('hide')
+	});
+
+</script>
+{% endblock scripts %}

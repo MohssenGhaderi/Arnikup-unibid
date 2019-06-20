@@ -1,0 +1,168 @@
+{% extends 'site/layout.html' %}
+{% block title %} برندگان گذشته {% endblock %}
+{% block content %}
+<div class="content-page">
+	<div class="container" id="app">
+		<div class="top-selling15">
+				<div class="container">
+					<div class="text-center title-box15 wow zoomIn">
+						<h2 class="title30 color">حراجی های برگزار شده </h2>
+						<p class="desc wow zoomIn">لیست مشاهده برندگان گذشته در یونی بید</p>
+					</div>
+					<div class="list-topsale15">
+						<div class="row">
+							<template v-if="offers.length" v-for="offer in offers">
+								{%raw%}
+									<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="item-product15 wow slideInUp">
+										<div class="row">
+											<div class="col-md-6 col-sm-12 col-xs-6">
+												<div class="product-thumb">
+													<a v-bind:href="_createAuctionLink(offer.auction_id)" class="product-thumb-link">
+														<img v-bind:src="_prepare_auction_images(offer.images)" alt="">
+													</a>
+												</div>
+											</div>
+											<div class="col-md-6 col-sm-12 col-xs-6">
+												<div class="product-info">
+													<h3 class="product-title"><a v-bind:href="_createAuctionLink(offer.auction_id)">{{offer.title}}</a></h3>
+													<div class="product-auction">
+														<ins>{{_ToPersianCurrency(offer.total_price)}}تومان</ins>
+														<del>{{_ToPersianCurrency(offer.main_price)}}تومان</del>
+													</div>
+													<p class="desc">تاریخ برگزاری : {{_generateDate(offer.start_date)}}</p>
+													<p class="desc">تخفیف محصول :{{_ToPersianCurrency(offer.main_price - offer.total_price)}}</p>
+													<div class="product-extra-link5">
+														<a class="addcart-link" href="#">نام برنده :{{offer.winner}}</a>
+														<a class="wishlist-link" href="#"><i aria-hidden="true" class="fa fa-user"></i>{{_ToPersian(offer.participants)}}</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								{%endraw%}
+							</template>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		<div v-if="show" class="btn-loadmore"><a href="#"><i aria-hidden="true" class="fa fa-spinner fa-spin"></i></a></div>
+	</div>
+</div>
+<a href="#" class="radius scroll-top"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript" src="{{url_for('static',filename='js/libs/masonry.pkgd.min.js')}}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/libs/persian-date.min.js')}}"></script>
+
+<script>
+
+	start_loading(loading_element);
+	app = new Vue({
+
+		el : "#app",
+
+		data:{
+			offers : [],
+			seen : 0,
+			total : 4,
+			all_auctions :0,
+			show : true,
+		},
+		methods:{
+			_prepare_auction_images(images){
+				return product_image_path + ClearifyNames(images)[0];
+			},
+			_ToPersianCurrency(number){
+				return ToPersian(formatCurrency(number));
+			},
+			_ToPersian(number){
+				return ToPersian(number);
+			},
+			_generateDate(date){
+				return new persianDate(new Date(new Date(date).format("yyyy/M/d HH:mm:ss","UTC"))).format("dddd DD MMMM YYYY");
+			},
+			_createAuctionLink(id){
+				return "/view/auction/"+id;
+			},
+
+			scroll(){
+
+				dataNotReceived = false;
+    		window.onscroll = () => {
+
+				let bottomOfWindow = document.documentElement.scrollTop >= document.getElementById('footer').offsetTop - 400 || document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight ;
+	      if (bottomOfWindow && !dataNotReceived) {
+
+					dataNotReceived = true;
+					if (this.seen < this.all_auctions && dataNotReceived) {
+						data = {"start":this.seen ,"stop":this.seen + this.total};
+
+						axios.put("{{url_for('auctionviewfinished')}}",data,
+						{
+							headers:
+								{
+									'Content-Type': 'application/json',
+									"X-CSRF-TOKEN" : getCookie('csrf_access_token'),
+								}
+						}).then((response) => {
+								 response.data.forEach((item)=>{
+								   if (!this.offers.find(x=>x.auction_id == item.auction_id)){
+										 this.offers.push(item);
+										 this.seen +=1;
+									 }
+								 });
+								 dataNotReceived = false;
+								 this.show = false;
+						 }).catch((error)=>{
+								console.error(error.response);
+						});
+					}
+		     }
+		   };
+		  },
+
+		},
+
+		created: function(){
+
+			data = {"start":this.seen ,"stop":this.seen + this.total};
+
+			axios.put("{{url_for('auctionviewfinished')}}",data,{
+				headers:
+					{
+						'Content-Type': 'application/json',
+						"X-CSRF-TOKEN" : getCookie('csrf_access_token'),
+					}
+			}).then((response) => {
+
+					this.offers = response.data;
+					this.seen = this.offers.length;
+					this.show = false;
+				})
+				.catch((error)=>{
+					console.log(error.response);
+				});
+
+			axios.get("{{url_for('auctionviewfinished')}}")
+			.then((response) => {
+				this.all_auctions = response.data.finished;
+				console.log("all finished :"+this.all_auctions);
+			}).catch((error)=>{
+					console.error(error.response);
+				});
+
+			this.scroll();
+		},
+
+		updated:function() {
+			stop_loading(loading_element);
+		},
+
+	});
+
+</script>
+{% endblock scripts %}

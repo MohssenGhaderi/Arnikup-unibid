@@ -1,0 +1,34 @@
+<div class="accountProfile accountProfile-basket">
+  <div class="profileContainer">
+    <p class="accountProfile-title">سبد خرید<img src="assets/resources/images/assets/png/arrowDown.png" (click)="goBack()"/></p>
+    <div class="accountProfile-basketWrapper" *ngFor="let cart of carts">
+
+      <div class="accountProfile-priceItem-wrapper">
+        <div class="accountProfile-basketImage-wrapper">
+          <span class="accountProfile-basketImage-remove" (click)="deleteOrder($event,cart.orderId)">&times;</span>
+          <img [src]="Link.product(cart.image)"/>
+        </div>
+        <div class="accountProfile-priceItem">
+          <p class="accountProfile-priceItem-title">{{cart.title}}</p>
+          <p class="accountProfile-priceItem-before">قیمت : {{cart.price | currency : ' ' : 'symbol' : '1.0-0'}} تومان</p>
+          <p class="accountProfile-priceItem-after">تخفیف : {{cart.discount | currency : ' ' : 'symbol' : '1.0-0'}} تومان</p>
+        </div>
+      </div>
+
+    </div>
+    <div class="accountProfile-basket-off">
+      <span class="accountProfile-basket-offButton">اعمال</span>
+      <input type="text" class="cfnText" placeholder="افزودن کد تخفیف">
+    </div>
+    <div class="accountProfile-priceTotal">
+      <span>قیمت نهایی:</span>
+      <span>{{totalPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </span>
+    </div>
+    <div class="shipping-profile-button">
+      <a class="cfnButton cfnButton-primary" (click)="togglePreview()">پرداخت</a>
+    </div>
+    <app-loading></app-loading>
+    <app-error></app-error>
+    <app-success></app-success>
+  </div>
+</div>

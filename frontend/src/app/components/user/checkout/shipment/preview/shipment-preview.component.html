@@ -1,0 +1,48 @@
+<div class="accountProfile">
+  <div class="shipmentContainer">
+    <p class="accountProfile-title">تایید آدرس<img src="assets/resources/images/assets/png/001-down-arrow-copy-5.png" (click)="goBack()"/></p>
+    <div class="accountProfile-shippingSteps">
+      <div>
+        <div>
+          <div class="accountProfile-shippingSteps-check accountProfile-shippingSteps-check-checked"></div>
+          <span>سبد خرید</span>
+        </div>
+      </div>
+      <div>
+        <span class="accountProfile-shippingSteps-line"></span>
+
+        <div>
+          <div class="accountProfile-shippingSteps-check"></div>
+          <span>روش ارسال</span>
+        </div>
+      </div>
+      <div class="accountProfile-shippingSteps-disabled">
+        <span class="accountProfile-shippingSteps-line"></span>
+        <div>
+          <div class="accountProfile-shippingSteps-check"></div>
+          <span>روش پرداخت</span>
+        </div>
+      </div>
+    </div>
+    <div class="accountProfile-location">
+      <img src="resources/images/assets/png/locating.png" alt="">
+      <div>
+        <p>
+          محصول به آدرس : استان  {{address?.state}} - شهر {{address?.city}} - {{address?.address}}
+          <br>
+          جناب آقای/سرکار خانم {{address?.fullName}} ارسال می گردد.
+          <br>
+          محل کار : {{address?.workPlace}}
+          <br>
+          <a href="" (click)="editAddress($event)">ویرایش آدرس</a>
+         </p>
+      </div>
+    </div>
+    <p class="accountProfile-footer-tittle">روش ارسال</p>
+    <a class="cfnButton cfnButton-empty"> تحویل حضوری <img src="assets/resources/images/assets/png/arrowDown.png"/></a>
+    <a style="width:160px;" class="cfnButton cfnButton-primary" (click)="goToNext()">مرحله بعد</a>
+    <app-error></app-error>
+    <app-success></app-success>
+    <app-loading></app-loading>
+  </div>
+</div>

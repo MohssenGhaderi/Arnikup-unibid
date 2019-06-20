@@ -1,0 +1,211 @@
+{% extends 'site/iframes/ilayout.html' %}
+{% block title %}   ورود  {% endblock %}
+{% block content %}
+
+<div class="container" id="app" style="border:1px solid #000;">
+	<div class="row">
+	<div class="col-md-12">
+		<h2 class="title-shop-page">ورود به حساب کاربری یونی بید</h2>
+		<div class="register-content-box">
+			<div class="row">
+				<div class="form">
+				<div class="thumbnail"><img src="/static/images/theme/login-icon.svg"/></div>
+
+				<div class="alert alert-danger error_alert hide">
+					<a href="#" class="close" aria-label="close">×</a>
+					<div class="error_container"></div>
+				</div>
+
+				<div class="alert alert-success alert-dismissable success_alert hide">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+					<div class="success_container"></div>
+				</div>
+
+				<form class="login-form"  @submit.prevent="handleSubmit">
+					<input type="text" v-model="loginInformation.username" placeholder="نام کاربری"/>
+					<input type="password" v-model="loginInformation.password" placeholder="رمز عبور"/>
+					<input type="submit" value="ورود به حساب کاربری"/>
+					<div class="form-my-account">
+						<div class="table create-account">
+							<div class="text-left">
+								<p>
+									<input v-model="loginInformation.remember_me" type="checkbox"  id="remember_me" /> <label for="remember_me">بخاطر سپاری</label>
+								</p>
+							</div>
+							<div class="text-right">
+								<p><a href="{{('/iforgot')}}" class="color">فراموشی رمز عبور</a></p>
+							</div>
+						</div>
+					</div>
+
+					<p class="message">هنوز ثبت نام نکرده اید؟ <a href="{{ ('/iregister') }}">ثبت نام کنید</a></p>
+				</form>
+
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+</div>
+
+<!--
+<div class="content-page woocommerce">
+	<div id="app" class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h2 class="title-shop-page">حساب کاربری</h2>
+				<div class="register-content-box">
+					<div class="row">
+						<div class="col-md-6 col-sm-6 col-ms-12">
+							<div class="check-billing">
+								<div class="form-my-account">
+									<div class="alert alert-danger error_alert hide">
+										<a href="#" class="close" aria-label="close">×</a>
+										<div class="error_container"></div>
+									</div>
+									<div class="alert alert-success alert-dismissable success_alert hide">
+										<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+										<div class="success_container"></div>
+									</div>
+									<form @submit.prevent="handleSubmit">
+
+										<h2 class="title24 title-form-account">ورود</h2>
+										<p>
+											<label for="username">نام کاربری<span class="required">*</span></label>
+											<input v-model="loginInformation.username" name="username" type="text" />
+										</p>
+										<p>
+											<label for="password">رمز عبور <span class="required">*</span></label>
+											<input v-model="loginInformation.password" name="password" type="password" />
+										</p>
+										<p>
+											<input type="submit" class="register-button" name="login" value="ورود">
+										</p>
+										<div class="table create-account">
+											<div class="text-left">
+												<p>
+													<input v-model="loginInformation.remember_me" name="remember_me" type="checkbox"  id="remember" /> <label for="remember">مرا به خاطر بسپار</label>
+												</p>
+											</div>
+											<div class="text-right">
+												<a href="#" class="color">رمز عبور خود را فراموش کرده اید؟</a>
+											</div>
+										</div>
+										 <h2 class="title18 social-login-title">یا از طریق زیر وارد شوید</h2>
+										 <div class="social-login-block table text-center">
+											 <div class="social-login-btn">
+												<a href="#" class="login-fb-link">Facebook</a>
+											</div>
+											<div class="social-login-btn">
+												<a href="#" class="login-goo-link">Google</a>
+											</div>
+									 </div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-sm-6 col-ms-12">
+							<div class="check-address">
+								<div class="form-my-account check-register text-center">
+									 <h2 class="title24 title-form-account">ثبت نام کنید!</h2>
+									<p class="desc">
+											ثبت نام در یونی بید به شما اجازه می دهد در حراجی ها شرکت کنید و به وضعیت و تاریخ سفارش خود دسترسی داشته باشید. فقط فیلدهای مربوطه را پر کنید و در هر زمان یک حساب جدید برای خود ایجاد کنید. ما فقط از شما برای اطلاعاتی که لازم است تا فرایند خرید را سریع تر و آسان تر خواهد کرد پرسیده ایم .
+									</p>
+									<a href="{{ ('/iregister') }}" class="shop-button">هم اکنون ثبت نام کنید!</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div> -->
+
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script>
+
+var app = new Vue({
+
+  el: '#app',
+
+  data:{
+		loginInformation :{
+			username : "",
+			password : "",
+			remember_me :1,
+			next : "{{next}}",
+		},
+		next : "{{next}}",
+	},
+	mounted:function(){
+
+	},
+	methods:{
+		handleSubmit: function(){
+
+			self = this;
+			var obj = self.loginInformation;
+
+      for (var propName in obj) {
+        if (obj[propName] === "null" || obj[propName] === undefined || obj[propName]==="" || obj[propName]===-1) {
+          delete obj[propName];
+        }
+      }
+
+			axios.post("{{url_for('userlogin')}}",obj,
+				{
+					headers:
+					{
+						'Content-Type': 'application/json'
+					}
+				}).then(function (response) {
+					$(".error_alert").addClass('hide');
+
+					if(self.next!="None"){
+						if(response.data.redirect_to_auction){
+							window.parent.location = '/view/auction/'+response.data.auction_id;
+						}
+						if(self.next.includes('participate') || self.next.includes('instantview')){
+								window.location = self.next;
+						}
+						if(next.includes('view/auction')){
+								window.parent.location = self.next;
+						}
+					}
+					else
+					{
+						window.parent.location.reload();
+					}
+
+					$(".success_alert").removeClass('hide');
+					$(".success_container").html('ورود شما با موفقیت انجام شد')
+         }).catch((error)=>{
+					 console.log(error.response.data.message);
+
+					if (error.response.data.message.field == "verification"){
+
+						window.location = "/iverify";
+					}else {
+						$(".error_alert").removeClass('hide');
+						for (var propName in error.response.data.message) {
+							$(".error_container").html(error.response.data.message[propName]);
+						}
+					}
+ 				});
+		}
+	}
+});
+
+$('.close').on('click',function(event){
+	event.preventDefault();
+	$(this).parent().removeClass('show').addClass('hide');
+});
+
+</script>
+{% endblock scripts %}

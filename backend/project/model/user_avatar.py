@@ -4,6 +4,8 @@ import datetime
 
 class UserAvatar(Base):
     __tablename__ = 'user_avatars'
+    __table_args__ = (db.UniqueConstraint('user_id', 'avatar_id', name='UC_user_id_avatar_id'),)
+
     id = db.Column(db.BigInteger,primary_key=True)
     user_id = db.Column(db.BigInteger,db.ForeignKey('users.id'))
     user = db.relationship('User')

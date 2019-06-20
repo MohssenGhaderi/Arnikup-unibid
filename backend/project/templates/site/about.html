@@ -1,0 +1,93 @@
+{% extends 'site/layout.html' %}
+{% block title %} درباره ما {% endblock %}
+{% block content %}
+<div class="content-page">
+	<div class="container">
+		<div class="about-banner banner-image">
+			<a href="#"><img src="{{url_for('static',filename='images/theme/about-banner.jpg')}}" alt="about" /></a>
+		</div>
+		<ul class="about-menu">
+			<li><a href="/help">راهنمای شرکت در حراجی </a></li>
+			<li><a href="/faq">سوالات متداول</a></li>
+			<li><a href="/support">پشتیبانی یونی بید</a></li>
+		</ul>
+		<div class="contact-info-page about-info-page">
+			<div class="list-contact-info">
+				<div class="row">
+					<div class="col-md-4 col-sm-4 col-xs-12">
+						<div class="item-contact-info">
+							<a class="contact-icon icon-quality" href="#"><i class="fa fa-diamond"></i></a>
+							<h2><a href="#">٪۱۰۰ حفاظت از کیفیت محصول</a></h2>
+						</div>
+					</div>
+					<div class="col-md-4 col-sm-4 col-xs-12">
+						<div class="item-contact-info">
+							<a class="contact-icon icon-shipment" href="#"><i class="fa fa-clock-o"></i></a>
+							<h2><a href="#">٪۱۰۰ حفاظت در زمان حمل و نقل</a></h2>
+						</div>
+					</div>
+					<div class="col-md-4 col-sm-4 col-xs-12">
+						<div class="item-contact-info last-item">
+							<a class="contact-icon icon-payment" href="#"><i class="fa fa-usd"></i></a>
+							<h2><a href="#">٪۱۰۰ حفاظت از پرداخت</a></h2>
+						</div>
+					</div>
+				</div>
+			</div>
+			<p class="desc">
+				اگر یونی بید نتواند کالاهای خود را در زمان معین حمل کند یا کیفیت محصول استانداردهای قرارداد شما را برآورده نکرد، یونی بید مبلغ پرداخت شده شما را بازپرداخت خواهد کرد.
+			</p>
+		</div>
+		<div class="protect-bidbazi">
+			<div class="row">
+				<h2 class="title-default">مسیر استفاده از یونی بید</h2>
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<div class="about-full-protec">
+
+						<ul>
+							<li><span class="about-num"><span>۱</span></span> <p>با حساب کاربری خود وارد یونی بید بشوید. در صورت نداشتن حساب کاربری یک حساب برای خود ایجاد کنید.</p></li>
+							<li><span class="about-num"><span>۲</span></span> <p>حراجی مورد نظری را که میخواهید در آن شرکت کنید پیدا کنید و با خرید بسته پیشنهادی در آن ثبت نام کنید.</p></li>
+							<li><span class="about-num"><span>۳</span></span> <p>در زمان شروع حراجی در آن شرکت کنید و اگر برنده شدید محصول با تخفیف برای شما خواهد بود.</p></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-6 col-sm-6 col-xs-12">
+						<div class="about-full-protec mt-70">
+							<ul>
+								<li><span class="about-num"><span>۴</span></span> <p>حراجی برنده شده را در سبد خرید خود نهایی کنید تا برای شما ارسال شود.</p></li>
+								<li><span class="about-num"><span>۵</span></span> <p>در نهایت محصول به دست شما خواهد رسید.</p></li>
+							</ul>
+						</div>
+				</div>
+			</div>
+		</div>
+		<div class="about-review">
+			<h2 class="title-default">درباره ما</h2>
+			<div class="list-about-review">
+				<div class="row">
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<div class="item-about-review">
+							<div class="about-info">
+								<h3><a href="#">اهداف سایت :</a></h3>
+								<p>
+									سایت یونی بید با هدف فروش انواع کالاها و خدمات به صورت حراجی آنلاین است؛ که سعی بر آن دارد با به وجود آوردن لذت یک خرید هیجان انگیز از طریق برگزاری حراجی برای کالاها و خدمات موجود در سایت، اقدام به ارائه آنها با تخفیف مناسب به مشتریان کند.
+								</p>
+								<h3><a href="#"> انگیزه سایت : </a></h3>
+								<p>
+									این سایت با هدف فروش محصولات متنوع و با کیفیت بالا راه اندازی گردیده است. هدف اصلی این سایت فروش محصولات کاملا نو با گارانتی اصلی و پایین ترین قیمت به مشتریان خود می باشد. شما میتوانید در یونی بید هر کالا را تا 70 درصد با تخفیف خریداری نمایید و برای خرید بهترین محصولات از بهترین برندها در یک رقابت هیجان انگیز شرکت کنید. فرآیند خرید در یونی بید بسیار ساده و لذت بخش است و تجربه ی یک خرید لذت بخش و هیجان انگیز را برای کاربران خود به همراه خواهد داشت. شما می توانید با عضویت در این سایت از تخفیفات لحظه ای این فروشگاه استفاده نموده و محصولات مورد نظر خود را انتخاب و خرید نمایید.
+
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script>
+</script>
+{% endblock scripts %}

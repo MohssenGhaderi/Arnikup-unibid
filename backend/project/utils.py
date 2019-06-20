@@ -24,9 +24,6 @@ class Payload(object):
     def __init__(self, j):
         self.__dict__ = loads(j)
 
-
-
-
 # required_token decorator
 def token_required(f):
     def wrapper(*args, **kwargs):

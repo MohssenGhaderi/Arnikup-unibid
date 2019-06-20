@@ -1,0 +1,83 @@
+{% extends 'site/layout.html' %}
+{% block title %}   تایید پرداخت {% endblock %}
+{% block content %}
+<div class="content-page">
+	<input type="hidden" id="pid" value="{{pid}}">
+	<div class="Package">
+		<div class="container">
+			<div class="product-quickview woocommerce">
+				<div class="row">
+					<h3 class="order_review_heading">تایید پرداخت</h3>
+					<div class="woocommerce-checkout-review-order" id="order_review">
+						<div class="table-responsive">
+							<table class="shop_table woocommerce-checkout-review-order-table">
+								<tfoot>
+									<!--
+									<tr class="order-total">
+										<th>موجودی حساب شما</th>
+										<td><strong><span class="amount"><span >{{current_user.credit}}</span> تومان </span></strong> </td>
+									</tr> -->
+									<tr class="order-total">
+										<th>مبلغ پرداختی نهایی</th>
+										<input type="hidden" id="amount_money" value="{{amount}}">
+										{%raw%}
+										<td><strong><span class="amount" id="amount"></span></strong></td>
+										{%endraw%}
+									</tr>
+
+								</tfoot>
+							</table>
+						</div>
+						<div class="woocommerce-checkout-payment" id="payment">
+							<div class="form-row place-order">
+								<form id="confirm" action="https://www.zarinpal.com/pg/StartPay/{{ref_id}}" method="get">
+									<input type="submit" value="تایید نهایی پرداخت و هدایت به درگاه بانک" class="button alt">
+								</form>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script>
+
+	function getRefID() {
+		pid = $('#pid').val();
+
+		$.ajax({
+			url: "{{url_for('zerinpalgateway')}}",
+			type: 'post',
+			data: {
+					pid:pid
+			},
+			dataType: 'json',
+			error:function(data){
+				console.log(data);
+			},
+			success:function(data) {
+				console.log(data);
+				$('#RefId').val(data['ref_id']);
+				$('#amount').html(ToPersian(formatCurrency($('#amount_money').val())) + " تومان ")
+			}
+		});
+	}
+	getRefID();
+
+	$('#confirm').on('submit', function(event){
+
+		if(!$('#RefId').val()){
+			event.preventDefault();
+			alert('لطفا اندکی صبر کنید ');
+		}
+
+	});
+
+</script>
+
+{% endblock scripts %}

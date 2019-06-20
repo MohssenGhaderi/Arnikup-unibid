@@ -1,6 +1,5 @@
 from flask_restplus import Resource, fields, Namespace
-from flask_jwt_extended import (set_refresh_cookies,create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt,set_access_cookies,get_csrf_token)
-from flask import current_app,url_for, redirect, render_template, request, abort, make_response , jsonify , session
+from flask import current_app, request, abort, make_response , jsonify , session
 from ..model import *
 import json
 from ..database import db
@@ -14,29 +13,14 @@ import string,random
 from datetime import datetime,timedelta
 from project.lang.fa import *
 from project.utils import token_required, token_optional
+from flask_login import login_user, logout_user
 import jwt
 import hashlib
 from rejson import Path
+from sqlalchemy import func
 
 
 auth_ns = Namespace('auth')
-
-# # @auth_ns.doc(params={'id': 'An ID'})
-# @auth_ns.route('/test')
-# class MyResource(Resource):
-#     parser = rest_api.parser()
-#     parser.add_argument('Authorization',type=str,location='headers',help='Bearer Access Token',required=False)
-#     @rest_api.header('Authorization: Bearer', 'JWT TOKEN', required=False)
-#     @rest_api.doc(parser=parser,validate=True)
-#     @token_optional
-#     def get(self,current_user):
-#         if not current_user:
-#             return make_response(jsonify({"success":False}),403)
-#         return make_response(jsonify({"success":True}),200)
-#
-#     @auth_ns.response(403, 'Not Authorized')
-#     def post(self, id):
-#         auth_ns.abort(403)
 
 login_fields = auth_ns.model('Login', {
     'username': fields.String(description='The login username', required=True,min_length=3,max_length=32),
@@ -60,8 +44,7 @@ verify_resend_fields = auth_ns.model('Resend', {
 })
 
 forgotpass_fields = auth_ns.model('ForgotPassword', {
-    'username': fields.String(description='The login username', required=True,min_length=3,max_length=32),
-    'mobile': fields.String(description='The user mobile field', required=True,min_length=11,max_length=11),
+    'forgotField': fields.String(description='The forgot field must be username or mobile', required=True,min_length=3,max_length=32),
 })
 
 changepass_fields = auth_ns.model('ChangePassword', {
@@ -147,11 +130,23 @@ class Register(Resource):
         new_user.mobile = mobile
         new_user.password = User.generate_hash(password)
         new_user.invitor = invitor
+        for avatar in Avatar.query.filter_by(type=AvatarType.REGULAR):
+            new_user.avatars.append(avatar)
+
+        avatar = Avatar.query.filter_by(type=AvatarType.REGULAR).order_by(func.random()).first()
+        new_user.avatar = avatar
+        new_user.level = Level.query.filter_by(number=1).first()
         new_user.save_to_db()
 
         current_user = User.find_by_username(username)
 
-        session["username"] = username
+        user_agent_string = request.user_agent.string.encode('utf-8')
+        user_agent_hash = hashlib.md5(user_agent_string).hexdigest()
+        obj = {
+            'username': current_user.username,
+            'code_expiration_time': None
+        }
+        rj.jsonset(user_agent_hash, Path.rootPath(), obj)
 
         resp ={
             'message': 'Ready for verification for {}'.format(current_user.username),
@@ -210,7 +205,8 @@ class Login(Resource):
             user_agent_hash = hashlib.md5(user_agent_string).hexdigest()
             obj = {
                 'username': current_user.username,
-                'code_expiration_time': None
+                'code_expiration_time': None,
+                'avatar':current_user.avatar.image.split("'")[1]
             }
             rj.jsonset(user_agent_hash, Path.rootPath(), obj)
 
@@ -250,6 +246,8 @@ class Login(Resource):
             ua.activity = ACTIVITIES['LOGIN']
             db.session.add(ua)
             db.session.commit()
+
+            login_user(current_user,remember=True)
 
             return make_response(jsonify({'accessToken': _access_token, 'refreshToken': _refresh_token}),200)
 
@@ -440,24 +438,23 @@ class ForgotPassword(Resource):
     @auth_ns.response(400, 'SMS System and Validation Error')
     @auth_ns.response(401, 'Not Authorized')
     @auth_ns.response(403, 'Not available')
-    @auth_ns.expect(forgotpass_fields,validate=False)
+    @auth_ns.expect(forgotpass_fields, validate= False)
     def post(self):
         data = request.get_json(force=True)
 
-        if 'mobile' not in data and 'username' not in data:
-            return make_response(jsonify({"success":False,"reason":'username_mobile',"message":MOBILE_OR_USERNAME_REQUIRED}),400)
+        if 'forgotField' not in auth_ns.payload:
+            return make_response(jsonify({"success":False,"reason":'forgotField',"message":MOBILE_OR_USERNAME_REQUIRED}),400)
 
-        mobile = data.get("mobile", None)
-
-        if not mobile:
-            current_user = User.find_by_username(data['username'].lower())
+        current_user = User.query.filter_by(username=auth_ns.payload['forgotField'].lower()).first()
+        if not current_user :
+            current_user = User.query.filter_by(mobile=auth_ns.payload['forgotField']).first()
             if not current_user :
-                return make_response(jsonify({"success":False,"reason":'username',"message":USER_NOT_FOUND}),403)
+                return make_response(jsonify({"success":False,"reason":'userNotFound',"message":USER_NOT_FOUND}),403)
 
-            if not current_user.mobile:
-                return make_response(jsonify({"success":False,"reason":'user.mobile',"message":MOBILE_NOT_FOUND}),403)
+        if not current_user.mobile:
+            return make_response(jsonify({"success":False,"reason":'user.mobile',"message":MOBILE_NOT_FOUND}),403)
 
-            mobile = current_user.mobile
+        mobile = current_user.mobile
 
         if not str(mobile).isdigit():
             return make_response(jsonify({"success":False,"reason":'mobile',"message":MOBILE_MUST_NUMBER}),400)
@@ -480,7 +477,6 @@ class ForgotPassword(Resource):
         current_user.send_sms_attempts += 1
         db.session.add(current_user)
         db.session.commit()
-        session['last_send_time'] = datetime.now()
 
         message = current_user.username +' عزیز٬ '\
         + '\n' + "رمز عبور جدید شما :" + new_password + "است."\
@@ -643,3 +639,15 @@ class Logout(Resource):
         p.delete(token['hash'])
         p.execute()
         return make_response(jsonify({"success":True,"reason":"logout"}),200)
+
+@auth_ns.route('/avatar')
+class GetAvatar(Resource):
+    def get(self):
+        avatar = ''
+        try:
+            user_agent_string = request.user_agent.string.encode('utf-8')
+            user_agent_hash = hashlib.md5(user_agent_string).hexdigest()
+            avatar = rj.jsonget(user_agent_hash, Path('.avatar'))
+        except(e):
+            pass
+        return make_response(jsonify(avatar),200)

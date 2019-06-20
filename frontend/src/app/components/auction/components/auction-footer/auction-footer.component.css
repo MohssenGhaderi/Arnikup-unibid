@@ -1,0 +1,52 @@
+.off-title {
+  font-size: 24px;
+  color: #212121;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.off-content-text {
+  width: 380px;
+}
+
+.off-content-text-container {
+  display: flex;
+  position: relative;
+  width: max-content;
+}
+
+.off-content-text-container > .cfnButton {
+  width: 90px;
+  height: 50.4px;
+  opacity: 0.4;
+  border-radius: 28px;
+  background-color: #212121;
+  position: absolute;
+  left: 3px;
+  top: 3px;
+}
+
+.off-content {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 120px;
+}
+
+.btnBuyWrapper {
+  width: max-content;
+  position: relative;
+}
+
+.btnBuyWrapper  .cfnButton {
+  margin-right: 19px;
+  width: 190px;
+}
+
+.btnBuyWrapper > p {
+  position: absolute;
+  text-align: center;
+  right: 50px;
+  top: -15px;
+  font-size: 13px;
+  color: #212121;
+}

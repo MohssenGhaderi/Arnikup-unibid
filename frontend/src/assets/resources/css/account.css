@@ -32,14 +32,16 @@
   display: flex;
   width: 9.09em;
   height: 9.09em;
-  opacity: 0.24;
+  /*opacity: 0.1;*/
   border-radius: 50%;
-  background-color: #c68d6d;
+  background-color: #c68d6d69;
   margin-top: 1.3em;
   justify-content: center;
   align-items: center;
 }
-
+.account-pic >img {
+  z-index: 99999999;
+}
 .account-regularText {
   font-size: 1.27em;
   color:#707070;

@@ -1,0 +1,433 @@
+{% extends 'site/layout.html' %}
+{% block title %} تایید پرداخت {% endblock %}
+{% block content %}
+<div v-cloak id="app" class="content-page woocommerce">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+
+        <h2 class="title-shop-page" v-if="current_user" >اطلاعات حساب کاربری شما</h2>
+        <h2 class="title-shop-page" v-else >ثبت اطلاعات کاربری</h2>
+
+        <div  class="row">
+          <div class="col-md-6 col-sm-6 col-ms-12">
+            <div class="check-billing">
+              <form class="form-my-account">
+                <h2 class="title18">وارد کردن اطلاعات</h2>
+                <p class="clearfix box-col2">
+                  <input type="text" v-model="information.last_name" placeholder="نام خانوادگی *" onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" />
+                  <input type="text" v-model="information.first_name" placeholder="نام *" onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" />
+                </p>
+                <p><input type="text" v-model="information.work_place" placeholder="نام محل کار" onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" /></p>
+                <p class="clearfix box-col2">
+                  <input type="text" v-model="information.email" placeholder="ایمیل" onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" />
+                  <input type="text" v-model="information.mobile" v-on:keypress="isNumber($event)" :maxlength="11" placeholder="موبایل *" onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" />
+                </p>
+                <p>
+                  <select v-model="information.state" id="state">
+                      {%raw%}
+                      <option v-for="state in states" :value="state.id" :selected="info.address && info.address.state && info.address.state.id == state.id" >{{ state.title }}</option>
+                      {%endraw%}
+                  </select>
+                </p>
+                <p>
+                  <input type="text" v-model="information.address" placeholder="آدرس *" onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" />
+                </p>
+
+                <p class="clearfix box-col2">
+                  <input type="text" v-model="information.postal_code" v-on:keypress="isNumber($event)" :maxlength="10" placeholder="کد پستی ۱۰ رقمی انگلیسی *" onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" />
+                  <input type="text" v-model="information.city" placeholder="شهر / روستا *" onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''" />
+                </p>
+                <p>
+                  {%raw%}
+                    <div  v-if="!current_user">
+                      <input type="checkbox" v-model="information.accept_tick" id="register_information" />
+                      <label for="register_information">ایجاد یک حساب کاربری؟</label>
+                    </div>
+                    <div v-else>
+                      <input type="checkbox" v-model="information.accept_tick" id="register_information" />
+                      <label for="register_information">بروز رسانی اطلاعات حساب</label>
+                    </div>
+                  {%endraw%}
+                </p>
+              </form>
+            </div>
+          </div>
+          <div class="col-md-6 col-sm-6 col-ms-12">
+            <div class="check-address">
+              <form class="form-my-account">
+                <h2 class="title18">اطلاعات بیشتر</h2>
+                <p>
+                  <textarea v-model="information.more_info" placeholder="توضیحات بیشتر..." cols="30" rows="13" onblur="if (this.value=='') this.value = this.defaultValue" onfocus="if (this.value==this.defaultValue) this.value = ''"></textarea>
+                </p>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="order_review_heading">سفارش شما</h3>
+        <div class="woocommerce-checkout-review-order" id="order_review">
+          <div class="table-responsive">
+            <table class="shop_table woocommerce-checkout-review-order-table">
+              <thead>
+                <tr>
+                  <th class="product-name">عنوان</th>
+                  <th class="product-total">مبلغ</th>
+                </tr>
+              </thead>
+              <tbody >
+                <tr v-for="order in user_orders" class="cart_item">
+                  {%raw%}
+                  <td class="product-name">
+                   <span class="product-quantity"> {{toPersian(order.total)}} × {{order.item_title}} با کسر تخفیف {{toPersian(parseInt(order.main_price) - parseInt(order.discounted_price))}} تومانی </span>
+                  </td>
+                  <td class="product-total">
+                    <span class="amount">{{toPersian(order.discounted_price)}} تومان</span>
+                  </td>
+                  {%endraw%}
+                </tr>
+                <!-- <tr class="cart_item">
+                  <td class="product-name">
+                      نام محصول برنده شده	<span class="product-quantity">× ۲</span>
+                  </td>
+                  <td class="product-total">
+                    <span class="amount">۲،۰۰۰،۰۰۰ تومان</span>
+                  </td>
+                </tr> -->
+              </tbody>
+              <tfoot>
+
+                <tr class="shipping">
+                  <td>
+                    <label>نوع ارسال</label>
+                    <ul  id="shipping_method" class="list-none">
+                      <li v-for="(shipment, index) in shipment_methods">
+                        <input v-shipmentradio type="radio" @click="update_shipment_data(shipment.price ,shipment.id)" class="shipping_method" value="local_delivery" :id="index" data-index="0" name="shipping_method">
+                        <label :for="index">{%raw%} {{shipment.title}} {%endraw%}</label>
+                      </li>
+                    </ul>
+                  </td>
+
+                  <td><strong class="amount">{%raw%}{{toPersian(shipment_price)}}{%endraw%} تومان</strong></td>
+
+                </tr>
+                <tr class="cart-subtotal">
+                  <th>مبلغ محصولات بدون احتساب تخفیف</th>
+                  <td><strong class="amount">{%raw%}{{toPersian(total_price)}}{%endraw%} تومان</strong></td>
+                </tr>
+                <tr class="cart-subtotal">
+                  <th class="text-orange">مجموع تخفیف داده شده محصولات</th>
+                  <td><strong class="amount text-orange">{%raw%}{{toPersian(items_discount)}}{%endraw%} تومان</strong></td>
+                </tr>
+                <tr class="cart-subtotal">
+                  <th class="text-orange">مجموع تخفیف داده شده برای کوپن تخفیف</th>
+                  <td><strong class="amount text-orange">{%raw%}{{toPersian(coupon_discount)}}{%endraw%} تومان</strong></td>
+                </tr>
+                <tr class="order-total">
+                  <th>مبلغ پرداختی نهایی</th>
+                  <td><strong><span class="amount">{%raw%}{{toPersian(final_price)}}{%endraw%} تومان </span></strong> </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <div class="woocommerce-checkout-payment" id="payment">
+            <ul v-for="payment_method in payment_methods" class="payment_methods methods list-none">
+              <li class="payment_method_bacs">
+                <input v-paymentradio @click="update_payment_id(payment_method.id)" type="radio" data-order_button_text=""  name="payment_method" class="input-radio" id="payment_method_bacs" checked="checked">
+                <label for="payment_method_bacs">{%raw%} {{payment_method.title}} {%endraw%}</label>
+                <div class="payment_box payment_method_bacs">
+                  <p>{%raw%}{{payment_method.description}}{%endraw%}</p>
+                </div>
+              </li>
+              <!-- <li class="payment_method_cheque">
+                <input type="radio" data-order_button_text="" value="cheque" name="payment_method" class="input-radio" id="payment_method_cheque">
+                <label for="payment_method_cheque">پرداخت فیش بانکی</label>
+                  <div class="payment_box payment_method_cheque">
+                  <p>پس از پرداخت به شماره حساب اعلان شده شماره فیش پرداختی را برای ما ارسال کنید.</p>
+                </div>
+              </li>
+              <li class="payment_method_cod">
+                <input type="radio" data-order_button_text="" value="cod" name="payment_method" class="input-radio" id="payment_method_cod">
+                <label for="payment_method_cod">به صورت نقدی</label>
+                <div class="payment_box payment_method_cod">
+                  <p>لطفا مبلغ سفارش را بعد از تحویل کالا به مامور پست تحویل دهید.</p>
+                </div>
+              </li>
+              <li class="payment_method_paypal">
+                <input type="radio" data-order_button_text="Proceed" value="Proceed" name="payment_method" class="input-radio" id="payment_method_Proceed">
+                <label for="payment_method_Proceed">
+                  آنلاین <img alt="" src="{{url_for('static', filename='images/theme/bank.png')}}"><a title="" onclick="javascript:window.open('https://shaparak.ir/content?id=287','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;" class="about_paypal" href="https://shaparak.ir/content?id=287">کارت های عضو شتاب</a>
+                </label>
+              </li> -->
+            </ul>
+            <div class="form-row place-order">
+              <form @submit.prevent="handleSubmit" id="confirm">
+                <input type="submit" data-value="Place order" value="پرداخت و تایید نهایی" id="place_order"  class="button alt">
+
+                <div class="alert alert-danger error_alert hide">
+                  <a href="#" class="close" aria-label="close">×</a>
+                  <div class="error_container"></div>
+                </div>
+
+              </form>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <h2 id="app"> {%raw%} {{shipment_methods}} {%endraw%}  </h2> -->
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+
+<script>
+
+var app = new Vue({
+
+  el: '#app',
+
+  data:{
+    info : [],
+    current_user : "{{current_user.is_authenticated}}",
+    shipment_methods: [],
+    payment_methods: [],
+    states :[],
+    shipment_price: 0,
+    user_orders: [],
+    invitation_discount: 0,
+    items_discount: 0,
+    total_price: 0,
+    coupon_discount: 0,
+
+    information :{
+      first_name : "",
+      last_name : "",
+      work_place : "",
+      mobile : "",
+      email : "",
+      state : -1,
+      city : "",
+      address : "",
+      postal_code : "",
+      more_info : "",
+      registered : "{{current_user.id}}" ? true : false,
+      accept_tick : 0,
+      shipment_method : -1,
+      payment_method : -1,
+      payment_id : -1,
+    }
+  },
+
+  computed: {
+    final_price: function(){
+      return parseInt(this.total_price) - this.items_discount + parseInt(this.shipment_price) - this.coupon_discount;
+    },
+  },
+
+  methods:{
+
+    toPersian: function(data){
+      return ToPersian(formatCurrency(data));
+    },
+
+    update_payment_id: function(payment_method_id){
+      this.information.payment_method = payment_method_id;
+    },
+
+    update_shipment_data: function(price, id){
+      this.shipment_price = price;
+      this.information.shipment_method = id;
+    },
+
+    handleSubmit: function(){
+
+      var obj = this.information;
+
+      for (var propName in obj) {
+        if (obj[propName] === "null" || obj[propName] === undefined || obj[propName]==="" || obj[propName]===-1) {
+          delete obj[propName];
+        }
+      }
+
+      axios.post("{{url_for('usercheckoutconfirm',pid=pid)}}",obj,
+				{
+					headers:
+					{
+						'Content-Type': 'application/json',
+            "X-CSRF-TOKEN" : getCookie('csrf_access_token'),
+					}
+				}).then(function (response) {
+          //handle success
+
+          $(".error_alert").addClass('hide');
+
+          swal({
+            title: 'تایید پرداخت',
+            text: response.data.message.message,
+            type: 'success',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'باشه...'
+          }).then((result) => {
+            if (result.value) {
+              if(response.data.message.operation ==="redirect_to_bank"){
+                window.location = "/confirm/payment/{{pid}}";
+              }else {
+                window.location = "/profile/payments";
+              }
+            }
+          })
+         })
+         .catch((error)=>{
+           console.log(error.response.data.message);
+           if(error.response.data.message.success === false)
+             swal(
+               'مشکلی پیش اومد',
+               error.response.data.message.message,
+               'error'
+             )
+            else{
+              $(".error_alert").removeClass('hide');
+              for (var propName in error.response.data.message) {
+         			  $(".error_container").html(error.response.data.message[propName])
+              }
+            }
+
+ 				});
+
+      // axios({
+      //   method: 'POST',
+      //   url: "{{url_for('usercheckoutconfirm',pid=pid)}}",
+      //   data: this.information,
+      //   config: { headers: {'Content-Type': 'multipart/form-data' }}
+      // })
+      // .then(function (response) {
+      //   //handle success
+      //   window.location = "/confirm/payment/{{pid}}"
+      //  })
+      // .catch(function (response) {
+      //     //handle error
+      //     console.log(response);
+      // });
+    },
+    isNumber: function(evt) {
+			evt = (evt) ? evt : window.event;
+			var charCode = (evt.which) ? evt.which : evt.keyCode;
+			// if ((charCode > 31 && (charCode < 48 || charCode > 57)) && (charCode < 1776 || charCode > 1785) && charCode !== 46) {
+			if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+				evt.preventDefault();
+			}
+			else {
+				return true;
+			}
+		},
+
+  },
+
+  mounted: function(){
+
+   self = this;
+
+   axios.get("{{url_for('usercoupons')}}")
+     .then((response) => {
+       response.data.forEach(discount =>{
+         self.coupon_discount += parseInt(discount.amount);
+        });
+     })
+     .catch((response)=>{
+       self.coupon_discount = 0;
+     });
+
+   axios.get("{{url_for('sitestates')}}")
+     .then(function (response) {
+       self.states = response.data[0];
+     })
+     .catch(function (error) {
+       console.error(error);
+   });
+
+   axios.get("{{url_for('userbasicinfo')}}")
+     .then(function (response) {
+       self.info = response.data[0];
+       self.information.first_name = self.info.first_name;
+       self.information.email = self.info.email;
+       self.information.last_name = self.info.last_name;
+       self.information.work_place = self.info.work_place;
+       if (self.info.address){
+         self.information.state = self.info.address.state.id;
+         self.information.city = self.info.address.city;
+         self.information.address = self.info.address.address;
+         self.information.postal_code = self.info.address.postal_code;
+       }
+       self.information.mobile = self.info.mobile;
+     })
+     .catch(function (error) {
+       console.error(error);
+   });
+
+    axios.get("{{url_for('sitepaymentmethods')}}")
+      .then(function (response) {
+        self.payment_methods = response.data[0];
+      })
+      .catch(function (error) {
+        console.error(error);
+    });
+
+    axios.get("{{url_for('siteshipmentmethods')}}")
+      .then(function (response) {
+        self.shipment_methods = response.data[0];
+      })
+      .catch(function (error) {
+        console.error(error);
+    });
+
+    axios.get("{{url_for('usercartcheckout')}}")
+      .then(function (response) {
+          self.user_orders = response.data;
+          response.data.forEach(order => {
+            self.total_price += parseInt(order.main_price);
+            self.items_discount += parseInt(order.main_price - order.discounted_price);
+        });
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+    });
+    // $.getJSON("{{url_for('usercartorder')}}", function(data){
+    //   console.log(data);
+    //   self.user_orders = data;
+    //   data.forEach(order => {
+    //     self.total_price += parseInt(order[0].total_cost);
+    //   });
+
+    // });
+  },
+
+  directives: {
+
+		shipmentradio:{
+			inserted:function(el) {
+				$("input:radio[name=shipping_method]:first").click();
+			}
+		},
+		paymentradio:{
+			inserted:function(el) {
+				$("input:radio[name=payment_method]:first").click();
+			}
+		},
+	}
+
+
+
+});
+
+$('.close').on('click',function(event){
+	event.preventDefault();
+	$(this).parent().removeClass('show').addClass('hide')
+});
+
+</script>
+{% endblock scripts %}

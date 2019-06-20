@@ -1,14 +1,15 @@
 import { Routes, RouterModule } from '@angular/router';
-import { SigninComponent } from './auth/signin/signin.component';
-import { SignupComponent } from './auth/signup/signup.component';
-import { ShopComponent } from './shop/shop.component';
-import { DefaultComponent } from './default/default.component';
-import { VerificationComponent } from './auth/verification/verification.component';
+import { SigninComponent } from './components/auth/signin/signin.component';
+import { SignupComponent } from './components/auth/signup/signup.component';
+import { AuctionComponent } from './components/auction/auction.component';
+import { DefaultComponent } from './components/default/default.component';
+import { VerificationComponent } from './components/auth/verification/verification.component';
+import { ForgetPasswordComponent } from './components/auth/forget-password/forget-password.component';
 
 const appRoutes: Routes = [
   {
-      path: 'shop',
-      component: ShopComponent
+      path: 'auction/:id',
+      component: AuctionComponent
   },
   {
       path: 'signin',
@@ -17,6 +18,10 @@ const appRoutes: Routes = [
   {
       path: 'signup',
       component: SignupComponent
+  },
+  {
+      path: 'forgot',
+      component: ForgetPasswordComponent
   },
   {
     path: '',

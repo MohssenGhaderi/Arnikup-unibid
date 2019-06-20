@@ -1,0 +1,36 @@
+<!-- <div *ngFor="let image of auction?.images">
+<div class="details-slideImage-wrapper">
+<img class="details-slideImage" [src]="Link.product(image)" alt="">
+</div>
+</div>
+<div *ngIf="status?.avatar && !auction.done">
+<div class="details-slideImage-info-wrapper">
+<div class="details-slideImage-info">
+<img class="details-slideImage-info-img" [src]="Link.avatar(status.avatar)" alt="">
+<span class="details-slideImage-info-badge">1</span>
+</div>
+<p style="font-size: 14px;">{{status.name}}</p>
+</div>
+</div> -->
+
+<div class="swiper-container-wrapper">
+    <div class="swiper-container">
+      <swiper [config]="config">
+        <div class="swiper-wrapper">
+          <img class="swiper-slide"  *ngFor="let image of auction?.images" [src]="Link.product(image)" alt=""/>
+        </div>
+        <!-- Add Arrows -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+      </swiper>
+    </div>
+  <div *ngIf="status?.avatar && !auction.done">
+    <div class="details-slideImage-info-wrapper">
+      <div class="details-slideImage-info">
+        <img class="details-slideImage-info-img" [src]="Link.avatar(status.avatar)" alt="">
+        <span class="details-slideImage-info-badge">1</span>
+      </div>
+      <p style="font-size: 14px;">{{status.name}}</p>
+    </div>
+  </div>
+</div>

@@ -15,6 +15,6 @@ class UserPlan(Base):
     created = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False)
     updated = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False, onupdate=datetime.datetime.now)
     def __str__(self):
-        if(self.user):
+        if(self.user and self.auction_plan.auction):
             return    " پلن : " + self.auction_plan.plan.title +" "+ self.auction_plan.auction.title +" "+ self.user.username + " "
         return self.auction_plan.plan.title

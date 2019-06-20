@@ -137,9 +137,9 @@ class UserAdmin(ModelView):
 
     page_size = 20
     can_view_details = True
-    column_searchable_list = ['first_name', 'last_name','alias_name','username','mobile','address.city','address.state.title','address.address','address.postal_code']
-    column_editable_list = ['first_name', 'last_name','alias_name','mobile','verification_attempts','login_attempts','send_sms_attempts','coins','gems','points']
-    column_exclude_list = ('work_place','selected_avatar','password')
+    column_searchable_list = ['full_name', 'username','mobile','address.city','address.state.title','address.address','address.postal_code']
+    column_editable_list = ['full_name', 'mobile','verification_attempts','login_attempts','send_sms_attempts','coins','gems','points']
+    column_exclude_list = ('work_place','password')
 
     def is_accessible(self):
         return checkAdmin('admin')
@@ -302,13 +302,13 @@ class AuctionAdmin(ModelView):
     form_columns = (
     'item', 'level','advertisement','charity',
     'title','description','start_date','base_price','max_price','max_members','ratio',
-    'tag','is_active','have_extra_gems','extra_bids','required_gems'
+    'tag','is_active','have_extra_gems','extra_bids','required_gems','done'
     )
 
     page_size = 20
     can_view_details = True
     column_searchable_list = ['title', 'description']
-    column_editable_list = ['title', 'description','start_date','max_price','base_price','max_members','min_members','ratio','tag']
+    column_editable_list = ['title', 'description','start_date','max_price','base_price','max_members','min_members','ratio','tag','done']
     column_exclude_list = ('description','have_extra_gems','extra_bids','required_gems')
     form_excluded_columns = ('participants','views','likes','plans','created','updated')
     form_widget_args = {
@@ -387,7 +387,7 @@ class BidAdmin(ModelView):
 
     page_size = 30
     can_view_details = True
-    column_searchable_list = ['user_plan.auction_plan.plan.title','user_plan.user.first_name','user_plan.user.last_name','user_plan.user.alias_name','user_plan.user.username','auction.title','won']
+    column_searchable_list = ['user_plan.auction_plan.plan.title','user_plan.user.full_name','user_plan.user.username','auction.title','won']
 
     def is_accessible(self):
         return checkAdmin('admin')
@@ -425,7 +425,7 @@ class OrderAdmin(ModelView):
 
     page_size = 20
     can_view_details = True
-    column_searchable_list = ['status','discount_status','item.title','item.product.title','user.first_name','user.last_name','user.alias_name','user.username','payment.GUID','payment.status','payment.amount','payment.type']
+    column_searchable_list = ['status','discount_status','item.title','item.product.title','user.full_name','user.username','payment.GUID','payment.status','payment.amount','payment.type']
     column_editable_list = ['status', 'discount_status','total']
     form_excluded_columns = ('created','updated')
     column_exclude_list = ('description')
@@ -458,7 +458,7 @@ class PaymentAdmin(ModelView):
 
     page_size = 10
     can_view_details = True
-    column_searchable_list = ['user.first_name','user.last_name','user.alias_name','user.username','user.mobile','GUID','status','amount','type']
+    column_searchable_list = ['user.full_name','user.username','user.mobile','GUID','status','amount','type']
     column_editable_list = ['status','type']
     form_excluded_columns = ('user','created','updated')
 
@@ -479,7 +479,7 @@ class ShipmentAdmin(ModelView):
     page_size = 10
     can_view_details = True
     column_editable_list = ['status','send_date','recieve_date']
-    column_searchable_list = ['guid','status','order.status','order.discount_status','order.item.title','order.item.product.title','order.user.first_name','order.user.last_name','order.user.alias_name','order.user.username','order.payment.GUID','order.payment.status','order.payment.amount','order.payment.type','insurance.company']
+    column_searchable_list = ['guid','status','order.status','order.discount_status','order.item.title','order.item.product.title','order.user.full_name','order.user.username','order.payment.GUID','order.payment.status','order.payment.amount','order.payment.type','insurance.company']
     form_excluded_columns = ('created','updated','order','guid')
 
     def is_accessible(self):
@@ -494,28 +494,28 @@ class PlanAdmin(ModelView):
 class UserPlanAdmin(ModelView):
     page_size = 20
     can_view_details = True
-    column_searchable_list = ['user.first_name','user.last_name','user.alias_name','user.username','auction_plan.plan.title']
+    column_searchable_list = ['user.full_name','user.username','auction_plan.plan.title']
     def is_accessible(self):
         return checkAdmin('admin')
 
 class UserPlanPaymentAdmin(ModelView):
     page_size = 20
     can_view_details = True
-    column_searchable_list = ['user_plan.user.first_name','user_plan.user.last_name','user_plan.user.alias_name','user_plan.user.username','user_plan.auction_plan.plan.title']
+    column_searchable_list = ['user_plan.user.full_name','user_plan.user.username','user_plan.auction_plan.plan.title']
     def is_accessible(self):
         return checkAdmin('admin')
 
 class UserPlanCoinPaymentAdmin(ModelView):
     page_size = 20
     can_view_details = True
-    column_searchable_list = ['user_plan.user.first_name','user_plan.user.last_name','user_plan.user.alias_name','user_plan.user.username','user_plan.auction_plan.plan.title']
+    column_searchable_list = ['user_plan.user.full_name','user_plan.user.username','user_plan.auction_plan.plan.title']
     def is_accessible(self):
         return checkAdmin('admin')
 
 class UserPlanGemPaymentAdmin(ModelView):
     page_size = 20
     can_view_details = True
-    column_searchable_list = ['user_plan.user.first_name','user_plan.user.last_name','user_plan.user.alias_name','user_plan.user.username','user_plan.auction_plan.plan.title']
+    column_searchable_list = ['user_plan.user.full_name','user_plan.user.username','user_plan.auction_plan.plan.title']
 
     def is_accessible(self):
         return checkAdmin('admin')
@@ -531,14 +531,14 @@ class AuctionPlanAdmin(ModelView):
 class UserAuctionParticipationAdmin(ModelView):
     page_size = 10
     can_view_details = True
-    column_searchable_list = ['user.first_name','user.last_name','user.alias_name','user.username','auction.title']
+    column_searchable_list = ['user.full_name','user.username','auction.title']
     def is_accessible(self):
         return checkAdmin('admin')
 
 class UserMessageAdmin(ModelView):
     page_size = 10
     can_view_details = True
-    column_searchable_list = ['title','subject','message','user.username','user.first_name','user.last_name','user.alias_name']
+    column_searchable_list = ['title','subject','message','user.username','user.full_name']
     def is_accessible(self):
         return checkAdmin('admin')
 
@@ -614,7 +614,7 @@ class SMSAdmin(ModelView):
 class CreditLogAdmin(ModelView):
     page_size = 100
     can_view_details = True
-    column_searchable_list = ['after_credit', 'before_credit','user.username','user.first_name','user.last_name','user.mobile']
+    column_searchable_list = ['after_credit', 'before_credit','user.username','user.full_name','user.mobile']
     def is_accessible(self):
         return checkAdmin('admin')
 
@@ -724,6 +724,7 @@ class CharityAdmin(ModelView):
     can_view_details = True
     form_excluded_columns = ('created','updated')
     column_exclude_list = ('description')
+    column_searchable_list = ['title','description']
 
     form_overrides={
     'is_active':ActiveCharittyBooleanField,
@@ -754,6 +755,7 @@ class CoinAdmin(ModelView):
     can_view_details = True
     form_excluded_columns = ('created','updated')
     column_exclude_list = ('description')
+    column_searchable_list = ['title','quantity','description','type']
 
     form_choices = {
     'type':[
@@ -771,6 +773,8 @@ class GemAdmin(ModelView):
     can_view_details = True
     form_excluded_columns = ('created','updated')
     column_exclude_list = ('description')
+    column_searchable_list = ['title','quantity','description','type']
+
 
     form_choices = {
     'type':[
@@ -786,6 +790,7 @@ class GemPaymentAdmin(ModelView):
     page_size = 20
     can_view_details = True
     form_excluded_columns = ('user','created','updated')
+    column_searchable_list = ['GUID','paid_gems','status','user.username','user.full_name','user.mobile']
 
     form_choices = {
     'type':[
@@ -811,6 +816,7 @@ class CoinPaymentAdmin(ModelView):
     page_size = 20
     can_view_details = True
     form_excluded_columns = ('user','created','updated')
+    column_searchable_list = ['GUID', 'paid_coins','status','user.username','user.full_name','user.mobile']
 
     form_choices = {
     'type':[
@@ -835,6 +841,8 @@ class LevelAdmin(ModelView):
     can_view_details = True
     form_excluded_columns = ('users','auctions','created','updated')
     column_exclude_list = ('description')
+    column_searchable_list = ['title', 'number']
+
 
     def is_accessible(self):
         return checkAdmin('admin')
@@ -866,6 +874,8 @@ class SettingAdmin(ModelView):
 class UserActivityAdmin(ModelView):
     page_size = 50
     can_view_details = True
+    column_searchable_list = ['activity', 'ip','user.username','user.full_name','user.mobile']
+
 
     def is_accessible(self):
         return checkAdmin('admin')

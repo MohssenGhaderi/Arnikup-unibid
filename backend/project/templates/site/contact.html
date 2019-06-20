@@ -1,0 +1,71 @@
+{% extends 'site/layout.html' %}
+{% block title %} تماس با ما {% endblock %}
+{% block content %}
+<div class="content-page">
+	<div class="container">
+		<div class="contact-map">
+			<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d207372.7040790933!2d51.20939072754242!3d35.69673255258336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f8e00491ff3dcd9%3A0xf0b3697c567024bc!2sTehran%2C+Tehran+Province%2C+Iran!5e0!3m2!1sen!2s!4v1538605444425" width="1200" height="400" style="border:0" allowfullscreen></iframe>
+			<!-- <iframe src="https://www.google.com/maps/place/Tooba+Tower/@35.7667251,51.3685696,17.08z/data=!4m13!1m7!3m6!1s0x3f8e00491ff3dcd9:0xf0b3697c567024bc!2sTehran,+Tehran+Province,+Iran!3b1!8m2!3d35.6891975!4d51.3889736!3m4!1s0x3f8e07bcd0eb0dd9:0xccb7a8f1e3e5122a!8m2!3d35.7664644!4d51.3699272" width="1200" height="400" style="border:0" allowfullscreen></iframe> -->
+			<!-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3237.362589748516!2d51.367738515241534!3d35.766468632899944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f8e07bcd0eb0dd9%3A0xccb7a8f1e3e5122a!2sTooba+Tower!5e0!3m2!1sen!2sus!4v1527676438884" width="1200" height="400"  style="border:0" allowfullscreen></iframe> -->
+		</div>
+		<!-- End Map -->
+		<div class="contact-info-page">
+			<div class="list-contact-info">
+				<div class="row">
+					<!-- <div class="col-md-4 col-sm-4 col-xs-12">
+						<div class="item-contact-info">
+							<a class="contact-icon icon-mobile" href="#"><i class="fa fa-mobile"></i></a>
+							<h2>موبایل: <a href="#">۰۲۱-۹۶۶۶۷۵۰۱</a></h2>
+							<h2>موبایل: ۰۹۰۱۷۴۱۴۳۷۲</h2>
+						</div>
+					</div> -->
+
+					<div class="col-md-6 col-sm-6 col-xs-12">
+						<div class="item-contact-info">
+							<a class="contact-icon icon-phone" href="#"><i class="fa fa-phone"></i></a>
+							<!-- <h2>تلفن: <a href="#">۰۲۱-۹۶۶۶۷۵۰۱</a></h2> -->
+							<h2>تلفن: ۰۲۱-۸۸۷۱۱۶۷۲ </h2>
+						</div>
+					</div>
+					<div class="col-md-6 col-sm-6 col-xs-12">
+						<div class="item-contact-info last-item">
+							<a class="contact-icon icon-email" href="mailto:info@unibid.ir"><i class="fa fa-envelope"></i></a>
+							<!-- <a class="contact-icon icon-email" href="mailto:info@bordito.ir"><i class="fa fa-envelope"></i></a> -->
+							<h2><a href="mailto:info@unibid.ir">info@unibid.ir</a></h2>
+							<!-- <h2><a href="mailto:info@bordito.ir">info@bordito.ir</a></h2> -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<p class="desc">
+				تهران - وزرا - کوچه ششم - پلاک ۴ - واحد ۳
+			</p>
+		</div>
+		<div class="contact-form-page">
+			<h2>فرم تماس با ما</h2>
+			<div class="form-contact">
+				<form>
+					<div class="row">
+						<div class="col-md-3 col-sm-4 col-xs-12">
+							<input type="text" name="name" value="نام و نام خانوادگی *" onfocus="if (this.value==this.defaultValue) this.value = ''" onblur="if (this.value=='') this.value = this.defaultValue">
+						</div>
+						<div class="col-md-3 col-sm-4 col-xs-12">
+							<input type="text" name="email" value="ایمیل *" onfocus="if (this.value==this.defaultValue) this.value = ''" onblur="if (this.value=='') this.value = this.defaultValue">
+						</div>
+						<div class="col-md-6 col-sm-4 col-xs-12">
+							<input type="text" name="website" value="وب سایت" onfocus="if (this.value==this.defaultValue) this.value = ''" onblur="if (this.value=='') this.value = this.defaultValue">
+						</div>
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<textarea name="message" cols="30" rows="8" onfocus="if (this.value==this.defaultValue) this.value = ''" onblur="if (this.value=='') this.value = this.defaultValue">پیام خود را بنویسید...</textarea>
+							<input type="submit" value="ارسال پیام" />
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+{% endblock scripts %}

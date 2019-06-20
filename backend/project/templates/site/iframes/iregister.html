@@ -1,0 +1,197 @@
+{% extends 'site/iframes/ilayout.html' %}
+{% block title %}   ثبت نام {% endblock %}
+{% block content %}
+<div class="container" id="app" style="border:1px solid #000;">
+	<div class="row">
+	<div class="col-md-12">
+		<h2 class="title-shop-page">ثبت نام در یونی بید</h2>
+		<div class="register-content-box">
+			<div class="row">
+				<div class="form">
+				<div class="thumbnail"><img src="/static/images/theme/login-icon.svg"/></div>
+
+				<div class="alert alert-danger error_alert hide">
+					<a href="#" class="close" aria-label="close">×</a>
+					<div class="error_container"></div>
+				</div>
+				<div class="alert alert-success alert-dismissable success_alert hide">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+					<div class="success_container"></div>
+				</div>
+
+				<form class="register-form"  @submit.prevent="handleSubmit">
+					<input v-model="registerInformation.username" type="text" placeholder="نام کاربری (حداقل ۳ حرفی)"/>
+					<input v-model="registerInformation.password" type="password" placeholder="رمز عبور(حداقل ۴ کاراکتری)"/>
+					<input v-model="registerInformation.c_password" type="password" placeholder="تکرار رمز عبور(مشابه رمز عبور)"/>
+					<input v-model="registerInformation.mobile" v-on:keypress="isNumber($event)" type="text" placeholder="شماره موبایل (فقط عدد بصورت انگلیسی)" :maxlength="11"/>
+					<input v-model="registerInformation.invitor" type="text" placeholder="کد معرف"/>
+					<div class="form-my-account">
+						<div class="table create-account">
+							<div class="text-left">
+								<p>
+									<!-- <input v-model="registerInformation.accept_roles" type="checkbox"  id="accept_roles" name="accept_roles"/><label for="accept_roles"><a href="/roles" class="color">قوانین و مقررات سایت </a> را مطالعه کرده ام و قبول دارم <span class="required">*</span></label> -->
+									قبل از ثبت نام در سایت <a href="/roles" class="color"> قوانین و مقررات سایت </a>را مطالعه کرده ام و قبول دارم. </label>
+								</p>
+							</div>
+						</div>
+					</div>
+					<input type="submit" value="ثبت نام" />
+					<p class="message">قبلا ثبت نام کرده اید؟ <a href="/ilogin">ورود به حساب کاربری</a></p>
+
+				</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- <div class="content-page woocommerce">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h2 class="title-shop-page">حساب کاربری</h2>
+				<div class="register-content-box">
+					<div class="row">
+						<div class="col-md-6 col-sm-6 col-ms-12">
+							<div class="check-billing">
+								<div class="form-my-account">
+									<div class="alert alert-danger error_alert hide">
+										<a href="#" class="close" aria-label="close">×</a>
+										<div class="error_container"></div>
+									</div>
+									<div class="alert alert-success alert-dismissable success_alert hide">
+										<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+										<div class="success_container"></div>
+									</div>
+									<form id="register_form">
+										<h2 class="title24 title-form-account">ثبت نام</h2>
+										<p>
+											<label for="username">نام کاربری <span class="required">*</span></label>
+											<input type="text" name="username" />
+										</p>
+										<p>
+											<label for="password"> تلفن همراه <span class="required">*</span></label>
+											<input name="mobile" type="number"/>
+										</p>
+										<p>
+											<label for="password">رمز عبور <span class="required">*</span></label>
+											<input name="password" type="password" />
+										</p>
+										<p>
+											<label for="password">تکرار رمز عبور <span class="required">*</span></label>
+											<input name="c_password" type="password"/>
+										</p>
+										<p>
+											<input type="submit" class="register-button" name="register" value="ثبت نام">
+										</p>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-sm-6 col-ms-12">
+							<div class="check-address">
+								<div class="form-my-account check-register text-center">
+									<h2 class="title24 title-form-account">ثبت نام کنید!</h2>
+									<p class="desc">
+											ثبت نام در یونی بید به شما اجازه می دهد در حراجی ها شرکت کنید و به وضعیت و تاریخ سفارش خود دسترسی داشته باشید. فقط فیلدهای مربوطه را پر کنید و در هر زمان یک حساب جدید برای خود ایجاد کنید. ما فقط از شما برای اطلاعاتی که لازم است تا فرایند خرید را سریع تر و آسان تر خواهد کرد پرسیده ایم .
+									</p>
+									<a href="{{ '\ilogin' }}" class="shop-button">ورود به حساب کاربری</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div> -->
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script>
+
+var app = new Vue({
+
+  el: '#app',
+
+  data:{
+		registerInformation :{
+			username : "",
+			password : "",
+			c_password : "",
+			mobile : "",
+			accept_roles : false,
+			invitor : "",
+		},
+		next : "{{next}}",
+	},
+	methods:{
+		handleSubmit: function(){
+			self = this;
+			var obj = self.registerInformation;
+
+      for (var propName in obj) {
+        if (obj[propName] === "null" || obj[propName] === undefined || obj[propName]==="" || obj[propName]===false) {
+          delete obj[propName];
+        }
+      }
+			axios.post("{{url_for('userregistration')}}",obj,
+				{
+					headers:
+					{
+						'Content-Type': 'application/json'
+					}
+				}).then(function (response) {
+
+					window.location.href = "/iverify"
+
+         }).catch((error)=>{
+              $(".error_alert").removeClass('hide');
+							for (var propName in error.response.data.message) {
+ 							 $(".error_container").html(error.response.data.message[propName]);
+ 						 }
+ 				});
+		},
+		isNumber: function(evt) {
+			evt = (evt) ? evt : window.event;
+			var charCode = (evt.which) ? evt.which : evt.keyCode;
+			// if ((charCode > 31 && (charCode < 48 || charCode > 57)) && (charCode < 1776 || charCode > 1785) && charCode !== 46) {
+			if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+				evt.preventDefault();
+			}
+			else {
+				return true;
+			}
+		},
+	}
+});
+
+$('.close').on('click',function(event){
+	event.preventDefault();
+	$(this).parent().removeClass('show').addClass('hide');
+});
+
+// $( "#register_form" ).submit(function( event ) {
+// 	event.preventDefault();
+// 	var $form = $( this );
+// 	var data = getFormData($form);
+// 	var url = "{{url_for('userregistration')}}";
+// 	var posting = $.post( url, data);
+// 	posting.done(function( data ) {
+// 		$(".error_alert").addClass('hide');
+// 		$(".success_alert").removeClass('hide');
+// 		$(".success_container").html('ثبت نام شما با موفقیت انجام شد')
+// 		window.location.href = '/ilogin';
+// 	});
+// 	posting.fail(function(xhr, status, error) {
+// 		obj = JSON.parse(xhr.responseText);
+// 		$.each(obj.message, function (key, item) {
+// 			$(".error_alert").removeClass('hide');
+// 			$(".error_container").html(item)
+// 			});
+// 		});
+// });
+
+</script>
+{% endblock scripts %}

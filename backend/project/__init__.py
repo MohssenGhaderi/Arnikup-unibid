@@ -27,6 +27,11 @@ from .lang.fa import TOKEN
 import jwt as original_jwt
 import rejson
 
+# class CustomApi(flask_restful.Api):
+#     def handle_error(self, e):
+#         print (make_response(jsonify({"error":str(e)}),500))
+#         return 'ok'
+
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -59,23 +64,23 @@ params = {
 # socketio = SocketIO(logger=True, engineio_logger=True, **params)
 
 socketio = SocketIO(**params)
+# socketio.init_app(app, message_queue=REDIS_URL,async_handlers=True,async_mode='gevent',manage_session=False)
 socketio.init_app(app, message_queue=REDIS_URL,async_mode='gevent',manage_session=False)
 
-app.debug = True
+app.debug = False
 toolbar = DebugToolbarExtension(app)
 
 #login manager
 
 login_manager = LoginManager(app)
 login_manager.session_protection = 'strong'
-login_manager.login_view = 'site.login'
+login_manager.login_view = 'site'
 
 @app.before_request
 def make_session_permanent():
     session.permanent = True
     session.modified = True
     session.permanent_lifetime = timedelta(days=SESSION_EXPIRE_TIME)
-
 
 def verify_required(fn):
     @wraps(fn)
@@ -106,11 +111,11 @@ app.jinja_env.globals.update(has_role=has_role)
 
 # csrf = CSRFProtect(app)
 
-# from .route import route
+from .route import route
 
-@app.route('/')
-def site():
-    return make_response('everythins works fine')
+# @app.route('/')
+# def site():
+#     return make_response('everythins works fine')
 
 rest_api = flask_restplus.Api(app,'/v2/api')
 blueprint = Blueprint('rest_api', __name__, url_prefix='/v2/api')
@@ -121,15 +126,36 @@ description="This is v2 unibid api documentation.",
 default="API Documentation",
 default_label="Unibid v2 api documentation")
 
-CORS(blueprint)
+@rest_api.errorhandler
+def default_error_handler(error):
+    '''Default error handler'''
+    print("******** error occured in api *********",str(error))
+    return {'message': str(error)}, getattr(error, 'code', 500)
+
+CORS(app)
+
+# CORS(app, resources={r"/v2/api/*": {"origins": "https://dev.unibid.ir"}})
+
+# @blueprint.after_request
+# def after_request(response):
+#     response.headers.add('Access-Control-Allow-Origin', '*')
+#     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,User-Agent')
+#     response.headers.add('Access-Control-Allow-Methods', 'POST')
+#     return response
+
+# api = flask_restful.Api(app,'/api')
 
 from .websocket import handler
+# from .controllers import *
 from .resources.auth import auth_ns
 from .resources.site import site_ns
 from .resources.auction import auction_ns
 from .resources.shop import shop_ns
 from .resources.buy import buy_ns
-
+from .resources.user import user_ns
+from .resources.search import search_ns
+from .resources.payment import payment_ns
+from .resources.socket import socket_ns
 
 @rest_api.errorhandler(ValidationException)
 def handle_validation_exception(error):
@@ -157,5 +183,8 @@ rest_api.add_namespace(site_ns)
 rest_api.add_namespace(auction_ns)
 rest_api.add_namespace(shop_ns)
 rest_api.add_namespace(buy_ns)
-
+rest_api.add_namespace(user_ns)
+rest_api.add_namespace(search_ns)
+rest_api.add_namespace(payment_ns)
+rest_api.add_namespace(socket_ns)
 app.register_blueprint(blueprint)

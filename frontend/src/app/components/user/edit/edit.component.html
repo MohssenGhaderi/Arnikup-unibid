@@ -1,0 +1,29 @@
+<div class="accountProfile">
+  <div class="editProfileContainer">
+    <p class="accountProfile-title">ویرایش پروفایل<img src="assets/resources/images/assets/png/001-down-arrow-copy-5.png" (click)="goBack()" /></p>
+    <div class="accountProfile-profile-header">
+      <div class="accountProfile-profile-editProfile-headerTop">
+        <div class="accountProfile-profile-editProfile-headerTop-avatar">
+          <div><img src="assets/resources/images/assets/png/ic-camera-alt-24-px@2x.png" alt="" (click)="toggleAvatar()" /></div>
+          <p>انتخاب آواتار</p>
+        </div>
+        <img [src]="Link.avatar(editables?.avatar)" alt="">
+      </div>
+      <div class="accountProfile-profile-editProfile">
+        <form [formGroup]="registerForm">
+          <div><input type="text" placeholder="نام و نام خانوادگی" value="{{editables?.fullName}}" class="cfnText" formControlName="fullName"/></div>
+          <div><span class="cfnTextSign">@</span><input type="text" placeholder="پست الکترونیک" value="{{editables?.email}}" class="cfnText" formControlName="email"/></div>
+          <div>
+            <a class="cfnButton cfnButton-empty">{{editables?.state}}<img src="assets/resources/images/assets/png/arrowDown.png"/></a>
+          </div>
+          <div><input type="text" class="cfnText" placeholder="شهر" value="{{editables?.city}}" formControlName="city"/></div>
+          <div><input type="text" class="cfnText" placeholder="آدرس" value="{{editables?.address}}" formControlName="address" /></div>
+          <a href="" class="cfnButton cfnButton-primary" (click)="SaveProfile($event)">اعمال</a>
+      </form>
+      </div>
+    </div>
+    <app-success></app-success>
+    <app-error></app-error>
+    <app-loading></app-loading>
+  </div>
+</div>

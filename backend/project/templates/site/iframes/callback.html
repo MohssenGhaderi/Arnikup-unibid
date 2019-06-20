@@ -1,0 +1,77 @@
+{% extends 'site/layout.html' %}
+{% block title %}  وضعیت پرداخت شما {% endblock %}
+{% block content %}
+<div class="content-page" id="app">
+	<div class="Package">
+	<div v-cloak class="container">
+		<div class="product-quickview woocommerce">
+
+				<h3 class="order_review_heading">وضعیت پرداخت</h3>
+				<div class="woocommerce-checkout-review-order" id="order_review">
+					<div class="table-responsive">
+						<table v-cloak class="shop_table woocommerce-checkout-review-order-table">
+
+							<tfoot>
+								{% raw %}
+									<tr v-if="payment_status" class="order-total">
+										<th>{{payment_message}}</th>
+										<td><strong><span class="amount"><span>{{payment_ref_id}}</span></span></strong> </td>
+									</tr>
+
+										<tr v-else  class="cart-subtotal">
+											<th class="text-orange">{{payment_message}}</th>
+											<td><strong><span class="amount text-orange"><span>{{payment_ref_id}}</span></span></strong> </td>
+										</tr>
+									{% endraw %}
+							</tfoot>
+
+						</table>
+					</div>
+				</div>
+
+		</div>
+	</div>
+</div>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+
+<script>
+
+var app = new Vue({
+	el: "#app",
+	data:{
+		payment_status:false,
+		payment_message:"",
+		payment_ref_id:"",
+		payment_id : {{pid}}
+	},
+	mounted:function() {
+
+		axios.post("{{url_for('userapplypayment')}}",
+		{"pid": "{{pid}}"},
+		{
+			headers:
+			{
+				'Content-Type': 'application/json',
+				"X-CSRF-TOKEN" : getCookie('csrf_access_token'),
+			}
+		}).then((response) => {
+			this.payment_status = response.data.success;
+			this.payment_ref_id =  "کد پیگیری : " + response.data.token;
+			this.payment_message = response.data.message;
+		})
+		.catch((error)=>{
+			console.log(error.response.data);
+			swal(
+				'خطای عملیات',
+				error.response.data.message,
+				'error'
+			)
+		});
+	}
+});
+
+</script>
+{% endblock scripts %}

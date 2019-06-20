@@ -1,0 +1,293 @@
+{% extends 'site/layout.html' %}
+{% block title %} برندگان گذشته {% endblock %}
+{% block content %}
+<div class="content-page">
+	<div class="container" id="app">
+		<div class="bread-crumb radius">
+			<a href="/">خانه</a>
+		</div>
+		<div class="content-404">
+			<h2 class="title-shop-page"> فعال سازی حساب کاربری</h2>
+		</div>
+		<div>
+			<h3 style="color:#f33">توجه!</h3>
+			<h4><p>کاربر گرامی ! مشاهده این صفحه به دلیل این است که حساب کاربری شما فعال سازی نشده است. شما می توانید پس از دریافت کد فعال سازی و اعتبار سنجی حساب کاربری خود از تمامی امکانات یونی بید استفاده کنید . </p></h4>
+		</div>
+		<div class="content-404">
+			<div class="title-shop-page"><input class="verify-button" type="button" @click="get_activation_code" value="عملیات فعال سازی" /></div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+
+<script type="text/javascript" src="{{url_for('static',filename='js/libs/progressbar.min.js')}}"></script>
+
+
+<script>
+
+
+	app = new Vue({
+
+		el : "#app",
+
+		data:{
+			verification:{
+				mobile : null,
+				code : "",
+				attempts : 0,
+			}
+		},
+		methods:{
+
+			get_activation_code:function() {
+
+				axios.put("{{url_for('userverification')}}",
+					{
+						headers:
+						{
+							'Content-Type': 'application/json'
+						}
+					}).then((response) => {
+						console.log(response.data);
+						var remained_seconds = response.data.remained_to_expire;
+
+						axios.get("{{url_for('userverification')}}")
+
+							.then((response) => {
+								console.log(response.data);
+								html = response.data.send_attempts == 0 ?
+								'لطفا کد فعال سازی که برای شما پیامک شده است را در کادر زیر وارد کنید : <br>'+
+								'<input id="verification_code" type="number" " maxlength="4" size="4"><br>'+
+								'توجه کنید کد فعال سازی شما تا یک دقیقه معتبر است!'+
+								'<div id="progress"></div>'+
+								'<span> این فرصت آخر شما برای فعال سازی حساب کاربری است </span>'
+								:
+
+								'لطفا کد فعال سازی که برای شما پیامک شده است را در کادر زیر وارد کنید : <br>'+
+								'<input id="verification_code" type="number" " maxlength="4" size="4"><br>'+
+								'توجه کنید کد فعال سازی شما تا یک دقیقه معتبر است!'+
+								'<div id="progress"></div>'+
+								'<span>حداکثر '+ToPersian(response.data.send_attempts) +' بار دیگر می توانید کد فعال سازی را درخواست کنید </span>';
+
+									swal({
+									 title: 'فعال سازی حساب کاربری',
+									 type: "info",
+									 confirmButtonText: 'اعتبار سنجی',
+									 confirmButtonColor: '#3085d6',
+									 showLoaderOnConfirm: true,
+									 html:html,
+									 allowOutsideClick: () => !swal.isLoading(),
+
+									 preConfirm: (verify) => {
+										 this.verification.code = $("#verification_code").val();
+
+										 var obj = this.verification;
+
+										 for (var propName in obj) {
+											 if (obj[propName] === "null" || obj[propName] === undefined || obj[propName]==="" || obj[propName]===-1) {
+												 delete obj[propName];
+											 }
+										 }
+
+										 axios.post("{{url_for('userverification')}}",obj,
+											 {
+												 headers:
+												 {
+													 'Content-Type': 'application/json'
+												 }
+											 }).then(function (response) {
+
+												 swal({
+														title: "فعال سازی حساب کاربری",
+														text:response.data.message.message,
+														type:"success",
+														confirmButtonText: 'حله...',
+													}).then((result)=>{
+														if(result.value){
+															window.location.reload();
+														}
+													});
+
+												}).catch((error)=>{
+													err = error.response.data.message.code ? error.response.data.message.code : error.response.data.message.error;
+													swal({
+														title:'مشکل در عملیات فعال سازی',
+														text :err,
+														type: 'error',
+													}).then((result)=>{
+														if(result.value && error.response.data.message.type == "invalid"){
+															this.get_activation_code();
+														}
+													});
+
+												});
+									 },
+
+								});
+
+							 applyswl(remained_seconds);
+
+							})
+							.catch((error)=>{
+								swal(
+								 'مشکل در گرفتن کد فعال سازی',
+								 error.response.data.message.error,
+								 'error'
+							 )
+							});
+					}).catch((error)=>{
+						swal(
+							'مشکلی پیش اومد',
+							error.response.data.message.error,
+							'error'
+						)
+					});
+
+			},
+
+
+		},
+		mounted: function(){
+			axios.put("{{url_for('userverification')}}",
+				{
+					headers:
+					{
+						'Content-Type': 'application/json'
+					}
+				}).then((response) => {
+					console.log(response.data);
+					var remained_seconds = response.data.remained_to_expire;
+
+					axios.get("{{url_for('userverification')}}")
+
+						.then((response) => {
+							console.log(response.data);
+							html = response.data.send_attempts == 0 ?
+							'لطفا کد فعال سازی که برای شما پیامک شده است را در کادر زیر وارد کنید : <br>'+
+							'<input id="verification_code" type="number" " maxlength="4" size="4"><br>'+
+							'توجه کنید کد فعال سازی شما تا یک دقیقه معتبر است!'+
+							'<div id="progress"></div>'+
+							'<span> این فرصت آخر شما برای فعال سازی حساب کاربری است </span>'
+							:
+
+							'لطفا کد فعال سازی که برای شما پیامک شده است را در کادر زیر وارد کنید : <br>'+
+							'<input id="verification_code" type="number" " maxlength="4" size="4"><br>'+
+							'توجه کنید کد فعال سازی شما تا یک دقیقه معتبر است!'+
+							'<div id="progress"></div>'+
+							'<span>حداکثر '+ToPersian(response.data.send_attempts) +' بار دیگر می توانید کد فعال سازی را درخواست کنید </span>';
+
+								swal({
+								 title: 'فعال سازی حساب کاربری',
+								 type: "info",
+								 confirmButtonText: 'اعتبار سنجی',
+								 confirmButtonColor: '#3085d6',
+								 showLoaderOnConfirm: true,
+								 html:html,
+								 allowOutsideClick: () => !swal.isLoading(),
+
+								 preConfirm: (verify) => {
+									 this.verification.code = $("#verification_code").val();
+
+									 var obj = this.verification;
+
+									 for (var propName in obj) {
+										 if (obj[propName] === "null" || obj[propName] === undefined || obj[propName]==="" || obj[propName]===-1) {
+											 delete obj[propName];
+										 }
+									 }
+
+									 axios.post("{{url_for('userverification')}}",obj,
+										 {
+											 headers:
+											 {
+												 'Content-Type': 'application/json'
+											 }
+										 }).then(function (response) {
+
+											 swal({
+													title: "فعال سازی حساب کاربری",
+													text:response.data.message.message,
+													type:"success",
+													confirmButtonText: 'حله...',
+												}).then((result)=>{
+													if(result.value){
+														window.location.reload();
+													}
+												});
+
+											}).catch((error)=>{
+												err = error.response.data.message.code ? error.response.data.message.code : error.response.data.message.error;
+												swal({
+													title:'مشکل در عملیات فعال سازی',
+													text :err,
+													type: 'error',
+												}).then((result)=>{
+													if(result.value && error.response.data.message.type == "invalid"){
+														this.get_activation_code();
+													}
+												});
+
+											});
+								 },
+
+							});
+
+						 applyswl(remained_seconds);
+
+						})
+						.catch((error)=>{
+							swal(
+							 'مشکل در گرفتن کد فعال سازی',
+							 error.response.data.message.error,
+							 'error'
+						 )
+						});
+				}).catch((error)=>{
+					swal(
+						'مشکلی پیش اومد',
+						error.response.data.message.error,
+						'error'
+					)
+				});
+		},
+
+		updated:function() {
+
+
+		},
+
+	});
+
+	var bar = null;
+
+	function applyswl(remained) {
+		bar = new ProgressBar.Line(progress, {
+		  color: '#000',
+		  strokeWidth: 10,
+		  trailWidth: 10,
+		  easing: 'linear',
+		  duration: remained * 1000,
+		  from: { color: '#000', width: 15 },
+		  to: { color: '#fff', width: 15},
+		  step: function(state, circle) {
+		    circle.path.setAttribute('stroke', state.color);
+		    circle.path.setAttribute('stroke-width', state.width);
+
+		    var value = Math.round(circle.value() * remained);
+		    if (value < 10) {
+		      circle.setText(ToPersian('0'+value));
+		    } else {
+		      circle.setText(ToPersian(value));
+		    }
+
+		  }
+		});
+		bar.set(1);
+		bar.animate(0);
+	}
+
+</script>
+{% endblock scripts %}

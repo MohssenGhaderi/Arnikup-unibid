@@ -1,0 +1,13 @@
+<app-header></app-header>
+  <main>
+    <app-auction-header [auction]="auction"></app-auction-header>
+    <app-auction-slider [auction]="auction"></app-auction-slider>
+    <app-auction-details [auction]="auction"></app-auction-details>
+    <app-auction-participants [auction]="auction"></app-auction-participants>
+    <app-auction-footer [auction]="auction"></app-auction-footer>
+    <app-error></app-error>
+    <app-success></app-success>
+    <app-loading></app-loading>
+    <app-shop *ngIf="this.shared.shop"></app-shop>
+  </main>
+<app-footer></app-footer>

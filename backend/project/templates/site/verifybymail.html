@@ -1,0 +1,145 @@
+{% extends 'site/layout.html' %}
+{% block title %} فعال سازی حساب کاربری {% endblock %}
+{% block content %}
+
+	<div class="container" id="app">
+		<div class="row"  v-cloak>
+		<div class="col-md-12">
+			<h2 class="title-shop-page">فعال سازی حساب کاربری یونی بید</h2>
+			<div class="register-content-box">
+				<div class="row">
+					<div class="form">
+					<div class="thumbnail"><img src="/static/images/theme/login-icon.svg"/></div>
+					<form class="code-login-form" @submit.prevent="handleSubmit">
+						<input type="email" v-model="email"  placeholder="ایمیل خود را وارد کنید"/>
+						<input type="button" value="دریافت کد فعال سازی" v-on:click="get_activation_code()" />
+						<input type="number" class="rounded-text" v-model="code" v-on:keypress="isNumber($event)" placeholder="- - - - - -"/>
+						{%raw%}
+						<input type="submit" value="تایید کد فعال سازی"  />
+						{%endraw%}
+					</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+
+<script>
+
+
+	app = new Vue({
+
+		el : "#app",
+
+		data:{
+			code : null,
+			email : null,
+		},
+
+		methods:{
+
+			get_activation_code:function() {
+				start_loading(loading_element);
+				data = {"email":this.email};
+				axios.put("{{url_for('userverificationmail')}}",data,
+					{
+						headers:
+						{
+							'Content-Type': 'application/json'
+						}
+					}).then((response) => {
+						stop_loading(loading_element);
+						swal({
+							 title: "دریافت کد فعال سازی",
+							 text:response.data.message.text,
+							 type:"success",
+						 }).then((result)=>{
+							 if(result.value){
+							 }
+						 });
+
+					}).catch((error)=>{
+						stop_loading(loading_element);
+						swal({
+							 title: "مشکلی پیش اومد",
+							 text:error.response.data.message.text,
+							 type:"error",
+						 }).then((result)=>{
+							 if(result.value){
+							 }
+						 });
+					});
+			},
+
+			_ToPersian(number){
+				return ToPersian(number);
+			},
+
+			handleSubmit:function() {
+				start_loading(loading_element);
+
+					data = {"code":this.code};
+
+					axios.post("{{url_for('userverificationmail')}}",data,
+						{
+							headers:
+							{
+								'Content-Type': 'application/json'
+							}
+						}).then(function (response) {
+							stop_loading(loading_element);
+							swal({
+								 title: "فعال سازی حساب کاربری",
+								 text:response.data.text,
+								 type:"success",
+								 confirmButtonText: 'حله...',
+							 }).then((result)=>{
+								 if(result.value){
+									 window.location = "/profile/modify";
+								 }
+							 });
+
+						 }).catch((error)=>{
+							 stop_loading(loading_element);
+
+							 swal({
+								 title:'مشکل در عملیات فعال سازی',
+								 text :error.response.data.message.text,
+								 type: 'error',
+							 }).then((result)=>{
+								 if(result.value){
+								 }
+							 });
+
+						 });
+			},
+
+			isNumber: function(evt) {
+	      evt = (evt) ? evt : window.event;
+	      var charCode = (evt.which) ? evt.which : evt.keyCode;
+				// if ((charCode > 31 && (charCode < 48 || charCode > 57)) && (charCode < 1776 || charCode > 1785) && charCode !== 46) {
+	      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+	        evt.preventDefault();
+	      }
+				else {
+	        return true;
+	      }
+	    },
+
+
+		},
+
+	});
+
+$('.close').on('click',function(event){
+	event.preventDefault();
+	$(this).parent().removeClass('show').addClass('hide');
+});
+
+</script>
+{% endblock scripts %}

@@ -72,7 +72,7 @@ MAIL_PASSWORD = "123mail321"
 # MAIL_ASCII_ATTACHMENTS : default False
 
 PROPAGATE_EXCEPTIONS = False
-DEBUG = True
+DEBUG = False
 
 VERIFY_USER_TOKEN_TIME =  1 * 1 * 2 * 60 # 2 minute
 ONLINE_USER_ACCESS_TIME =  1 * 2 * 60 * 60 # 2 hours

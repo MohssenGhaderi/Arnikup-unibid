@@ -19,6 +19,7 @@ class User(Base,UserMixin):
     random.seed(time.time())
     __tablename__ = 'users'
     __table_args__ = (db.UniqueConstraint('username', name='users_username_uc'),)
+    __table_args__ = (db.UniqueConstraint('mobile', name='users_mobilr_uc'),)
 
     id = db.Column(db.BigInteger, primary_key=True)
 
@@ -30,9 +31,10 @@ class User(Base,UserMixin):
     login_attempts = db.Column(db.Integer,nullable =False,default=0)
     send_sms_attempts = db.Column(db.Integer,nullable =False,default=0)
     username = db.Column(db.String(length=255), nullable=False)
-    alias_name = db.Column(db.String(128), nullable = True)
-    first_name = db.Column(db.String(length=100))
-    last_name = db.Column(db.String(length=100))
+    # alias_name = db.Column(db.String(128), nullable = True)
+    full_name = db.Column(db.String(length=100))
+    # first_name = db.Column(db.String(length=100))
+    # last_name = db.Column(db.String(length=100))
     work_place = db.Column(db.String(length=100))
     mobile = db.Column(db.String(length=15), nullable=False)
     email = db.Column(db.String(length=255))
@@ -50,7 +52,6 @@ class User(Base,UserMixin):
     address = db.relationship('Address')
 
     avatars = db.relationship('Avatar', secondary='user_avatars', back_populates='users',lazy='dynamic')
-    selected_avatar = db.Column(db.String(length=255))
 
 
     plans = db.relationship('UserPlan',lazy='dynamic')
@@ -72,6 +73,9 @@ class User(Base,UserMixin):
     level_id = db.Column(db.BigInteger, db.ForeignKey('levels.id'))
     level = db.relationship('Level')
 
+    avatar_id = db.Column(db.BigInteger, db.ForeignKey('avatars.id'))
+    avatar = db.relationship('Avatar')
+
     notifications = db.relationship('Notification', secondary='user_notifications', back_populates='users',lazy='dynamic')
 
     auctions = db.relationship('Auction', lazy='dynamic', secondary='user_auction_participations',back_populates='participants')
@@ -80,11 +84,7 @@ class User(Base,UserMixin):
     auction_likes = db.relationship('Auction', secondary ='user_auction_likes', back_populates='likes',lazy='dynamic')
 
     def __str__(self):
-        if(self.first_name and self.last_name):
-            return str(self.first_name) + " " + str(self.last_name)
-        elif (self.alias_name):
-            return str(self.alias_name)
-        else: return self.username
+        return self.username
 
     @classmethod
     def find_by_username(cls, username):
