@@ -38,8 +38,11 @@ import { ShipmentPreviewComponent } from './components/user/checkout/shipment/pr
 import { ShipmentEditComponent } from './components/user/checkout/shipment/edit/shipment-edit.component';
 import { PaymentComponent } from './components/user/checkout/payment/payment.component';
 import { ForgetPasswordComponent } from './components/auth/forget-password/forget-password.component';
+import { AboutUsComponent } from './components/about-us/about-us.component';
 
-const config: SocketIoConfig = { url: 'http://dev.unibid.ir', options: {resource:'A/socket.io', 'force new connection': true} };
+import { MaterialModule } from './material.module';
+
+const config: SocketIoConfig = { url: 'https://admin.unibid.ir', options: {resource:'A/socket.io', 'force new connection': true} };
 // const config: SocketIoConfig = { url: 'http://127.0.0.1:9001', options: {resource:'A/socket.io', 'force new connection': true} };
 
 @NgModule({
@@ -76,6 +79,7 @@ const config: SocketIoConfig = { url: 'http://dev.unibid.ir', options: {resource
     ShipmentEditComponent,
     PaymentComponent,
     ForgetPasswordComponent,
+    AboutUsComponent    
   ],
   imports: [
     BrowserModule,
