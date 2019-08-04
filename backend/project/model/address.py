@@ -5,7 +5,7 @@ class Address(Base):
     __tablename__ = 'addresses'
 
     id = db.Column(db.BigInteger, primary_key=True)
-    # user = db.relationship('User', uselist=False, back_populates='address')
+    user = db.relationship('User', uselist=False, back_populates='address')
     country = db.Column(db.String(length=50),nullable=False,default="ایران")
 
     state_id = db.Column(db.BigInteger, db.ForeignKey('states.id'))
@@ -19,5 +19,4 @@ class Address(Base):
     updated = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False, onupdate=datetime.datetime.now)
 
     def __str__(self):
-        return " آدرس :" + self.country
-        # return " آدرس :" + self.country + " - " + str(self.state) + "  - " + self.city + " - " + self.address
+        return " آدرس :" + self.country + " - " + str(self.state) + "  - " + self.city + " - " + self.address

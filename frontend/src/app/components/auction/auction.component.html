@@ -1,10 +1,12 @@
 <app-header></app-header>
   <main>
-    <app-auction-header [auction]="auction"></app-auction-header>
-    <app-auction-slider [auction]="auction"></app-auction-slider>
-    <app-auction-details [auction]="auction"></app-auction-details>
-    <app-auction-participants [auction]="auction"></app-auction-participants>
-    <app-auction-footer [auction]="auction"></app-auction-footer>
+    <app-auction-header *ngIf="!this.shared.search.operate" [auction]="auction"></app-auction-header>
+    <app-auction-slider *ngIf="!this.shared.search.operate" [auction]="auction"></app-auction-slider>
+    <app-auction-details *ngIf="!this.shared.search.operate" [auction]="auction"></app-auction-details>
+    <app-auction-participants *ngIf="!this.shared.search.operate" [auction]="auction"></app-auction-participants>
+    <app-auction-footer *ngIf="!this.shared.search.operate" [auction]="auction"></app-auction-footer>
+    <app-product-details *ngIf="this.shared.productDetails" [auctionId]="auction?.auctionId" ></app-product-details>
+
     <app-error></app-error>
     <app-success></app-success>
     <app-loading></app-loading>

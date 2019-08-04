@@ -1,4 +1,4 @@
-import { SliderAuction } from '../sliderAuction.model';
+import { SliderAuction } from './../auction/sliderAuction.model';
 
 export class GetSliderAuctions {
   sliderAuctions: SliderAuction[];

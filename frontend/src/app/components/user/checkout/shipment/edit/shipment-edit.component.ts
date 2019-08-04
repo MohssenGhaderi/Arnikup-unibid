@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef ,HostListener } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoadingComponent } from 'src/app/components/loading/loading.component';
 import { ErrorComponent } from 'src/app/components/error/error.component';
@@ -22,7 +22,12 @@ export class ShipmentEditComponent implements OnInit {
   submitted = false;
   shipmentInfo:ShipmentInformation;
   constructor(private el: ElementRef, private shared:SharingService,private userService:UserService,private formBuilder: FormBuilder) { }
-
+  @HostListener('mouseenter') onMouseEnter() {
+    this.shared.visibleProfile = true;
+  }
+  @HostListener('mouseleave') onMouseLeave() {
+    this.shared.visibleProfile = false;
+  }
   ngOnInit() {
     this.el.nativeElement.getElementsByClassName('shipmentEditContainer')[0].classList.add(this.shared.basketClass);
 

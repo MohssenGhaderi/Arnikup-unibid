@@ -28,6 +28,18 @@
   }
 }
 
+/* =fadeOut */
+@keyframes fadeOut {
+  0% {
+    visibility: visible;
+    opacity: 1;
+  }
+  100% {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
 .myCfnAnimation-swap-in {
   animation: swapin 0.5s linear;
 }
@@ -60,6 +72,10 @@
 
 .myCfnAnimation-fadeIn {
   animation: fadeIn 0.8s ease;
+}
+
+.myCfnAnimation-fadeOut {
+  animation: fadeOut 0.8s ease;
 }
 
 .myCfnAnimation-slideup {

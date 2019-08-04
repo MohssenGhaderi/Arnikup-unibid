@@ -1,7 +1,8 @@
-import { Charity } from './../charity.model';
-import { Participant } from './participant.model';
+import { Charity } from './charity.model';
+import { BaseParticipant } from './baseParticipant.model';
 import { Product } from './product.model';
-import { AuctionStatus } from './../auctionStatus.model';
+import { AuctionStatus } from './auctionStatus.model';
+import { ExtraBids } from './extrabids.model';
 
 
 export class BaseAuction {
@@ -11,7 +12,7 @@ export class BaseAuction {
   level: number;
   maxLevel: number;
   likeCount: number;
-  participants: Participant[];
+  participants: BaseParticipant[];
   maxMembers: number;
   liked: boolean;
   participated: boolean;
@@ -26,4 +27,5 @@ export class BaseAuction {
   started:boolean;
   status:AuctionStatus;
   done:boolean;
+  extraBids:ExtraBids;
 }

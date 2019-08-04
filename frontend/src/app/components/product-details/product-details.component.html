@@ -1,0 +1,76 @@
+<div class="productDetails">
+  <div class="productDetails-header">
+    {{productDetails?.title}}
+    <span class="productDetails-close" (click)="close()">&times;</span>
+  </div>
+  <div class="productDetails-content">
+    <div *ngFor="let desc of productDetails?.descriptions">
+      <span>{{desc.title}} : </span>
+      <span *ngIf="desc.title!='رنگ'">{{desc.description}}</span>
+      <span *ngIf="desc.title=='رنگ'">
+        <app-color [colors]="desc.colors"></app-color>
+      </span>
+    </div>
+
+    <!-- <div>
+      <span>رم:</span>
+      <span>2GB</span>
+    </div>
+    <div>
+      <span>حافظه داخلی:</span>
+      <span>16GB Built-in , Supported Micro SD/Micro (Max 32 GB)</span>
+    </div>
+    <div>
+      <span>نمایشگر:</span>
+      <span>1280 x 800 IPS</span>
+    </div>
+    <div>
+      <span>بلوتوث:</span>
+      <span>4.0</span>
+    </div>
+    <div>
+      <span>مکان یاب:</span>
+      <span>YES</span>
+    </div>
+    <div>
+      <span>سیم کارت:</span>
+      <span>Dual Sim, GSM, WCDMA, 4G LTE</span>
+    </div>
+    <div>
+      <span>دوربین:</span>
+      <span>5MP Rear and 2MP Front</span>
+    </div>
+    <div>
+      <span>باتری:</span>
+      <span>Li-ion Battery 4000mA</span>
+    </div>
+    <div>
+      <span>سیستم عامل:</span>
+      <span>Android 7.0</span>
+    </div>
+    <div>
+      <span>رنگ:</span>
+      <span>
+        <span data-color="green"></span>
+        <span data-color="red"></span>
+        <span data-color="blue"></span>
+        <span data-color="white"></span>
+      </span>
+    </div>
+    <div>
+      <span>ضربه گیر:</span>
+      <span>دارد</span>
+    </div>
+    <div>
+      <span>محافظ صفحه نمایش:</span>
+      <span>دارد</span>
+    </div>
+    <div>
+      <span>آنتی ویروس:</span>
+      <span>اشتراک یکساله آنتی‌ویروس بیت‌دیفندر</span>
+    </div> -->
+  </div>
+  <app-error></app-error>
+  <app-success></app-success>
+  <app-loading></app-loading>
+</div>

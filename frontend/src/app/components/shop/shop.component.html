@@ -1,10 +1,8 @@
-<div class="cfnLoaderWrapper" *ngIf="loading">
-  <div class="cfnLoader"></div>
-</div>
+
 <div class="shop-wrapper" #shopWrapper>
   <div class="shop-container">
     <div class="shop-header">
-      <span class="config-close" (click)="this.shared.shop=false;">
+      <span class="config-close" (click)="close()">
         &#10006;
       </span>
       <p class="shop-header-title">فروشگاه یونی‌بید</p>
@@ -85,21 +83,10 @@
       </div>
 
     </div>
+    <app-error></app-error>
+    <app-success></app-success>
+    <app-loading></app-loading>
   </div>
 </div>
 
-<div class="confirm-wrapper" *ngIf="dialog">
-    <div class="confirm-box">
-      <span class="config-close" (click)="close()">
-        &#10006;
-      </span>
-      <img src="{{buy.picture}}" alt="">
-      <p class="confirm-text">{{buy.title}}</p>
-      <div style="display: flex; justify-content: space-between; width: 100%;">
-        <span class="confirm-trackingTitle">قیمت نهایی</span>
-        <span class="confirm-trackingTitle" style="color:#212121;">{{buy.price | currency : ' ' : 'symbol' : '1.0-0'}} تومان</span>
-      </div>
-      <a style="width: 80%;" class="cfnButton cfnButton-primary" *ngIf="buy.type!='avatar'">ورود به درگاه بانک و پرداخت نهایی</a>
-      <a style="width: 80%;" class="cfnButton cfnButton-primary" *ngIf="buy.type=='avatar'">خرید با الماس</a>
-    </div>
-  </div>
+<app-confirm *ngIf="shared.showConfirm" [buy]="buy" [shopWrapperElem]="shopWrapperElem"></app-confirm>

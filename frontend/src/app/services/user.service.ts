@@ -9,7 +9,8 @@ import { Avatar } from '../models/user/avatar.model'
 import { EditUserInformation } from 'src/app/models/user/information/edit.model'
 import { ShipmentInformation } from 'src/app/models/user/information/shipment.model'
 import { Address } from 'src/app/models/user/information/address.model'
-import { Payment } from 'src/app/models/user/information/payment.model'
+import { PaymentInfo } from 'src/app/models/user/information/paymentInfo.model'
+import { SharingService } from 'src/app/services/sharing.service';
 
 
 @Injectable({ providedIn: 'root' })
@@ -22,8 +23,49 @@ export class UserService {
   getAddressUrl = Links.prefix+'/v2/api/user/address';
   getShipmentUrl = Links.prefix+'/v2/api/user/shipment';
   getPaymentUrl = Links.prefix+'/v2/api/user/payment';
+  couponUrl = Links.prefix+'/v2/api/user/coupons';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private shared:SharingService) {}
+
+  hideProfile(){
+    this.shared.toggleMenu.profile = false;
+    this.shared.toggleMenu.profileReset();
+    this.shared.lastClass = "myCfnAnimation-fadeIn";
+  }
+
+  CheckCoupon(couponObj) {
+
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      const httpOptions = {
+        headers: new HttpHeaders({
+          Authorization: 'Bearer ' + token
+        })
+      };
+      return this.http.put(this.couponUrl, couponObj, httpOptions);
+    } else {
+      return this.http.put(this.couponUrl, couponObj);
+    }
+
+  }
+
+  ApplyCoupon(couponObj) {
+
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      const httpOptions = {
+        headers: new HttpHeaders({
+          Authorization: 'Bearer ' + token
+        })
+      };
+      return this.http.post(this.couponUrl, couponObj , httpOptions);
+    } else {
+      return this.http.post(this.couponUrl, couponObj);
+    }
+
+  }
 
   GetMainInformation() {
 
@@ -69,9 +111,9 @@ export class UserService {
           Authorization: 'Bearer ' + token
         })
       };
-      return this.http.get<Payment[]>(this.getPaymentUrl , httpOptions);
+      return this.http.get<PaymentInfo[]>(this.getPaymentUrl , httpOptions);
     } else {
-      return this.http.get<Payment[]>(this.getPaymentUrl);
+      return this.http.get<PaymentInfo[]>(this.getPaymentUrl);
     }
 
   }

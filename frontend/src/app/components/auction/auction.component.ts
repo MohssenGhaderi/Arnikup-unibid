@@ -27,7 +27,7 @@ export class AuctionComponent implements OnInit {
     private router:Router,
     private auctionSocket:LiveAuctionService,
     private renderer: Renderer2,
-    private shared:SharingService,
+    public shared:SharingService,
   )
   {this.auctionSocket.connectToServer();}
 
@@ -49,6 +49,7 @@ export class AuctionComponent implements OnInit {
     this.auctionSocket.auction.subscribe(result=>{
       this.auction = result;
     });
+
 
     this.auctionSocket.remained.subscribe(result=>{
       console.log(result);

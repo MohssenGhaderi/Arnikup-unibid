@@ -70,7 +70,7 @@
 
 .myCfnAnimation-slidedown-none {
   animation: slidedownNone .5s ease both;
-  display:  block;
+  display: block !important;
 }
 
 @keyframes slideleftNone {

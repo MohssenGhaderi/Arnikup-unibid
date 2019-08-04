@@ -207,11 +207,11 @@ def getAuction(data):
 
     discount = math.ceil(( (auction.item.price - auction.max_price) / auction.item.price )*100)
     images = []
-    for image in auction.item.images.split("'"):
-        if len(image) > 5:
-            images.append(image)
+    # for image in auction.item.images.split("'"):
+    #     if len(image) > 5:
+    #         images.append(image)
 
-    # images.append(auction.item.images.split("'")[1])
+    images.append(auction.item.images.split("'")[1])
 
     product = {}
     if auction.item.quantity > 0:
@@ -533,8 +533,7 @@ def auction_states():
             done = True
             today = datetime.now() - timedelta(seconds=3)
             tomorrow = datetime.now() + timedelta(days=1)
-            # auctions = db.session.query(Auction.start_date).filter(Auction.start_date >= today , Auction.start_date < tomorrow , Auction.done == False).order_by(Auction.start_date.desc())
-            auctions = db.session.query(Auction.start_date).filter(Auction.start_date >= today , Auction.done == False).order_by(Auction.start_date.desc())
+            auctions = db.session.query(Auction.start_date).filter(Auction.start_date >= today , Auction.start_date < tomorrow , Auction.done == False).order_by(Auction.start_date.desc())
             for auction in auctions:
                 states = {
                     "iceAge":False,

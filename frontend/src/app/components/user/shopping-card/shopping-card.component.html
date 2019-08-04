@@ -16,10 +16,7 @@
       </div>
 
     </div>
-    <div class="accountProfile-basket-off">
-      <span class="accountProfile-basket-offButton">اعمال</span>
-      <input type="text" class="cfnText" placeholder="افزودن کد تخفیف">
-    </div>
+    <app-coupon [title]="'اعمال'" [operation]="'apply'"></app-coupon>
     <div class="accountProfile-priceTotal">
       <span>قیمت نهایی:</span>
       <span>{{totalPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </span>

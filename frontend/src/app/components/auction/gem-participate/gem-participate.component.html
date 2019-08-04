@@ -1,0 +1,23 @@
+<div class="registerAuction" (click)="$event.stopPropagation()">
+  <div class="hoveredAuction" (click)="$event.stopPropagation()">
+    <p class="hoveredAuctionTitle">
+      تبدیل الماس به سکه
+      <img (click)="close($event)" class="registerAuctionTitle-arrowDown" src="assets/resources/images/assets/svg/arrowDown.svg" alt="">
+    </p>
+    <div class="hoveredAuctionContent" >
+      <div class="hoveredAuction-imageWrapper">
+        <img src="assets/resources/images/assets/png/slot-machine@2x.png"/>
+      </div>
+      <p class="hoveredAuctionContent-title">{{details?.requiredGems}} عدد الماس </p>
+      <p class="hoveredAuctionContent-parag">برای خرید {{details?.coinsNeeded}} سکه {{details?.requiredGems}} الماس بدهید.</p>
+      <br/>
+      <br/>
+      <br/>
+    </div>
+
+    <a class="cfnButton cfnButton-primary" (click)="registerByGem($event)">تایید</a>
+    <app-error></app-error>
+    <app-success></app-success>
+    <app-loading></app-loading>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { LoadingComponent } from 'src/app/components/loading/loading.component';
 import { ErrorComponent } from 'src/app/components/error/error.component';
 import { SharingService } from 'src/app/services/sharing.service'
@@ -20,7 +20,12 @@ export class ScoreComponent implements OnInit {
   @ViewChild(LoadingComponent) loading: LoadingComponent ;
   @ViewChild(ErrorComponent) error: ErrorComponent ;
   constructor(private el: ElementRef, private shared:SharingService,private liveUser:LiveUserService,private userService:UserService) { }
-
+  @HostListener('mouseenter') onMouseEnter() {
+    this.shared.visibleProfile = true;
+  }
+  @HostListener('mouseleave') onMouseLeave() {
+    this.shared.visibleProfile = false;
+  }
   ngOnInit() {
     this.el.nativeElement.getElementsByClassName('ScoresContainer')[0].classList.add('myCfnAnimation-slidedown');
 

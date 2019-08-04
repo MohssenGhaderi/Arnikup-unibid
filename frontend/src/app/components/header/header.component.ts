@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { SearchItems } from 'src/app/models/service/searchItems.model';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { MainServices } from 'src/app/services/main.service';
+import { UserService } from 'src/app/services/user.service';
 import { SharingService } from 'src/app/services/sharing.service';
 import { LiveUserService } from 'src/app/services/live-user.service';
 import { Links } from 'src/app/links.component';
@@ -12,9 +12,7 @@ import { BasicUserInformation } from 'src/app/models/user/information/basic.mode
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  @ViewChild('txtSearch') txtSearch: ElementRef;
-  @ViewChild('searchToolbarSuggestion') searchToolbarSuggestion: ElementRef;
-  searchItems: SearchItems;
+
   isLoggedIn = false;
   Link = Links;
   toggleProfile = false;
@@ -24,6 +22,7 @@ export class HeaderComponent implements OnInit {
   username;
 
   constructor(
+    private userService: UserService,
     private service: MainServices,
     private shared: SharingService,
     private liveUser:LiveUserService) {
@@ -31,12 +30,6 @@ export class HeaderComponent implements OnInit {
     if (currentUser) {
       this.isLoggedIn = true;
     }
-
-    this.service.GetSearchItems().subscribe(result => {
-      this.searchItems = result;
-    },
-    error => {
-    });
 
     this.service.GetBasicInformation().subscribe(result => {
       this.userInfo = result;
@@ -52,7 +45,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.userSyncTimer = setInterval(() => {
       this.liveUser.getStatus();
-    }, 1000);
+    }, 10000);
   }
 
   ngDoCheck(){
@@ -61,7 +54,10 @@ export class HeaderComponent implements OnInit {
       this.joined = true;
       this.liveUser.join();
     }
+  }
 
+  shop(){
+    this.shared.shop=true;
   }
 
   ngAfterViewInit(){
@@ -78,26 +74,19 @@ export class HeaderComponent implements OnInit {
     clearInterval(this.userSyncTimer);
   }
 
-  searchBoxBehaviour(event) {
-      this.searchToolbarSuggestion.nativeElement.classList.add('search-toolbar-suggestion-show');
-  }
-
-  searchItemClick(eventData) {
-    this.txtSearch.nativeElement.value = eventData.target.textContent + ' ';
-    this.txtSearch.nativeElement.focus();
-    this.searchToolbarSuggestion.nativeElement.classList.remove('search-toolbar-suggestion-show');
-  }
-
   toggleProfileMenu(){
+    this.liveUser.getStatus();
     this.shared.toggleMenu.profile = !this.shared.toggleMenu.profile;
     this.shared.toggleMenu.profileReset();
     this.shared.lastClass = "myCfnAnimation-fadeIn";
   }
 
-  headerClicked(eventData){
-    // console.log(eventData.target);
-    // console.log('header clicked');
+  hideProfileMenu(eventData){
+    if(eventData){
+      if(eventData.target.classList[0]!="profileSelector" && !this.shared.visibleProfile){
+        this.userService.hideProfile();
+      }
+    }
   }
-
 
 }

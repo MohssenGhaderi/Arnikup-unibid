@@ -1,7 +1,9 @@
-<app-header></app-header>
-<app-slider></app-slider>
-  <main>
-  <app-auctionList></app-auctionList>
-  <app-shop *ngIf="this.shared.shop"></app-shop>
-</main>
+<div #mainWrapper>
+  <app-header></app-header>
+  <app-slider (click)="hideProfileMenu($event)"></app-slider>
+    <main>
+    <app-auctionList></app-auctionList>
+  </main>
   <app-footer></app-footer>
+</div>
+<app-shop [mainWrapperElem]="mainWrapperElem" *ngIf="this.shared.shop"></app-shop>

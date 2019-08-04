@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Auction } from '../models/auction.model';
+import { Auction } from '../models/auction/auction.model';
 import { GetAuctions } from '../models/service/getAuctions.model';
 import { GetAuction } from '../models/service/getAuction.model';
 import { Shop } from '../models/shop/shop.model';
 import { GetSliderAuctions } from '../models/service/sliderAuctions.model';
+import { GetFinishedAuctions } from '../models/service/getFinishedAuctions.model';
+
 import { SearchItems } from '../models/service/searchItems.model';
 import { Links } from '../links.component';
 import { BasicUserInformation } from '../models/user/information/basic.model'
+import { ProductDetails } from '../models/details/details.model'
+import { GetParticipation } from '../models/auction/getParticipation.model'
 
 
 @Injectable({ providedIn: 'root' })
@@ -21,8 +25,71 @@ export class MainServices {
   participationByCoin = Links.prefix+'/v2/api/auction/coin/registeration';
   participationByGem = Links.prefix+'/v2/api/auction/gem/registeration';
   getBasicInfoUrl = Links.prefix+'/v2/api/user/basic';
+  HandleExtraBidUrl = Links.prefix+'/v2/api/auction/extrabids';
+  searchUrl = Links.prefix+'v2/api/search';
+  finishedUrl = Links.prefix+'v2/api/site/finished/auctions';
+  productDetailsUrl = Links.prefix+'v2/api/auction/details/';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient) { }
+
+  FinishedAuctions() {
+
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      const httpOptions = {
+        headers: new HttpHeaders({
+          Authorization: 'Bearer ' + token
+        })
+      };
+      return this.http.get<GetFinishedAuctions>(this.finishedUrl , httpOptions);
+    } else {
+      return this.http.get<GetFinishedAuctions>(this.finishedUrl);
+    }
+
+  }
+
+  SearchAuctions(searchObj) {
+
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      const httpOptions = {
+        headers: new HttpHeaders({
+          Authorization: 'Bearer ' + token
+        })
+      };
+      return this.http.get<GetAuctions>(
+        this.searchUrl,
+        { params: searchObj,
+          headers: new HttpHeaders(
+            {
+              Authorization: 'Bearer ' + token
+            }
+          )});
+    } else {
+      return this.http.get<GetAuctions>(this.searchUrl, {params: searchObj} );
+    }
+  }
+
+  GetProductDetails(auctionId) {
+    return this.http.get<ProductDetails>(this.productDetailsUrl+auctionId);
+  }
+
+  HandleExtraBid(auctionObj) {
+
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      const httpOptions = {
+        headers: new HttpHeaders({
+          Authorization: 'Bearer ' + token
+        })
+      };
+      return this.http.post(this.HandleExtraBidUrl, auctionObj , httpOptions);
+    } else {
+      return this.http.post(this.HandleExtraBidUrl, auctionObj);
+    }
 
   }
 
@@ -82,9 +149,15 @@ export class MainServices {
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       const token = JSON.parse(currentUser)['accessToken'];
-      headers.set('Authorization', token);
+      const httpOptions = {
+        headers: new HttpHeaders({
+          Authorization: 'Bearer ' + token
+        })
+      };
+      return this.http.get<GetSliderAuctions>(this.sliderAuctionUrl , httpOptions);
+    }else{
+      return this.http.get<GetSliderAuctions>(this.sliderAuctionUrl);
     }
-    return this.http.get<GetSliderAuctions>(this.sliderAuctionUrl , {headers});
   }
 
   GetSearchItems() {
@@ -130,9 +203,9 @@ export class MainServices {
           'Authorization':`Bearer ${token}`
         })
       };
-      return this.http.post(this.participationByCoin ,participationObject,httpOptions);
+      return this.http.post<GetParticipation>(this.participationByCoin ,participationObject,httpOptions);
     }else{
-      return this.http.post(this.participationByCoin ,participationObject);
+      return this.http.post<GetParticipation>(this.participationByCoin ,participationObject);
     }
   }
 
@@ -145,9 +218,9 @@ export class MainServices {
           'Authorization':`Bearer ${token}`
         })
       };
-      return this.http.post(this.participationByGem ,participationObject,httpOptions);
+      return this.http.post<GetParticipation>(this.participationByGem ,participationObject,httpOptions);
     }else{
-      return this.http.post(this.participationByGem ,participationObject);
+      return this.http.post<GetParticipation>(this.participationByGem ,participationObject);
     }
   }
 }

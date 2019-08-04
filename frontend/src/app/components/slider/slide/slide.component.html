@@ -1,0 +1,48 @@
+<!-- <div class="cart-tag" *ngIf="slider?.tag"></div> -->
+<!-- <span class="cart-tag-content" *ngIf="slider?.tag">{{slider?.tag}}</span> -->
+<app-success></app-success>
+<app-error></app-error>
+<app-loading></app-loading>
+<img class="swiper-slide-image" [src]="Link.ad(slider?.image)" />
+<div class="swiper-slide-content">
+  <div class="swiper-slide-content-info">
+    <p class="swiper-slide-content-title">{{slider?.title}}</p>
+    <p class="swiper-slide-content-startAuction">شروع حراجی: {{slider?.basePrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان</p>
+    <p class="swiper-slide-content-price">قیمت محصول: {{slider?.maxPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان</p>
+    <div style="display: flex; align-items: flex-start;">
+      <div class="cart-timer">
+        <div class="cart-timer-part">
+          <span class="cart-time">{{remainedTime.seconds}}</span>
+          <span class="cart-time-text">ثانیه</span>
+        </div>
+        <div class="cart-timer-part">
+          <span class="cart-time">{{remainedTime.minute}}</span>
+          <span class="cart-time-text">دقیقه</span>
+        </div>
+        <div class="cart-timer-part">
+          <span class="cart-time">{{remainedTime.hour}}</span>
+          <span class="cart-time-text">ساعت</span>
+        </div>
+        <div class="cart-timer-part">
+          <span class="cart-time">{{remainedTime.day}}</span>
+          <span class="cart-time-text">روز</span>
+        </div>
+
+      </div>
+      <button *ngIf="!slider?.participated" class="cfnButton cfnButton-primary" (click)="scroll(target)">ثبت نام در حراجی</button>
+      <button *ngIf="slider?.participated" class="cfnButton cfnButton-primary" (click)="scrollViewAuction(target)">شرکت در حراجی</button>
+    </div>
+  </div>
+</div>
+<div class="swiper-slider-footer">
+  <div class="swiper-slider-footer-favWrapper">
+    <div class="heart" [ngClass]="{'is_animating': toggleHeart || (toggleHeart && slider.liked)}" (click)="toggleClick($event,slider?.auctionId)"></div>
+    <span class="swiper-slider-footer-fav">{{slider?.likeCount}} نفر پسندیدن</span>
+    <img style="margin-right: 25px; margin-left: 15px;" src="assets/resources/images/assets/png/share.png">
+    <span>اشتراک با دوستان</span>
+  </div>
+  <div class="cart-footer-contributer" dir="ltr">
+    <img *ngFor="let pic of slider?.participants.icons" [src]="Link.avatar(pic)" alt="" class="">
+    <span>شرکت کنندگان: {{slider?.participants.count}} از {{slider?.maxMembers}}</span>
+  </div>
+</div>

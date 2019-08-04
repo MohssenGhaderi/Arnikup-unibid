@@ -14,9 +14,9 @@
 </div>
 <div class="details-header-bottom">
   <div class="details-header-bottom-right">
-    <span class="details-button">مشخصات محصول</span>
+    <span class="details-button" (click)="showProductDetails()">مشخصات محصول</span>
     <span class="details-button details-button-heart"><img src="assets/resources/images/assets/svg/heart-red.svg"/> {{auction?.likeCount}} </span>
-    <span class="details-button"><img src="assets/resources/images/pics/assets/png/share.png"/> اشتراک گذاری </span>
+    <span class="details-button"><img src="assets/resources/images/assets/png/share.png"/> اشتراک گذاری </span>
   </div>
 
   <div class="details-header-bottom-left">
@@ -26,6 +26,12 @@
     </ng-template>
 
     <span class="details-header-bottom-left-textSeperator">اتوبید</span>
-    <label class="switch"><input type="checkbox" checked><span class="switch-slider"></span><span class="switch-text">10</span></label>
+    <label class="switch">
+      <input type="checkbox" (click)="toggleAutobid()" [checked]="shared.autobid.state" />
+      <span class="switch-slider"></span>
+      <span class="switch-text" *ngIf="shared.autobid.state">
+        <input class="autobid" type="number" min="1" max="9" maxlength="1" value="{{shared.autobid.deadline}}"  (input)="onDeadlineChange($event.target.value)" />
+      </span>
+    </label>
   </div>
 </div>

@@ -15,14 +15,12 @@
 
 <div class="swiper-container-wrapper">
     <div class="swiper-container">
-      <swiper [config]="config">
         <div class="swiper-wrapper">
           <img class="swiper-slide"  *ngFor="let image of auction?.images" [src]="Link.product(image)" alt=""/>
         </div>
         <!-- Add Arrows -->
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>
-      </swiper>
     </div>
   <div *ngIf="status?.avatar && !auction.done">
     <div class="details-slideImage-info-wrapper">

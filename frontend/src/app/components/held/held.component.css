@@ -1,0 +1,28 @@
+main {
+  margin: 30px 100px;
+  margin-top: 0;
+  flex:1
+}
+
+.searchResult {
+  flex:1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding-bottom: 50px;
+}
+
+.searchResult-title {
+  text-align: center;
+  font-size: 26px;
+  color: #212121;
+  margin: 42px 0;
+}
+
+.auctionList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}

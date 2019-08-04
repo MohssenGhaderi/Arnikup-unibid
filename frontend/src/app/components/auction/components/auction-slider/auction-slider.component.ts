@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
+import Swiper from 'swiper';
 import { BaseAuction } from 'src/app/models/auction/baseAuction.model';
 import { Links } from 'src/app/links.component';
 import { LiveAuctionService } from 'src/app/services/live-auction.service';
@@ -13,27 +14,29 @@ export class AuctionSliderComponent implements OnInit {
   @Input() auction: BaseAuction;
   Link = Links;
   status;
-  swiper;
+  mySwiper : Swiper;
 
   constructor(private el:ElementRef, private auctionSocket:LiveAuctionService) {
     this.auctionSocket.connectToServer();
   }
 
-  // config: SwiperOptions = {
-  //   navigation: {
-  //         nextEl: '.swiper-button-next',
-  //         prevEl: '.swiper-button-prev',
-  //         spaceBetween: 30
-  //       },
-  // };
-
-
   ngOnInit() {
-
-
-
     this.auctionSocket.status.subscribe(result =>{
       this.status = result;
     });
+  }
+  ngAfterViewInit(){
+    setTimeout(function () {
+      this.mySwiper = new Swiper('.swiper-container', {
+        centeredSlides: true,
+        spaceBetween: 30,
+        initialSlide: 0,
+        slidesPerView: 'auto',
+        navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+      });
+    },500);
   }
 }

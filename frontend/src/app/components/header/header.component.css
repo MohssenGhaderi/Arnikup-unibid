@@ -5,6 +5,9 @@ header {
   padding-top: 0;
   padding-bottom: 0;
   box-shadow: 0 8px 12px 0 rgba(0, 0, 0, 0.08);
+  /*position: fixed;
+  width: 100%;
+  z-index: 99999999999;*/
 }
 
 .header-top, .header-content, main {
@@ -132,9 +135,19 @@ header {
   font-size: 13px;
   display: flex;
   align-items: center;
+
+  display: flex;
+  flex: 1;
+  align-items: center;
+  position: relative;
 }
 
 .header-content-unauthorized > span {
+  cursor: pointer;
+  outline: none;
+}
+
+.header-top-info-link{
   cursor: pointer;
   outline: none;
 }

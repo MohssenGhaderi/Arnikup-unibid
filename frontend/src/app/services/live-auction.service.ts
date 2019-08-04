@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { AuctionStatus } from '../models/auctionStatus.model';
-import { Winner } from '../models/winner.model';
+import { AuctionStatus } from '../models/auction/auctionStatus.model';
+import { Winner } from '../models/auction/winner.model';
 import { States } from '../models/auction/states.model';
 import { LiveUser } from '../models/liveUser.model';
 import { GetError } from '../models/service/getError.model';
 import { SuccessMessage } from '../models/success.message.model';
 import { GetAuction } from 'src/app/models/service/getAuction.model';
+import { AuctionItem } from 'src/app/models/auction/auctionItem.model';
 
 
 @Injectable({
@@ -24,6 +25,7 @@ export class LiveAuctionService {
   bids = this.socket.fromEvent<string>('remainBids');
   users = this.socket.fromEvent<LiveUser[]>('users');
   auction = this.socket.fromEvent<GetAuction>('auction');
+  auctionItem = this.socket.fromEvent<AuctionItem>('auctionItem');
   remained = this.socket.fromEvent<string>('remained');
   done = this.socket.fromEvent<string>('done');
   states = this.socket.fromEvent<States>('states');
@@ -50,6 +52,14 @@ export class LiveAuctionService {
 
   getStatus(auctionId){
     this.socket.emit('getStatus',{'auctionId':auctionId});
+  }
+
+  getStates(auctionId){
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      this.socket.emit('getStates',{'auctionId':auctionId,'authorization':token});
+    }
   }
 
   getAuction(auctionId){

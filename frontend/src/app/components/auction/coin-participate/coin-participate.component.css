@@ -1,0 +1,73 @@
+.registerAuction {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  z-index: 1;
+  padding: 0 23px;
+  display: none;
+  pointer-events: none;
+}
+
+.registerAuctionTitle {
+  font-size: 16px;
+  text-align: center;
+  border-bottom: solid 1px #ebebeb;
+  padding: 15px 0;
+  margin: 0 -23px;
+  position: relative;
+}
+
+.registerAuctionTitle-arrowDown {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.registerAuctionParag {
+  font-size: 13px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.registerAuction-item {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-radius: 16px;
+  border: solid 1px #ebebeb;
+  margin-bottom: 16px;
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.registerAuction-item-active {
+  background-color: #fafafa;
+}
+
+.registerAuction-item-info > p {
+  font-size: 12px;
+  color: #707070;
+}
+
+.registerAuction-item-info > p > span {
+  font-size: 16px;
+  color: #212121;
+}
+
+.registerAuction-item-image {
+  width: 85px;
+  height: 85px;
+  background-color: rgba(255, 217, 73, 0.3);
+  border-radius: 50%;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 16px;
+}

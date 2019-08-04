@@ -1,3 +1,4 @@
+
 .off-title {
   font-size: 24px;
   color: #212121;
@@ -45,7 +46,7 @@
 .btnBuyWrapper > p {
   position: absolute;
   text-align: center;
-  right: 50px;
+  right: 35px;
   top: -15px;
   font-size: 13px;
   color: #212121;

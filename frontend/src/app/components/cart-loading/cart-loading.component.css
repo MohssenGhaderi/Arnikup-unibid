@@ -1,0 +1,36 @@
+.cart-loading {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-loading-top {
+  background-color: #fafafa;
+  height: 250px;
+  margin-bottom: 10px;
+}
+
+.cart-loading-line {
+  height: 16px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  margin: 9px 20px;
+  background: #f6f7f8;
+  background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+  background-size: 800px 104px;
+  animation: wave 1s infinite linear forwards;
+}
+
+.cart-loading-line:last-of-type {
+  width: 50%;
+}
+
+@keyframes wave{
+  0%{
+      background-position: -468px 0
+  }
+  100%{
+      background-position: 468px 0
+  }
+}

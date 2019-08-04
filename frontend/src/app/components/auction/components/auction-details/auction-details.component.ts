@@ -9,6 +9,7 @@ import { States } from 'src/app/models/auction/states.model';
 import { LoadingComponent } from 'src/app/components/loading/loading.component';
 import { ErrorComponent } from 'src/app/components/error/error.component';
 import { SuccessComponent } from 'src/app/components/success/success.component';
+import { SharingService } from 'src/app/services/sharing.service';
 
 @Component({
   selector: 'app-auction-details',
@@ -22,6 +23,7 @@ export class AuctionDetailsComponent implements OnInit {
   @ViewChild(SuccessComponent) success: SuccessComponent ;
   @ViewChild(ProgressComponent ) progress: ProgressComponent ;
 
+
   remainedTime;
   timer;
   timeoutId;
@@ -29,23 +31,49 @@ export class AuctionDetailsComponent implements OnInit {
   joined = false;
   Link = Links;
   states = new States();
+  done = false;
+  autobid = false;
+  extraBidsShowed = false;
+  getStates = false;
 
   constructor(
     private auctionSocket:LiveAuctionService,
     private router:Router,
-    private authService:AuthenticationService
+    private authService:AuthenticationService,
+    private shared:SharingService
   )
   {this.auctionSocket.connectToServer();}
 
   ngOnInit() {
     console.log(this.states);
+    setInterval(()=>{
+      if(this.auction && this.shared.autobid.state){
+        if ( (this.auction.remainedTime >= -10000) && (this.auction.remainedTime <= this.shared.autobid.deadline * 1000) && !this.auction.done){
+          this.auctionSocket.offerBid(this.auction.auctionId);
+        }
+      }
+    },100);
+
+    this.auctionTimer = setInterval(() => {
+      console.log('getAuction status');
+      this.auctionSocket.getAuction(this.auction.auctionId);
+      if(!this.states.iceAge){
+        clearInterval(this.auctionTimer);
+      }
+    }, 10000);
   }
   ngDoCheck(){
 
     if (this.auction) {
 
+      if (!this.getStates){
+        this.auctionSocket.getStates(this.auction.auctionId);
+        this.getStates = true;
+      }
+
       // client timer
-      if(!this.timer){
+      if(!this.timer && !this.done){
+
         this.remainedTime = this.ConvertMS(this.auction.remainedTime);
         this.timer = setInterval(() => {
           this.auction.remainedTime -= 1000;
@@ -54,12 +82,7 @@ export class AuctionDetailsComponent implements OnInit {
       }
 
       // get live auction status
-      if(this.states.iceAge && !this.auctionTimer){
-        this.auctionTimer = setInterval(() => {
-          console.log('getAuction status');
-          this.auctionSocket.getAuction(this.auction.auctionId);
-        }, 1000);
-      }
+
 
       // join client to the auctions room
       if(this.states.holliDay && !this.joined){
@@ -81,6 +104,12 @@ export class AuctionDetailsComponent implements OnInit {
 
     this.auctionSocket.bids.subscribe(result => {
       this.auction.bids = parseInt(result);
+      if(this.auction.extraBids){
+        if(this.auction.bids <= this.auction.extraBids.target && !this.extraBidsShowed){
+          this.shared.extraBid = true;
+          this.extraBidsShowed = true;
+        }
+      }
       this.loading.hide();
     });
 
@@ -115,14 +144,16 @@ export class AuctionDetailsComponent implements OnInit {
     this.auctionSocket.done.subscribe(result => {
       console.log(result);
       this.loading.hide();
-      // this.auction.done = true;
-      // this.auctionSocket.disconnect();
+      this.done = true;
+      clearInterval(this.timer);
+      this.auction.done = true;
+      this.auctionSocket.disconnect();
     });
 
     this.auctionSocket.states.subscribe(result=>{
       this.states = result;
       if(this.states.feniTto){
-        this.loading.show();
+        this.loading.hide();
       }
       // console.log(this.states);
     });
@@ -138,9 +169,7 @@ export class AuctionDetailsComponent implements OnInit {
 
   handleBid(eventData,auctionId){
     console.log('try bid for : ',auctionId);
-
     this.auctionSocket.offerBid(auctionId);
-
     eventData.stopPropagation();
   }
 

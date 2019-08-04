@@ -13,7 +13,6 @@ import string,random
 from datetime import datetime,timedelta
 from project.lang.fa import *
 from project.utils import token_required, token_optional
-from flask_login import login_user, logout_user
 import jwt
 import hashlib
 from rejson import Path
@@ -247,8 +246,6 @@ class Login(Resource):
             db.session.add(ua)
             db.session.commit()
 
-            login_user(current_user,remember=True)
-
             return make_response(jsonify({'accessToken': _access_token, 'refreshToken': _refresh_token}),200)
 
         else:
@@ -477,7 +474,7 @@ class ForgotPassword(Resource):
         current_user.send_sms_attempts += 1
         db.session.add(current_user)
         db.session.commit()
-
+        
         message = current_user.username +' عزیز٬ '\
         + '\n' + "رمز عبور جدید شما :" + new_password + "است."\
         + '\n' + 'www.unibid.ir'
@@ -641,13 +638,9 @@ class Logout(Resource):
         return make_response(jsonify({"success":True,"reason":"logout"}),200)
 
 @auth_ns.route('/avatar')
-class GetAvatar(Resource):
+class Avatar(Resource):
     def get(self):
-        avatar = ''
-        try:
-            user_agent_string = request.user_agent.string.encode('utf-8')
-            user_agent_hash = hashlib.md5(user_agent_string).hexdigest()
-            avatar = rj.jsonget(user_agent_hash, Path('.avatar'))
-        except(e):
-            pass
+        user_agent_string = request.user_agent.string.encode('utf-8')
+        user_agent_hash = hashlib.md5(user_agent_string).hexdigest()
+        avatar = rj.jsonget(user_agent_hash, Path('.avatar'))
         return make_response(jsonify(avatar),200)

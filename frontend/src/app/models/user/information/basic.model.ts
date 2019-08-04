@@ -6,5 +6,5 @@ export class BasicUserInformation {
   notifications:Notification[];
   username:string;
   avatar:string;
-  orderCount:number;
+  level:number;
 }

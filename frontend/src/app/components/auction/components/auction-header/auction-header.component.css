@@ -79,7 +79,7 @@
 
 /* Hide default HTML checkbox */
 .switch input {
-  display: none;
+  /*display: none;*/
 }
 
 /* The slider */
@@ -120,7 +120,19 @@ input:checked + .switch-slider::before {
 .switch-text {
   color: #fff;
   position: absolute;
-  left: 8px;
-  top: 50%;
+  left: 28px;
+  top: 7%;
   transform: translateY(-50%);
+}
+
+.autobid {
+  outline: none;
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  text-align: left;
+  background: #eb3f7a;
+  color: white;
+  border: none;
 }

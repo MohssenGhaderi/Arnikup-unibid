@@ -11,6 +11,8 @@
 /* @import url(assets/resources/fonts/Iransans/css/fontiran.css); */
 @import url(assets/resources/fonts/IransansFA/css/fontiran.css);
 /* @import url(assets/resources/fonts/roboto/css/roboto.css); */
+@import '~@ngx-share/button/themes/default/default-theme';
+@import '~@ngx-share/button/themes/circles/circles-light-theme';
 
 app-default {
   display: flex;

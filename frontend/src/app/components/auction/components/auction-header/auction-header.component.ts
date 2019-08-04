@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BaseAuction } from 'src/app/models/auction/baseAuction.model';
+import { SharingService } from 'src/app/services/sharing.service';
+
 
 @Component({
   selector: 'app-auction-header',
@@ -8,10 +10,24 @@ import { BaseAuction } from 'src/app/models/auction/baseAuction.model';
 })
 export class AuctionHeaderComponent implements OnInit {
   @Input() auction: BaseAuction;
-
-  constructor() { }
+  textValue;
+  constructor(public shared:SharingService) {
+    this.textValue = 5;
+  }
 
   ngOnInit() {
+  }
+
+  toggleAutobid(){
+    this.shared.autobid.state = !this.shared.autobid.state;
+  }
+
+  onDeadlineChange(value){
+    this.shared.autobid.deadline = value;
+  }
+  showProductDetails(){
+    console.log('pd');
+    this.shared.productDetails = true;
   }
 
 }

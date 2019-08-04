@@ -1,0 +1,22 @@
+<div class="registerAuction">
+  <p class="registerAuctionTitle">
+    ثبت نام در حراجی
+    <img (click)="close($event)" class="registerAuctionTitle-arrowDown" src="assets/resources/images/assets/svg/arrowDown.svg" alt="">
+  </p>
+  <p class="registerAuctionParag">برای شرکت در حراجی بسته مورد نظر را انتخاب کنید.</p>
+  <div *ngFor="let coin of coins">
+    <div class="registerAuction-item" (click) = "registerByCoin($event,auctionId,coin.planId)">
+      <div class="registerAuction-item-image">
+         <img src="assets/resources/images/assets/png/coins.png" alt="">
+      </div>
+      <div class="registerAuction-item-info">
+        <p><span>{{coin.coinCount}} سکه</span> ({{coin.price | currency : ' ' : 'symbol' : '1.0-0'}} تومان)</p>
+        <p>{{coin.bids}} عدد پیشنهاد</p>
+        <p>کوپن تخفیف {{coin.discountCoupon | currency : ' ' : 'symbol' : '1.0-0'}} تومانی</p>
+      </div>
+    </div>
+  </div>
+  <app-error></app-error>
+  <app-success></app-success>
+  <app-loading></app-loading>
+</div>

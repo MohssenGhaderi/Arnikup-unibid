@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
@@ -14,7 +13,6 @@ import { VerificationInputKeyupDirective } from './directives/verification-input
 import { routing } from './routerConfig';
 import { AuctionItemComponent } from './components/auction/auctionItem/auctionItem.component';
 import { AuctionListComponent } from './components/auction/auctionList/auctionList.component';
-import { SwiperModule } from 'angular2-useful-swiper';
 import { SliderComponent } from './components/slider/slider.component';
 import { ShopComponent } from './components/shop/shop.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
@@ -38,11 +36,26 @@ import { ShipmentPreviewComponent } from './components/user/checkout/shipment/pr
 import { ShipmentEditComponent } from './components/user/checkout/shipment/edit/shipment-edit.component';
 import { PaymentComponent } from './components/user/checkout/payment/payment.component';
 import { ForgetPasswordComponent } from './components/auth/forget-password/forget-password.component';
-import { AboutUsComponent } from './components/about-us/about-us.component';
+import { ExtraBidComponent } from './components/auction/components/extra-bid/extra-bid.component';
+import { SearchComponent } from './components/search/search.component';
+import { SearchBoxComponent } from './components/search-box/search-box.component';
+import { SlideComponent } from './components/slider/slide/slide.component';
+import { ConfirmComponent } from './components/confirm/confirm.component';
+import { CouponComponent } from './components/coupon/coupon.component';
+import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { ColorComponent } from './components/color/color.component';
+import { CoinParticipateComponent } from './components/auction/coin-participate/coin-participate.component';
+import { CartLoadingComponent } from './components/cart-loading/cart-loading.component';
+import { GemParticipateComponent } from './components/auction/gem-participate/gem-participate.component';
+import { ParticipatedComponent } from './components/auction/participated/participated.component';
+import { PersianPipe } from './pipes/persian.pipe';
+import { FinishedComponent } from './components/auction/finished/finished.component';
+import { HeldComponent } from './components/held/held.component';
+import { ShareModule } from '@ngx-share/core';
+import { ShareButtonsModule } from '@ngx-share/buttons';
+import { SocialComponent } from './components/social/social.component';
 
-import { MaterialModule } from './material.module';
-
-const config: SocketIoConfig = { url: 'https://admin.unibid.ir', options: {resource:'A/socket.io', 'force new connection': true} };
+const config: SocketIoConfig = { url: 'http://dev.unibid.ir', options: {resource:'A/socket.io', 'force new connection': true} };
 // const config: SocketIoConfig = { url: 'http://127.0.0.1:9001', options: {resource:'A/socket.io', 'force new connection': true} };
 
 @NgModule({
@@ -79,15 +92,32 @@ const config: SocketIoConfig = { url: 'https://admin.unibid.ir', options: {resou
     ShipmentEditComponent,
     PaymentComponent,
     ForgetPasswordComponent,
-    AboutUsComponent    
+    ExtraBidComponent,
+    SearchComponent,
+    SearchBoxComponent,
+    SlideComponent,
+    ConfirmComponent,
+    CouponComponent,
+    ProductDetailsComponent,
+    ColorComponent,
+    CoinParticipateComponent,
+    CartLoadingComponent,
+    GemParticipateComponent,
+    ParticipatedComponent,
+    PersianPipe,
+    FinishedComponent,
+    HeldComponent,
+    SocialComponent,
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
     routing,
-    SwiperModule,
-    SocketIoModule.forRoot(config)
+    SocketIoModule.forRoot(config),
+    HttpClientModule,       // (Required) For share counts
+    ShareModule,
+    ShareButtonsModule
   ],
 providers: [],
   bootstrap: [AppComponent]

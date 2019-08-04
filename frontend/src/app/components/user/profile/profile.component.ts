@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener} from '@angular/core';
 import { LoadingComponent } from 'src/app/components/loading/loading.component';
 import { ErrorComponent } from 'src/app/components/error/error.component';
 import { UserService } from 'src/app/services/user.service';
@@ -22,12 +22,20 @@ export class ProfileComponent implements OnInit {
 
   constructor(private el: ElementRef,private userService:UserService,private shared:SharingService,private liveUser:LiveUserService) {
   }
+  @HostListener('mouseenter') onMouseEnter() {
+    this.shared.visibleProfile = true;
+  }
+  @HostListener('mouseleave') onMouseLeave() {
+    this.shared.visibleProfile = false;
+  }
+
   ngOnInit() {
     this.el.nativeElement.getElementsByClassName('accountProfile-profile-header')[0].classList.add(this.shared.lastClass);
+    this.liveUser.getProfileStatus();
 
     this.userSyncTimer = setInterval(() => {
       this.liveUser.getProfileStatus();
-    }, 1000);
+    }, 10000);
 
     this.loading.show();
 
@@ -72,5 +80,9 @@ export class ProfileComponent implements OnInit {
     this.shared.toggleMenu.edit = true;
   }
 
+  profileLostFocus(eventData){
+    console.log('here');
+    this.shared.toggleMenu.reset();
+  }
 
 }

@@ -2,16 +2,17 @@ import { Component, OnInit, Input, ViewChild, ElementRef ,ViewChildren, QueryLis
 import { MainServices } from 'src/app/services/main.service';
 import { SharingService } from 'src/app/services/sharing.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { Auction } from 'src/app/models/auction.model';
+import { Auction } from 'src/app/models/auction/auction.model';
 import { Links } from 'src/app/links.component';
 import { Router } from '@angular/router';
-import { GetParticipation } from 'src/app/models/getParticipation.model';
+import { GetParticipation } from 'src/app/models/auction/getParticipation.model';
 import { LiveAuctionService } from 'src/app/services/live-auction.service';
 import { ProgressComponent } from 'src/app/components/progress/progress.component';
-import { AuctionStatus } from 'src/app/models/auctionStatus.model';
-import { LoadingComponent } from 'src/app/components/loading/loading.component'
-import { ErrorComponent } from 'src/app/components/error/error.component'
-import { SuccessComponent } from 'src/app/components/success/success.component'
+import { AuctionStatus } from 'src/app/models/auction/auctionStatus.model';
+import { LoadingComponent } from 'src/app/components/loading/loading.component';
+import { ErrorComponent } from 'src/app/components/error/error.component';
+import { SuccessComponent } from 'src/app/components/success/success.component';
+import { Cart } from 'src/app/models/cart.model';
 
 @Component({
   selector: 'app-auctionItem',
@@ -29,11 +30,13 @@ export class AuctionItemComponent implements OnInit {
   Link = Links;
   remainedTime;
   timer;
+  cart:Cart;
   joined = false;
   timeoutId = 0;
+  subscription: any;
+  toggleSocial = false;
 
   @Input() auction: Auction;
-  @ViewChild('errorMessage') errorMessageElem: ElementRef;
   @ViewChild(ProgressComponent ) progress: ProgressComponent ;
   @ViewChild(ErrorComponent ) error: ErrorComponent ;
   @ViewChild(SuccessComponent ) success: SuccessComponent ;
@@ -43,17 +46,33 @@ export class AuctionItemComponent implements OnInit {
   totalSegments = 10 ;
 
   constructor(
+    private el:ElementRef,
     private service: MainServices,
     private authService:AuthenticationService,
     private router: Router,
     private auctionSocket:LiveAuctionService,
     private shared:SharingService,
   )
-  {this.auctionSocket.connectToServer();}
+  {
+    this.auctionSocket.connectToServer();
+    this.cart = new Cart();
+
+  }
 
   ngOnInit() {
     // this.auctionSocket.connect();
     // this.auctionSubscription = this.auctionSocket.connect.pipe().subscribe(result => console.log(result));
+    this.cart.auctionId = this.auction.auctionId;
+    this.subscription = this.shared.getCartStateEmitter().subscribe(result=>{
+      if(this.auction.auctionId == result.auctionId){
+        this.cart.state = result.state;
+        this.cart.details = result.details;
+        this.cart.participated = result.participated;
+        if (result.scroll)
+          this.el.nativeElement.scrollIntoView();
+      }
+    });
+
     this.toggleHeart = this.auction.liked;
 
     if (this.auction) {
@@ -64,6 +83,14 @@ export class AuctionItemComponent implements OnInit {
       }, 1000);
     }
 
+    this.subscription = this.shared.getSocialStayEmitter().subscribe((auctionId)=>{
+      if(this.auction.auctionId==auctionId){
+        setTimeout(()=>{
+          this.toggleSocial = false;
+        },1000);
+      }
+    });
+
   }
 
   ngDoCheck(){
@@ -72,7 +99,18 @@ export class AuctionItemComponent implements OnInit {
       this.joined = true;
       this.auctionSocket.join(this.auction.auctionId);
     }
+  }
 
+  closeSocial(eventData){
+    if(this.toggleSocial){
+      this.shared.emitCloseSocial(this.auction.auctionId);
+      setTimeout(()=>{
+        this.toggleSocial = false;
+      },1000);
+    }else{
+      this.toggleSocial = true;
+    }
+    eventData.stopPropagation();
   }
 
   ngOnDestroy() {
@@ -141,17 +179,22 @@ export class AuctionItemComponent implements OnInit {
       eventData.stopPropagation();
     }
 
-  RegisterAuctionSlideupClick() {
-    this.showRegisterAuction = true;
-  }
+  RegisterAuctionSlideupClick(eventData) {
+    if(this.toggleSocial){
+      this.shared.emitCloseSocial(this.auction.auctionId);
 
-  RegisterAuctionSlideDownClick(eventData) {
-    this.hideRegisterAuction = true;
-    setTimeout(() => {
-      // this.coinState = 'pallet';
-      this.showRegisterAuction = false;
-      this.hideRegisterAuction = false;
-    }, 1000);
+    }
+    else{
+      if(this.auction.participated){
+        this.cart.state = "participated";
+      }else if(this.cart.participated){
+        this.cart.state = "confirmed";
+      }
+      else if(this.cart.state=="" || this.cart.state=="closed"){
+          this.cart.state = "participate";
+      }
+    }
+
     eventData.stopPropagation();
   }
 
@@ -175,52 +218,4 @@ export class AuctionItemComponent implements OnInit {
     };
   }
 
-  registerByCoin(eventData,auctionId,planId){
-    this.loading.show();
-    this.service.registerByCoin({auctionId:auctionId,planId:planId}).subscribe(result => {
-      this.loading.hide();
-      this.GetParticipation = <any>result;
-      this.coinState = 'confirmed';
-      this.participated = true;
-    },
-    error => {
-      if(error.error.reason==="coins"){
-        this.GetParticipation = error.error;
-        this.coinState = 'gems';
-      }
-      this.loading.hide();
-      this.error.show(error,2000,null);
-    });
-    eventData.stopPropagation();
-  }
-
-  registerByGem(eventData,auctionId,planId){
-    eventData.stopPropagation();
-
-    this.loading.show();
-    this.service.registerByGem({auctionId:auctionId,planId:planId}).subscribe(result => {
-      this.loading.hide();
-      this.GetParticipation = <any>result;
-      this.coinState = 'confirmed';
-      this.participated = true;
-    },
-    error => {
-      if(error.error.reason==="coins"){
-        this.GetParticipation = error.error;
-        this.coinState = 'gems';
-      }
-
-      this.loading.hide();
-
-      if(error.error.reason=="redirectShop"){
-        this.error.show(error,2000,null)
-        .then(()=>{
-          this.shared.shop = true;
-        });
-      }else{
-        this.error.show(error,2000,null);
-      }
-    });
-
-  }
 }

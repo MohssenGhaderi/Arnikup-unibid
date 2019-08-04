@@ -1,0 +1,49 @@
+<!-- <div class="cart cart-suggest cart-dated" routerLink = "/auction/{{auction.auctionId}}"> -->
+
+<div class="cart cart-suggest cart-dated">
+
+<app-social *ngIf="toggleSocial"
+[auctionId]="auction.auctionId"
+[title]="auction.title"
+[description]="auction.title"
+[url]="Link.auctionUrl(auction.auctionId)">
+</app-social>
+  <div class="cart-share-fav">
+    <div class="heart" [ngClass]="{'is_animating': toggleHeart || (toggleHeart && auction.liked)}" (click)="toggleClick($event,auction.auctionId)"></div>
+    <img (click)="closeSocial()" src="assets/resources/images/assets/png/share.png">
+
+  </div>
+
+  <img src="assets/resources/images/pics/pic6.jpg" alt="" class="cart-image">
+  <p class="cart-title">{{auction.title}}</p>
+
+  <div class="cart-off">
+
+
+    <span class="cart-off-percent">٪{{auction.discount}}</span>
+    <div class="cart-off-info">
+      <p class="cart-off-after">قیمت پایه حراجی : {{auction.basePrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+      <p class="cart-off-before">قیمت اتمام حراجی : {{auction.maxPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+    </div>
+  </div>
+  <div class="cart-register-date">
+    <img src="assets/resources/images/assets/png/group-5.png"/>
+    <span>{{ auction.date | persian : 'dddd DD MMMM YY ٬ HH:mm:ss'}}</span>
+  </div>
+
+  <div class="cart-footer">
+    <div class="cart-footer-rank">
+      <img src="assets/resources/images/assets/png/star.png">
+      <span>{{auction.maxLevel}} / {{auction.level}}</span>
+    </div>
+    <div class="cart-footer-contributer" dir="ltr">
+      <span>{{auction.status?.winnerName}}</span>
+      <img [src]="Link.avatar(auction.status?.winnerAvatar)" alt="" class="">
+      <span>برنده</span>
+    </div>
+  </div>
+  <app-success></app-success>
+  <app-error></app-error>
+  <app-loading></app-loading>
+
+</div>

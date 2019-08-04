@@ -149,6 +149,6 @@ def migrate():
     from  .model import setting
     manager.run()
 
-# print ("migrating ... ")
-# migrate()
-# print ("migration done..!")
+print ("migrating ... ")
+migrate()
+print ("migration done..!")

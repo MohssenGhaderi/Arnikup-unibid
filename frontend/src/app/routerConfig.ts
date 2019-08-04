@@ -5,12 +5,21 @@ import { AuctionComponent } from './components/auction/auction.component';
 import { DefaultComponent } from './components/default/default.component';
 import { VerificationComponent } from './components/auth/verification/verification.component';
 import { ForgetPasswordComponent } from './components/auth/forget-password/forget-password.component';
-import { AboutUsComponent } from './components/about-us/about-us.component';
+import { SearchComponent } from './components/search/search.component';
+import { HeldComponent } from './components/held/held.component';
 
 const appRoutes: Routes = [
   {
       path: 'auction/:id',
       component: AuctionComponent
+  },
+  {
+      path: 'finished',
+      component: HeldComponent
+  },
+  {
+      path: 'search',
+      component: SearchComponent
   },
   {
       path: 'signin',
@@ -31,10 +40,6 @@ const appRoutes: Routes = [
   {
     path: 'verification',
     component: VerificationComponent
-  },
-  {
-    path: 'contact-us',
-    component: AboutUsComponent
   },
   {
     path: '',

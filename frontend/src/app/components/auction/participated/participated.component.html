@@ -1,0 +1,25 @@
+<div class="registerAuction">
+  <div class="hoveredAuction">
+    <p class="hoveredAuctionTitle">
+      شرکت در حراجی
+      <img (click)="close($event)" class="registerAuctionTitle-arrowDown" src="assets/resources/images/assets/svg/arrowDown.svg" alt="">
+    </p>
+    <div class="hoveredAuctionContent" *ngIf="details">
+      <div class="hoveredAuction-imageWrapper">
+        <img src="assets/resources/images/assets/png/coins@2x.png"/>
+        <img src="assets/resources/images/assets/png/check.png" class="hoveredAuction-check"/>
+      </div>
+      <p class="hoveredAuctionContent-title">{{details.coinsNeeded}} سکه</p>
+      <p class="hoveredAuctionContent-parag"> تعداد {{details.coinsNeeded}} سکه جهت شرکت شما در {{details.auction}} کسر شد.</p>
+    </div>
+    <div class="hoveredAuctionContent" *ngIf="plan">
+      <div class="hoveredAuction-imageWrapper">
+        <img src="assets/resources/images/assets/png/coins@2x.png"/>
+        <img src="assets/resources/images/assets/png/check.png" class="hoveredAuction-check"/>
+      </div>
+      <p class="hoveredAuctionContent-title">{{plan.bids}} پیشنهاد با پلن {{plan.title}}</p>
+      <p class="hoveredAuctionContent-parag">شما {{plan.coins}} سکه جهت شرکت در {{auctionTitle}} پرداخت کرده اید.</p>
+    </div>
+    <a routerLink = "/auction/{{auctionId}}" class="cfnButton cfnButton-primary" >ورود به حراجی</a>
+  </div>
+</div>

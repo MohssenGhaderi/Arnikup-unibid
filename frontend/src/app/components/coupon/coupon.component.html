@@ -1,0 +1,7 @@
+<div class="accountProfile-basket-off">
+  <span #couponButton class="accountProfile-basket-offButton" (click)="confirm()">{{title}}</span>
+  <input #couponInput value="{{couponCode}}" (input)="onCouponChange($event.target.value)" class="cfnText" type="text"  placeholder="کوپن تخفیف">
+  <app-loading></app-loading>
+  <app-error></app-error>
+  <app-success></app-success>
+</div>

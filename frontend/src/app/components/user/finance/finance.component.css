@@ -97,6 +97,8 @@
 }
 
 .accountProfile-financialCredit-wrapper {
+  max-height: 380px;
+  overflow: auto;
   width: 100%;
   box-sizing: border-box;
   padding-bottom: 50px;
@@ -179,6 +181,7 @@
   height: 60px;
   border-top: 1px solid #ebebeb;
   align-items: center;
+  background: #fff;
 }
 
 .accountProfile-financialCredit-footer > span:last-of-type {

@@ -42,7 +42,6 @@ class Basic(Resource):
             "seen":notif.seen,
             "link":notif.link,
             "date":str(notif.created),
-            "image":notif.image,
             })
 
         notifs = UserNotification.query.filter_by(user_id=current_user.id).order_by(UserNotification.created.desc())
@@ -54,7 +53,6 @@ class Basic(Resource):
             "seen":notif.seen,
             "link":notif.notification.link,
             "date":str(notif.notification.created),
-            "image":'',
             })
 
         notifs = UserAuctionNotification.query.filter_by(user_id=current_user.id).order_by(UserAuctionNotification.created.desc())
@@ -66,18 +64,17 @@ class Basic(Resource):
             "seen":notif.seen,
             "link":notif.auction_notification.link,
             "date":str(notif.auction_notification.created),
-            "image":notif.auction_notification.auction.image.split("'")[1],
             })
 
         result = sorted(result, key=lambda r: r['date'],reverse=True)
+
 
         basics = {
             "coins":current_user.coins,
             "gems":current_user.gems,
             "username":current_user.username,
             "avatar":current_user.avatar.image.split("'")[1],
-            # "orderCount":Order.query.filter_by(user_id = current_user.id,status = OrderStatus.UNPAID).count(),
-            "level":current_user.level.number,
+            "orderCount":Order.query.filter_by(user_id = current_user.id,status = OrderStatus.UNPAID).count(),
             "notifications":result
         }
         return make_response(jsonify(basics),200)
@@ -141,7 +138,7 @@ class Avatars(Resource):
             current_user.avatar = avatar
             db.session.add(current_user)
             db.session.commit()
-            return make_response(jsonify({"success":True,"message":USER['AVATAR_CHANGED']}),200)
+            return make_response(jsonify({"success":True}),200)
 
 
         if current_user.gems < avatar.needed_gems:
@@ -169,7 +166,8 @@ class Avatars(Resource):
         db.session.add(gem_payment)
         db.session.add(user_avatar)
         db.session.commit()
-        return make_response(jsonify({"success":True,"message":USER['AVATAR_CHANGED_GEM']}),200)
+        return make_response(jsonify({"success":True}),200)
+
 
 @user_ns.route('/information')
 class Information(Resource):
@@ -195,54 +193,13 @@ class Information(Resource):
         }
         return make_response(jsonify(user),200)
 
-shipment_method_model = user_ns.model('ShipmentMethodModel', {
-    "methodId":fields.Integer(),
-    "title":fields.String(),
-    "price":fields.String(),
-})
-item_garanty_model = user_ns.model('ItemGarantyModel', {
-    "garantyId":fields.Integer(),
-    "title":fields.String(),
-    "price":fields.String(),
-})
-
-order_detail = user_ns.model('OrderDetailModel', {
-    "orderId":fields.Integer(),
-    "item_garanties":fields.List(fields.Nested(item_garanty_model)),
-})
-
-cart_fields_model = user_ns.model('ShoppingCartModel', {
-    "count":fields.Integer(),
-    "orderId":fields.Integer(),
-    "itemId":fields.Integer(),
-    "price":fields.Integer(),
-    "type":fields.String(),
-    "discount":fields.Integer(),
-    "title":fields.String(),
-    "image":fields.String(),
-    "order_details" : fields.List(fields.Nested(order_detail))
-})
-
-shipment_methods_model = user_ns.model('ShipmentMethodsModel', {
-    "shipment_methods" : fields.List(fields.Nested(shipment_method_model))
-})
-
-
-cart_put_fields = user_ns.model('ShoppingCartPut', {
-    "orderId":fields.Integer()
-})
-
-cart_post_fields = user_ns.model('ShoppingCartPost', {
-    "auctionId":fields.Integer()
-})
-
 @user_ns.route('/carts')
 class cart(Resource):
     parser = rest_api.parser()
     parser.add_argument('Authorization',type=str,location='headers',help='Bearer Access Token (using example: "Bearer token")',required=True)
     @user_ns.header('Authorization: Bearer', 'JWT TOKEN', required=True)
-    @user_ns.doc('get user shopping cart information api.', parser=parser , validate=False)
-    @user_ns.response(200, 'Success',cart_fields_model)
+    @user_ns.doc('get user shopping cart information api.', parser=parser, validate=False)
+    @user_ns.response(200, 'Success')
     @user_ns.response(400, 'SMS System and Validation Error')
     @user_ns.response(401, 'Not Authorized')
     @user_ns.response(403, 'Not available')
@@ -250,55 +207,22 @@ class cart(Resource):
     def get(self,current_user):
         order_result = Order.query.filter_by(user_id = current_user.id,status = OrderStatus.UNPAID).order_by(Order.created.desc())
         orders = []
-        shipment_methods = []
-        item_garanties = None
-        Ids  = []
         for order in order_result:
-            shipment_cost = 0
-            for method in ItemShipment.query.join(ShipmentMethod).filter(ItemShipment.item_id==order.item_id).order_by(ShipmentMethod.title.desc()):
-                if method.shipment_method.id not in Ids:
-                    shipment_methods.append({
-                        "methodId":method.shipment_method.id,
-                        "title":method.shipment_method.title,
-                        "price": method.shipment_method.aggrigation * float(method.price)
-                    })
-                    Ids.append(method.shipment_method.id)
-                else:
-                    item = next(x for x in shipment_methods if x['methodId']==method.shipment_method.id)
-                    item['price'] += method.shipment_method.aggrigation * float(method.price)
-
-        for order in order_result:
-
-            item_garanties = []
-            for item_garanty in ItemGaranty.query.join(Garanty).filter(ItemGaranty.item_id==order.item_id).order_by(ItemGaranty.price):
-                item_garanties.append({
-                    "orderId":order.id,
-                    "garantyId":item_garanty.garanty.id,
-                    "title":item_garanty.garanty.title,
-                    "price":int(item_garanty.price)
-                })
-
             orders.append({
                 "orderId":order.id,
                 "itemId":order.item.id,
                 "price":str(order.total_cost),
                 "discount":str(order.total_discount),
                 "title":order.item.title,
-                "type":order.discount_status,
-                "image":order.item.images.split("'")[1],
-                "order_details":{
-                    "item_garanties":item_garanties
-                }
+                "image":order.item.images.split("'")[1]
             })
-
-        print(shipment_methods)
         return make_response(jsonify(orders),200)
 
     parser = rest_api.parser()
     parser.add_argument('Authorization',type=str,location='headers',help='Bearer Access Token (using example: "Bearer token")',required=True)
     @user_ns.header('Authorization: Bearer', 'JWT TOKEN', required=True)
-    @user_ns.doc('delet user shopping cart item api.', parser=parser, body=cart_put_fields, validate=False)
-    @user_ns.response(200, 'delete item from shopping cart')
+    @user_ns.doc('get user shopping cart information api.', parser=parser, validate=False)
+    @user_ns.response(200, 'Success')
     @user_ns.response(400, 'SMS System and Validation Error')
     @user_ns.response(401, 'Not Authorized')
     @user_ns.response(403, 'Not available')
@@ -318,8 +242,8 @@ class cart(Resource):
     parser = rest_api.parser()
     parser.add_argument('Authorization',type=str,location='headers',help='Bearer Access Token (using example: "Bearer token")',required=True)
     @user_ns.header('Authorization: Bearer', 'JWT TOKEN', required=True)
-    @user_ns.doc('get user shopping cart information api.', parser=parser,body=cart_post_fields, validate=False)
-    @user_ns.response(200, 'add item to shopping cart')
+    @user_ns.doc('get user shopping cart information api.', parser=parser, validate=False)
+    @user_ns.response(200, 'Success')
     @user_ns.response(400, 'SMS System and Validation Error')
     @user_ns.response(401, 'Not Authorized')
     @user_ns.response(403, 'Not available')
@@ -379,39 +303,6 @@ class cart(Resource):
         db.session.add(order)
         db.session.commit()
         return make_response(jsonify({"success":True,"message":ORDER['ADD_SUCCESS']}),200)
-
-@user_ns.route('/shipment/methods')
-class ShipmentMedhods(Resource):
-    parser = rest_api.parser()
-    parser.add_argument('Authorization',type=str,location='headers',help='Bearer Access Token (using example: "Bearer token")',required=True)
-    @user_ns.header('Authorization: Bearer', 'JWT TOKEN', required=True)
-    @user_ns.doc('get user shopping cart information api.', parser=parser , validate=False)
-    @user_ns.response(200, 'Success',shipment_methods_model)
-    @user_ns.response(400, 'SMS System and Validation Error')
-    @user_ns.response(401, 'Not Authorized')
-    @user_ns.response(403, 'Not available')
-    @token_required
-    def get(self,current_user):
-        order_result = Order.query.filter_by(user_id = current_user.id,status = OrderStatus.UNPAID).order_by(Order.created.desc())
-        orders = []
-        shipment_methods = []
-        item_garanties = None
-        Ids  = []
-        for order in order_result:
-            shipment_cost = 0
-            for method in ItemShipment.query.join(ShipmentMethod).filter(ItemShipment.item_id==order.item_id).order_by(ShipmentMethod.title.desc()):
-                if method.shipment_method.id not in Ids:
-                    shipment_methods.append({
-                        "methodId":method.shipment_method.id,
-                        "title":method.shipment_method.title,
-                        "price": method.shipment_method.aggrigation * float(method.price)
-                    })
-                    Ids.append(method.shipment_method.id)
-                else:
-                    item = next(x for x in shipment_methods if x['methodId']==method.shipment_method.id)
-                    item['price'] += method.shipment_method.aggrigation * float(method.price)
-
-        return make_response(jsonify(shipment_methods),200)
 
 @user_ns.route('/scores')
 class Scores(Resource):
@@ -495,7 +386,7 @@ class Profile(Resource):
         return make_response(jsonify({"success":True,"message":USER['PROFILE_SAVED']}),200)
 
 @user_ns.route('/address')
-class GetAddress(Resource):
+class Address(Resource):
     @token_required
     def get(self,current_user):
         state = None
@@ -516,7 +407,7 @@ class GetAddress(Resource):
         return make_response(jsonify(address),200)
 
 @user_ns.route('/shipment')
-class ShipmentInfo(Resource):
+class Shipment(Resource):
     @token_required
     def get(self,current_user):
 
@@ -577,194 +468,3 @@ class ShipmentInfo(Resource):
         db.session.commit()
 
         return make_response(jsonify({"success":True,"message":USER['PROFILE_SAVED']}),200)
-
-paymentInfo_fields = user_ns.model('PaymentInfoModel', {
-    "type":fields.String(),
-    "title":fields.String(),
-    "price":fields.Integer(),
-    "paid":fields.Integer(),
-    "factor":fields.String(),
-    "date":fields.String(),
-    "discount":fields.Integer(),
-    "quantity":fields.Integer(),
-    "image":fields.String(),
-})
-
-@user_ns.route('/payment')
-class PaymentInfo(Resource):
-    parser = rest_api.parser()
-    parser.add_argument('Authorization',type=str,location='headers',help='Bearer Access Token (using example: "Bearer token")',required=True)
-    @user_ns.header('Authorization: Bearer', 'JWT TOKEN', required=True)
-    @user_ns.doc('get user payment information api.', parser=parser , validate=False)
-    @user_ns.response(200, 'Success',paymentInfo_fields)
-    @user_ns.response(401, 'Not Authorized')
-    @user_ns.response(403, 'Not available')
-    @token_required
-    def get(self,current_user):
-        result = Payment.query.filter_by(user_id=current_user.id,status=PaymentStatus.ARCHIVE).order_by(Payment.created.desc()).limit(5)
-        payments = []
-        for payment in result:
-            if(payment.type==PaymentType.PRODUCT):
-                order_result = Order.query.filter_by(payment_id=payment.id).all()
-                for order in order_result:
-                    payments.append({
-                        "type":"p",
-                        "title":" خرید محصول " + order.item.title ,
-                        "price":str(order.item.price),
-                        "paid":str(order.total_cost - order.total_discount),
-                        "factor":payment.GUID,
-                        "date":str(payment.updated),
-                        "discount":str(order.total_discount),
-                        "quantity":order.total,
-                        "image":order.item.images.split("'")[1]
-                    })
-
-        return make_response(jsonify(payments),200)
-
-coupons_field = user_ns.model('Coupons', {
-    "couponCode":fields.List(fields.String)
-})
-
-user_coupon_field = user_ns.model('UserCoupon', {
-    "title":fields.String(),
-    "amount":fields.String(),
-})
-
-@user_ns.route('/coupons')
-class Coupons(Resource):
-    parser = rest_api.parser()
-    parser.add_argument('Authorization',type=str,location='headers',help='Bearer Access Token (using example: "Bearer token")',required=True)
-    @user_ns.header('Authorization: Bearer', 'JWT TOKEN', required=True)
-    @user_ns.doc('user coupon api.', parser=parser , validate=False)
-    @user_ns.response(200, 'Success',)
-    @user_ns.response(400, 'SMS System and Validation Error')
-    @user_ns.response(401, 'Not Authorized')
-    @user_ns.response(403, 'Not available')
-    @token_required
-    def get(self,current_user):
-        user_coupon = current_user.coupons.filter(UserCoupon.used==False).order_by(UserCoupon.created.desc()).first()
-        result = None
-        if user_coupon:
-            result = {"title":user_coupon.title,"amount":str(user_coupon.amount)}
-
-        return make_response(jsonify(result),200)
-
-    parser = rest_api.parser()
-    parser.add_argument('Authorization',type=str,location='headers',help='Bearer Access Token (using example: "Bearer token")',required=True)
-    @user_ns.header('Authorization: Bearer', 'JWT TOKEN', required=True)
-    @user_ns.doc('user coupon api.', parser=parser , body=coupons_field, validate=False)
-    @user_ns.response(200, 'Success')
-    @user_ns.response(400, 'SMS System and Validation Error')
-    @user_ns.response(401, 'Not Authorized')
-    @user_ns.response(403, 'Not available')
-    @token_required
-    def put(self,current_user):
-        if 'couponCode' not in user_ns.payload:
-            return make_response(jsonify({"success":False,"reason":"couponCode","message":COUPON['REQUIRED']}),400)
-
-        coupon = Coupon.query.filter_by(title=user_ns.payload['couponCode']).first()
-
-        if not coupon:
-            return make_response(jsonify({"success":False,"reason":"couponNotFound","message":COUPON['INVALID']}),400)
-
-        if coupon.expired:
-            return make_response(jsonify({"success":False,"reason":"couponNotFound","message":COUPON['EXPIRED']}),403)
-
-
-        user_coupon = UserCoupon.query.filter_by(user_id=current_user.id,coupon_id=coupon.id).first()
-        if user_coupon:
-            if user_coupon.used:
-                return make_response(jsonify({"success":False,"reason":"couponUsed","message":COUPON['USED']}),403)
-
-            message = COUPON['REAPETED'].replace('amount',str(int(coupon.amount)))
-            return make_response(jsonify({"success":True,"reason":"couponReapeted","message":message}),200)
-
-        if coupon.type == CouponType.SYSTEM:
-            return make_response(jsonify({"success":False,"reason":"systemCoupon","message":COUPON['SYSTEM']}),403)
-
-        current_user.coupons.append(coupon)
-        db.session.add(current_user)
-        db.session.commit()
-
-        message = COUPON['STATUS'].replace('amount',str(int(coupon.amount)))
-        return make_response(jsonify({"success":True,"message":message}),200)
-
-    parser = rest_api.parser()
-    parser.add_argument('Authorization',type=str,location='headers',help='Bearer Access Token (using example: "Bearer token")',required=True)
-    @user_ns.header('Authorization: Bearer', 'JWT TOKEN', required=True)
-    @user_ns.doc('user coupon api.', parser=parser , body=coupons_field, validate=False)
-    @user_ns.response(200, 'Success')
-    @user_ns.response(400, 'SMS System and Validation Error')
-    @user_ns.response(401, 'Not Authorized')
-    @user_ns.response(403, 'Not available')
-    @token_required
-    def post(self,current_user):
-        if 'couponCode' not in user_ns.payload:
-            return make_response(jsonify({"success":False,"reason":"couponCode","message":COUPON['REQUIRED']}),400)
-
-        coupon = Coupon.query.filter_by(title=user_ns.payload['couponCode']).first()
-
-        if not coupon:
-            return make_response(jsonify({"success":False,"reason":"couponNotFound","message":COUPON['INVALID']}),400)
-
-        if coupon.expired:
-            return make_response(jsonify({"success":False,"reason":"couponNotFound","message":COUPON['EXPIRED']}),403)
-
-        user_coupon = UserCoupon.query.filter_by(user_id=current_user.id,coupon_id=coupon.id).first()
-        if not user_coupon:
-            return make_response(jsonify({"success":False,"reason":"couponNotFound","message":COUPON['NOT_YOURS']}),403)
-
-        if user_coupon.used:
-            return make_response(jsonify({"success":False,"reason":"couponUsed","message":COUPON['USED']}),403)
-
-        unpaid_order = Order.query.filter_by(user_id=current_user.id,status=OrderStatus.UNPAID).first()
-        unpaid_order.total_discount += coupon.amount
-        user_coupon.used = True
-
-        db.session.add(unpaid_order)
-        db.session.add(user_coupon)
-        db.session.commit()
-
-        message = COUPON['FIXED'].replace('amount',str(int(coupon.amount)))
-        return make_response(jsonify({"success":True,"message":message}),200)
-
-
-# @user_ns.route('/order/details')
-# class GetOrderDetails(Resource):
-#     parser = rest_api.parser()
-#     parser.add_argument('Authorization',type=str,location='headers',help='Bearer Access Token',required=False)
-#     @user_ns.header('Authorization: Bearer', 'JWT TOKEN', required=False)
-#     @user_ns.doc(parser=parser,validate=True)
-#     @user_ns.response(200, "Success",order_details_model)
-#     @token_required
-#     def get(self,current_user):
-#         order_result = Order.query.filter_by(user_id = current_user.id,status = OrderStatus.UNPAID).order_by(Order.created.desc())
-#         result = []
-#         for order in order_result:
-#
-#             orderId = order.id
-#
-#             shipment_methods = []
-#             for method in ItemShipment.query.join(ShipmentMethod).filter(ItemShipment.item_id==order.item_id).order_by(ShipmentMethod.title.desc()):
-#                 shipment_methods.append({
-#                     "methodId":method.shipment_method.id,
-#                     "title":method.shipment_method.title,
-#                     "price":str(method.price)
-#                 })
-#
-#             item_garanties = []
-#             for item_garanty in ItemGaranty.query.join(Garanty).filter(ItemGaranty.item_id==order.item_id).order_by(Garanty.title.desc()):
-#                 item_garanties.append({
-#                     "methodId":item_garanty.garanty.id,
-#                     "title":item_garanty.garanty.title,
-#                     "price":str(item_garanty.price)
-#                 })
-#
-#             result.append({
-#                 "order_details":{
-#                     "orderId":orderId,
-#                     "shipment_methods":shipment_methods,
-#                     "item_garanties":item_garanties
-#                 }
-#             })
-#         return make_response(jsonify(result),200)

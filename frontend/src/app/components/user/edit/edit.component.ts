@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef ,HostListener } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
 import { SharingService } from 'src/app/services/sharing.service';
@@ -25,7 +25,20 @@ export class EditUserComponent implements OnInit {
   @ViewChild(ErrorComponent) error: ErrorComponent ;
   @ViewChild(SuccessComponent) success: SuccessComponent ;
 
-  constructor(private el: ElementRef, private shared:SharingService,private userService:UserService,private formBuilder: FormBuilder) { }
+  constructor(
+    private el: ElementRef,
+    private shared:SharingService,
+    private userService:UserService,
+    private formBuilder: FormBuilder,
+    private liveUser:LiveUserService,
+  ) { }
+
+  @HostListener('mouseenter') onMouseEnter() {
+    this.shared.visibleProfile = true;
+  }
+  @HostListener('mouseleave') onMouseLeave() {
+    this.shared.visibleProfile = false;
+  }
 
   ngOnInit() {
     this.el.nativeElement.getElementsByClassName('editProfileContainer')[0].classList.add('myCfnAnimation-slideright');
@@ -57,6 +70,7 @@ export class EditUserComponent implements OnInit {
     });
   }
   goBack(){
+    this.liveUser.getProfileStatus();
     this.shared.lastClass = "myCfnAnimation-slideleft";
     this.el.nativeElement.getElementsByClassName('editProfileContainer')[0].classList.add('myCfnAnimation-slideright-none');
     setTimeout(()=>{
@@ -66,6 +80,8 @@ export class EditUserComponent implements OnInit {
   }
 
   SaveProfile(eventDate) {
+    this.liveUser.getProfileStatus();
+    this.liveUser.getStatus();
     eventDate.preventDefault();
     this.submitted = true;
     if (this.registerForm.invalid) {

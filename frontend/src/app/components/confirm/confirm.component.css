@@ -1,0 +1,74 @@
+.confirm-wrapper {
+  z-index: 1000000;
+  position: fixed;
+  top:0;
+  left: 0;
+  right: 0;
+  bottom:0;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /*display: none;*/
+}
+
+.confirm-box {
+width: 570px;
+border-radius: 16px;
+box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.08);
+background-color: #ffffff;
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+padding: 30px;
+position: relative;
+animation: fadeInHoriz 0.8s ease forwards;
+flex:1;
+}
+
+.config-close {
+position: absolute;
+right: 16px;
+top: 16px;
+font-size: 25px;
+color: #888;
+cursor: pointer;
+}
+
+.config-close:hover {
+color: #212121;
+}
+
+.confirm-box > img {
+max-width: 100%;
+}
+
+.confirm-trackingTitle {
+font-size: 20px;
+color: #707070;
+margin-bottom: 15px;
+}
+
+.confirm-trackingCode {
+font-size: 36px;
+color: #212121;
+}
+
+.confirm-text {
+font-size: 28px;
+color: #212121;
+display: flex;
+align-items: center;
+justify-content: center;
+padding-bottom: 50px;
+border-bottom: solid 1px #ebebeb;
+width: 100%;
+box-sizing: border-box;
+}
+
+.confirm-text > img {
+margin-left: 12px;
+}

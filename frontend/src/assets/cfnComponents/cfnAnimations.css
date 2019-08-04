@@ -34,16 +34,44 @@
 }
 
 .cfnAnimation-fadeIn {
-  animation: fadeIn 0.4s ease forwards;
+  animation: fadeIn 0.5s ease forwards;
 }
 
 .cfnAnimation-slideup {
-  animation: slideup .5s ease both;
+  animation: slidedown .7s ease both;
   display: block !important;
 }
 
 .cfnAnimation-slidedown {
-  animation: slidedown .5s ease both;
+  animation: slidedownNone .7s ease both;
+}
+
+.cfnAnimation-slidedown-none {
+  animation: slideupNone .7s ease both;
+}
+
+@keyframes slideupNone {
+  from {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes slidedownNone {
+  from {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0px);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
 }
 
 @keyframes slidedown {

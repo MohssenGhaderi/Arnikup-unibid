@@ -1,6 +1,4 @@
-.shop-container:parent{
-  filter : blur(3px);
-}
+
 .shop-container {
     margin-bottom: 200px;
     background-color: #f5f5f5;
@@ -18,7 +16,7 @@
     position: absolute;
     z-index: 1000000;
     padding-top: 42px;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { SharingService } from 'src/app/services/sharing.service';
 import { LiveUserService } from 'src/app/services/live-user.service';
@@ -18,12 +18,20 @@ export class ShoppingCardComponent implements OnInit {
   @ViewChild(LoadingComponent) loading: LoadingComponent ;
   @ViewChild(ErrorComponent) error: ErrorComponent ;
   @ViewChild(SuccessComponent) success: SuccessComponent ;
+
   Link = Links;
   userSyncTimer;
   carts:Cart[];
   totalPrice = 0;
+
   constructor(private el: ElementRef, private userService:UserService,private shared:SharingService,private liveUser:LiveUserService) { }
 
+  @HostListener('mouseenter') onMouseEnter() {
+    this.shared.visibleProfile = true;
+  }
+  @HostListener('mouseleave') onMouseLeave() {
+    this.shared.visibleProfile = false;
+  }
 
   ngOnInit() {
     this.el.nativeElement.getElementsByClassName('profileContainer')[0].classList.add(this.shared.basketClass);

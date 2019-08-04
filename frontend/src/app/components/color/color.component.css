@@ -1,0 +1,49 @@
+[data-color] {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-left: 16px;
+}
+
+[data-color="green"] {
+  background-color: #4caf50;
+}
+
+[data-color="red"] {
+  background-color: #f44336;
+}
+
+[data-color="blue"] {
+  background-color: #2196f3;
+}
+
+[data-color="white"] {
+  background-color: #fff;
+  border: 1px solid #d3d3d3;
+}
+
+.color-circle {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-left: 16px;
+}
+
+.سبز {
+  background-color: #4caf50;
+}
+
+.آبی {
+  background-color: #2196f3;
+}
+
+.قرمز {
+  background-color: #f44336;
+}
+
+.سفید {
+  background-color: #fff;
+  border: 1px solid #d3d3d3;
+}

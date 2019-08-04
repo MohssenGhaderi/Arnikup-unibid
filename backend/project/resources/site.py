@@ -44,72 +44,55 @@ slider_auction_model = site_ns.model('SliderAuctions', {
 class SliderAuctions(Resource):
     parser = rest_api.parser()
     parser.add_argument('Authorization',type=str,location='headers',help='Bearer Access Token',required=False)
-    parser.add_argument('start', location='args', help='starting point')
-    parser.add_argument('stop', location='args', help='stopping point')
     @site_ns.header('Authorization: Bearer', 'JWT TOKEN', required=False)
     @site_ns.doc(parser=parser,validate=True)
     @site_ns.response(200, "Success",slider_auction_model)
     @token_optional
     def get(self,current_user):
-        start = 0
-        stop = 3
-        if 'start' in request.args:
-            if request.args['start'] != '':
-                start = int(request.args['start'])
-
-        if 'stop' in request.args:
-            if request.args['stop'] != '':
-                stop = int(request.args['stop'])
-
+        authToken = False
         result = Auction.query.join(Advertisement).filter(Auction.start_date > datetime.now(),Auction.is_active==True).order_by(asc(Auction.start_date))
-        lastAuctions = Auction.query.filter(Auction.start_date > datetime.now(),Auction.is_active==True).order_by(asc(Auction.start_date)).slice(start,stop)
-
         auctions = []
-        for auction in lastAuctions:
-            if auction in result:
-                participant_icons = []
-                for participant in auction.participants.order_by(UserAuctionParticipation.created.desc()).limit(6):
-                    if avatar:
-                        participant_icons.append(participant.avatar.image.split("'")[1])
+        for auction in result:
+            participant_icons = []
+            for participant in auction.participants:
+                if avatar:
+                    participant_icons.append(participant.avatar.image.split("'")[1])
 
+            participants = {
+                "icons":[],
+                "count":0
+            }
+
+            if auction.participants.count() > 0 :
                 participants = {
-                    "icons":[],
-                    "count":0
-                }
+                "icons":participant_icons,
+                "count":auction.participants.count()}
+
+            liked = False
+            participated = False
+
+            if current_user:
+                authToken = True
+                liked = auction in current_user.auction_likes
+                participated = auction in current_user.auctions
+
+            auctions.append({
+            "auctionId":auction.id,
+            "image":auction.advertisement.image.split("'")[1],
+            "likeCount":auction.likes.count(),
+            "participants":participants,
+            "maxMembers":auction.max_members,
+            "liked":liked,
+            "participated":participated,
+            "tag":auction.tag,
+            "title":auction.title,
+            "basePrice":str(auction.base_price),
+            "maxPrice":str(auction.max_price),
+            "remainedTime":auctionMillisecondsDeadline(auction.start_date),
+            })
 
 
-                if auction.participants.count() > 0 :
-                    participants = {
-                    "icons":participant_icons,
-                    "count":auction.participants.count()}
-
-                liked = False
-                participated = False
-
-                if current_user:
-                    liked = auction in current_user.auction_likes
-                    participated = auction in current_user.auctions
-
-                auctions.append({
-                    "auctionId":auction.id,
-                    "image":auction.advertisement.image.split("'")[1],
-                    "likeCount":auction.likes.count(),
-                    "participants":participants,
-                    "maxMembers":auction.max_members,
-                    "liked":liked,
-                    "participated":participated,
-                    "tag":auction.tag,
-                    "title":auction.title,
-                    "basePrice":str(auction.base_price),
-                    "maxPrice":str(auction.max_price),
-                    "remainedTime":auctionMillisecondsDeadline(auction.start_date),
-                })
-
-        if start == 0 and stop == 3:
-            total = Auction.query.join(Advertisement).filter(Auction.start_date > datetime.now(),Auction.is_active==True).count()
-            return make_response(jsonify({"success":True,"total":total,"sliderAuctions":auctions}),200)
-
-        return make_response(jsonify({"success":True,"sliderAuctions":auctions}),200)
+        return make_response(jsonify({"success":True,"authToken":authToken,"sliderAuctions":auctions}),200)
 
 charity_fields = site_ns.model('ParticipantsFields', {
     "icon":fields.String(),
@@ -117,9 +100,9 @@ charity_fields = site_ns.model('ParticipantsFields', {
 })
 
 status_fields = site_ns.model('ParticipantsFields', {
-    "bidPrice":fields.Integer(),
-    "name":fields.String(),
-    "avatar":fields.String()
+    "lastBidPrice":fields.Integer(),
+    "winnerName":fields.String(),
+    "winnerAvatar":fields.String()
 })
 
 coin_fields = site_ns.model('CoinFields', {
@@ -159,32 +142,19 @@ last_auction_model = site_ns.model('LastAuctions', {
 class LastAuctions(Resource):
     parser = rest_api.parser()
     parser.add_argument('Authorization',type=str,location='headers',help='Bearer Access Token',required=False)
-    parser.add_argument('start', location='args', help='starting point')
-    parser.add_argument('stop', location='args', help='stopping point')
     @site_ns.header('Authorization: Bearer', 'JWT TOKEN', required=False)
     @site_ns.doc(parser=parser,validate=True)
     @site_ns.response(200, "Success",last_auction_model)
     @token_optional
     def get(self,current_user):
-        start = 0
-        stop = 3
-        if 'start' in request.args:
-            if request.args['start'] != '':
-                start = int(request.args['start'])
-
-        if 'stop' in request.args:
-            if request.args['stop'] != '':
-                stop = int(request.args['stop'])
-
-
-        result = Auction.query.filter(Auction.start_date > datetime.now(),Auction.is_active==True).order_by(asc(Auction.start_date)).slice(start,stop)
+        result = Auction.query.filter(Auction.start_date > datetime.now(),Auction.advertisement==None,Auction.is_active==True).order_by(asc(Auction.start_date))
         auctions = []
         levels = Level.query.count()
         authToken = False
 
         for auction in result:
             participant_icons = []
-            for participant in auction.participants.order_by(UserAuctionParticipation.created.desc()).limit(3):
+            for participant in auction.participants:
                 if avatar:
                     participant_icons.append(participant.avatar.image.split("'")[1])
 
@@ -192,18 +162,17 @@ class LastAuctions(Resource):
                 "icons":[],
                 "count":0
             }
-
-            if auction.participants.count() > 0 :
-                participants = {
-                "icons":participant_icons,
-                "count":auction.participants.count()}
-
             charity = {}
             if auction.charity:
                 charity ={
                     "icon":auction.charity.icon.split("'")[1],
                     "description":auction.charity.description
                 }
+
+            if auction.participants.count() > 0 :
+                participants = {
+                "icons":participant_icons,
+                "count":auction.participants.count()}
 
             liked = False
             participated = False
@@ -249,16 +218,16 @@ class LastAuctions(Resource):
                 last_bid = Bid.query.filter_by(auction_id=auction.id).order_by(desc(Bid.created)).first()
                 if last_bid :
                     status = {
-                        "bidPrice":str(last_bid.bid_price),
-                        "name":last_bid.user_plan.user.username,
-                        "avatar":last_bid.user_plan.user.avatar.image.split("'")[1],
+                        "lastBidPrice":str(last_bid.bid_price),
+                        "winnerName":last_bid.user_plan.user.username,
+                        "winnerAvatar":last_bid.user_plan.user.avatar.image.split("'")[1],
                         }
                     auctions.append({
                     "status":status,
                     "charity":charity,
                     "coins":coins,
                     "auctionId":auction.id,
-                    "image":auction.image.split("'")[1],
+                    "image":auction.item.images.split("'")[1],
                     "level":auction.level.number,
                     "maxLevel":levels,
                     "likeCount":auction.likes.count(),
@@ -280,7 +249,7 @@ class LastAuctions(Resource):
                     "coins":coins,
                     "charity":charity,
                     "auctionId":auction.id,
-                    "image":auction.image.split("'")[1],
+                    "image":auction.item.images.split("'")[1],
                     "level":auction.level.number,
                     "maxLevel":levels,
                     "likeCount":auction.likes.count(),
@@ -303,7 +272,7 @@ class LastAuctions(Resource):
                 "coins":coins,
                 "charity":charity,
                 "auctionId":auction.id,
-                "image":auction.image.split("'")[1],
+                "image":auction.item.images.split("'")[1],
                 "level":auction.level.number,
                 "maxLevel":levels,
                 "likeCount":auction.likes.count(),
@@ -320,10 +289,6 @@ class LastAuctions(Resource):
                 "remainedTime":remainedTime,
                 "discount":discount,
                 })
-
-        if start == 0 and stop == 3:
-            total = Auction.query.filter(Auction.start_date > datetime.now(),Auction.is_active==True).count()
-            return make_response(jsonify({"success":True,"authToken":authToken,"total":total,"lastAuctions":auctions}),200)
 
         return make_response(jsonify({"success":True,"authToken":authToken,"lastAuctions":auctions}),200)
 
@@ -352,73 +317,3 @@ class Categories(Resource):
                 "icon":category.icon.split("'")[1],
                 })
         return make_response(jsonify({"categories":categories}),200)
-
-
-finished_auction_base_model = site_ns.model('FinishedAuctionBase', {
-    "status":fields.Nested(status_fields),
-    "auctionId":fields.Integer(),
-    "level":fields.Integer(),
-    "maxLevel":fields.Integer(),
-    "maxMembers":fields.Integer(),
-    'image':fields.String(),
-    "liked":fields.Boolean,
-    "participated":fields.Boolean,
-    "title":fields.String(),
-    "basePrice":fields.Integer(),
-    "maxPrice":fields.Integer(),
-    "discount":fields.Integer(),
-    "date":fields.String()
-})
-
-finished_auction_model = site_ns.model('FinishedAuctions', {
-    'finishedAuctions':fields.Nested(finished_auction_base_model),
-})
-
-@site_ns.route('/finished/auctions')
-class FinishedAuctions(Resource):
-    parser = rest_api.parser()
-    parser.add_argument('Authorization',type=str,location='headers',help='Bearer Access Token',required=False)
-    @site_ns.header('Authorization: Bearer', 'JWT TOKEN', required=False)
-    @site_ns.doc(parser=parser,validate=True)
-    @site_ns.response(200, "Success",finished_auction_model)
-    @token_optional
-    def get(self,current_user):
-        result = Auction.query.filter(Auction.start_date < datetime.now(),Auction.done==True).order_by(Auction.start_date.desc())
-        auctions = []
-        levels = Level.query.count()
-
-        for auction in result:
-            participant_icons = []
-
-            winnerBid = Bid.query.filter_by(auction_id=auction.id,won=True).order_by(Bid.created.desc()).first()
-
-            liked = False
-            participated = False
-            bids = 0
-            if current_user:
-                liked = auction in current_user.auction_likes
-                participated = auction in current_user.auctions
-
-            discount = math.ceil(((auction.item.price - winnerBid.bid_price) / auction.item.price )*100)
-
-            status = {
-                "bidPrice":str(winnerBid.bid_price),
-                "name":winnerBid.user_plan.user.username,
-                "avatar":winnerBid.user_plan.user.avatar.image.split("'")[1],
-                }
-            auctions.append({
-            "status":status,
-            "auctionId":auction.id,
-            "image":auction.image.split("'")[1],
-            "level":auction.level.number,
-            "maxLevel":levels,
-            "liked":liked,
-            "participated":participated,
-            "title":auction.title,
-            "basePrice":str(auction.base_price),
-            "maxPrice":str(winnerBid.bid_price),
-            "date":str(winnerBid.updated),
-            "discount":discount,
-            })
-
-        return make_response(jsonify({"lastAuctions":auctions}),200)

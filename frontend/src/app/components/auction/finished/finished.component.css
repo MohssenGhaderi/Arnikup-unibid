@@ -1,0 +1,135 @@
+.cart-share-fav {
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  display: flex;
+  left: 20px;
+  align-items: center;
+}
+
+.cart-share-fav > img {
+  width: 20px;
+  height: 20px;
+  margin-left: 20px;
+}
+
+.cart-suggest .cart-footer {
+  border: none;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.cart-suggest  > a{
+  cursor: pointer;
+  pointer-events: initial !important;
+}
+
+.cart-dated .cart-footer {
+  border-top: 1px solid #ebebeb;
+}
+
+.cart-image {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  max-width: 100%;
+}
+
+.cart-title {
+  font-size: 20px;
+  text-align: center;
+  margin: 15px 0;
+}
+
+.cart-off {
+  font-size: 13px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.cart-off-after {
+  color: #ec407a;
+}
+
+.cart-off-percent {
+  margin-left: 20px;
+  width: 42px;
+  height: 42px;
+  background: url(src/assets/resources/images/assets/png/path.png) no-repeat center center;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+}
+
+.cart-register-date {
+  width: 240px;
+  height: 48px;
+  border-radius: 24px;
+  border: solid 1px #eee;
+  margin: 30px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cart-register-date > span {
+  font-size: 14px;
+  color: #212121;
+}
+
+.cart-register-date > img {
+  margin-left: 5px;
+}
+
+.cart-footer {
+  height: 52px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  font-size: 13px;
+  justify-content: space-between;
+}
+
+.cart-footer-rank {
+  display: flex;
+  align-items: center;
+}
+
+.cart-footer-rank > img {
+  margin-left: 6px;
+  margin-bottom: 5px;
+}
+
+.cart-footer-contributer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cart-footer-contributer > span {
+  margin-left: 15px;
+}
+
+.cart-footer-contributer  > img{
+  border-radius: 50%;
+  position: relative;
+}
+
+.cart-footer-contributer  > img:nth-of-type(3){
+  margin-left: -10px;
+}
+
+.cart-footer-contributer  > img:nth-of-type(2){
+  margin-left: -10px;
+}
+
+.cart-suggest .cart-footer-contributer > * {
+  margin: 0 5px;
+}
+
+.cart-suggest .cart-footer-contributer > span:first-of-type {
+  color: #707070;
+}

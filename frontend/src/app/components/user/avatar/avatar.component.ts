@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, QueryList, ElementRef, ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChild, QueryList, ElementRef, ViewChildren ,HostListener} from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { SharingService } from 'src/app/services/sharing.service';
 import { LiveUserService } from 'src/app/services/live-user.service';
@@ -28,7 +28,12 @@ export class AvatarComponent implements OnInit {
   firstTime;
 
   constructor(private el: ElementRef, private userService:UserService,private shared:SharingService,private liveUser:LiveUserService) { }
-
+  @HostListener('mouseenter') onMouseEnter() {
+    this.shared.visibleProfile = true;
+  }
+  @HostListener('mouseleave') onMouseLeave() {
+    this.shared.visibleProfile = false;
+  }
   ngOnInit() {
     this.el.nativeElement.getElementsByClassName('AvatarContainer')[0].classList.add('myCfnAnimation-slideright');
     this.loading.show();
@@ -85,6 +90,8 @@ export class AvatarComponent implements OnInit {
   }
 
   confirmAvatar(eventData){
+    this.liveUser.getProfileStatus();
+    this.liveUser.getStatus();
     eventData.preventDefault();
     this.loading.show();
     this.userService.SaveAvatar({"avatarId":this.selected.avatarId}).subscribe(result=>{

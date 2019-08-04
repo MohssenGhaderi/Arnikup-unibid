@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef ,HostListener } from '@angular/core';
 import { LoadingComponent } from 'src/app/components/loading/loading.component';
 import { ErrorComponent } from 'src/app/components/error/error.component';
 import { SuccessComponent } from 'src/app/components/success/success.component';
@@ -19,7 +19,12 @@ export class ShipmentPreviewComponent implements OnInit {
   address:Address;
   Link = Links;
   constructor(private el: ElementRef,private userService:UserService,private shared:SharingService) { }
-
+  @HostListener('mouseenter') onMouseEnter() {
+    this.shared.visibleProfile = true;
+  }
+  @HostListener('mouseleave') onMouseLeave() {
+    this.shared.visibleProfile = false;
+  }
   ngOnInit() {
     this.el.nativeElement.getElementsByClassName('shipmentContainer')[0].classList.add(this.shared.basketClass);
 

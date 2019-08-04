@@ -76,7 +76,7 @@ export class ProgressComponent implements OnInit {
         }
       }
 
-      if(this.time>10 && !this.fixed){
+      if(this.time>10){
         this.el.nativeElement.getElementsByClassName('progressItem-empty')[0].remove();
       }
 

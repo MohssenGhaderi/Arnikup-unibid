@@ -1,7 +1,9 @@
-<div class="cfnLoaderWrapper" *ngIf="loading">
-    <div class="cfnLoader"></div>
-  </div>
-  
-<div class="auctionList">
-<app-auctionItem *ngFor="let item of auctions?.lastAuctions" [auction]="item"></app-auctionItem>
+<app-loading></app-loading>
+
+<div *ngIf="auctions" class="auctionList">
+  <app-auctionItem *ngFor="let item of auctions.lastAuctions" [auction]="item"></app-auctionItem>
+</div>
+
+<div *ngIf="items.length" class="auctionList">
+  <app-cart-loading *ngFor="let item of items"></app-cart-loading>
 </div>

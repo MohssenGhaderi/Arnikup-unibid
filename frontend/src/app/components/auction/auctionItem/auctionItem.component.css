@@ -20,11 +20,12 @@
   transition:all 250ms cubic-bezier(.02, .01, .47, 1);
   overflow: hidden;
   animation: fadeInHoriz 0.8s ease;
+  outline: none;
 }
 
-.cart * {
+/*.cart * {
   pointer-events: none;
-}
+}*/
 
 .cart-tag {
   width: 74px;
@@ -77,14 +78,15 @@
 }
 
 .cart-share-fav .cart-participated {
-  margin-right: auto;
-  margin-left: 0;
+  /*margin-right: auto;
+  margin-left: 0;*/
 }
 
 .cart-share-fav > img {
   width: 20px;
   height: 20px;
   margin-left: 20px;
+  pointer-events: all;
 }
 
 .cart-title {
@@ -273,7 +275,7 @@
   margin-left: 16px;
 }
 
-.cart .hoveredAuction {
+/*.cart .hoveredAuction {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -358,7 +360,7 @@
 .hoveredAuction .cfnButton {
   bottom: 50px;
   position: absolute;
-}
+}*/
 
 .cart .progress {
   margin-top: 36px;

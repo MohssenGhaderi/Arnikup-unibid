@@ -1,0 +1,14 @@
+<div #mainWrapper>
+  <app-header></app-header>  
+    <main>
+      <p class="searchResult-title">نتایج یافت شده : {{productCount}} محصول </p>
+      <div class="searchResult">
+        <app-auctionItem *ngFor="let item of auctions?.lastAuctions" [auction]="item"></app-auctionItem>
+        <app-error></app-error>
+        <app-success></app-success>
+        <app-loading></app-loading>
+      </div>
+   </main>
+  <app-footer></app-footer>
+</div>
+<app-shop [mainWrapperElem]="mainWrapperElem" *ngIf="this.shared.shop"></app-shop>

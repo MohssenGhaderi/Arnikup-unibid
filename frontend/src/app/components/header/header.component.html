@@ -1,51 +1,49 @@
 <header>
-  <div class="header-top">
-   <span class="header-top-text">حراجی و فروشگاه بزرگ آنلاین</span>
+  <div class="header-top" (click)="hideProfileMenu($event)">
+    <span class="header-top-text">حراجی و فروشگاه بزرگ آنلاین</span>
     <div dir="ltr" class="header-top-info">
-        <img src="assets/resources/images/assets/svg/Telegram.svg" class="telegram">
-        <img src="assets/resources/images/assets/svg/Instagram.svg" class="instagram">
-        <img src="assets/resources/images/assets/svg/Twitter.svg" class="twitter">
-        <span class="line"></span>
-        <span>راهنما</span>
-        <img src="assets/resources/images/assets/svg/question.svg" class="question">
+      <img shareButton="telegram" src="assets/resources/images/assets/svg/Telegram.svg" class="telegram">
+      <img src="assets/resources/images/assets/svg/Instagram.svg" class="instagram">
+      <img shareButton="twitter" src="assets/resources/images/assets/svg/Twitter.svg" class="twitter">
+      <span class="line"></span>
+      <span>راهنما</span>
+      <img src="assets/resources/images/assets/svg/question.svg" class="question">
+      <span class="header-top-info-link" routerLink = "/finished">حراجی های برگزار شده</span>
     </div>
   </div>
-  <div class="header-content" (click)="headerClicked($event)">
-    <img src="assets/resources/images/assets/png/logo.png" class="logo">
-  <div class="cfnSearch">
-    <input type="search" (click)="searchBoxBehaviour($event)" #txtSearch  class="cfnSearch-input" autocomplete="false"  placeholder="کالای مورد نظر خود را جستجو کنید...">
-    <div class="search-toolbar-suggestion" #searchToolbarSuggestion>
-      <ul class="search-toolbar-list">
-        <li (click)="searchItemClick($event)" *ngFor="let item of searchItems?.categories" class="search-toolbar-list-item"><img [src]="Link.category(item.icon)">{{item.title}}</li>
+  <div class="header-content" (click)="hideProfileMenu($event)">
+    <a href="/">
+      <img src="assets/resources/images/assets/png/logo.png" class="logo">
+    </a>
+
+    <app-search-box></app-search-box>
+
+    <div class="header-content-loginInfo" dir="ltr" *ngIf="isLoggedIn === true">
+      <app-profile *ngIf="this.shared.toggleMenu.profile"></app-profile>
+      <app-avatar *ngIf="this.shared.toggleMenu.avatar"></app-avatar>
+      <app-finance *ngIf="this.shared.toggleMenu.finance"></app-finance>
+      <app-shopping-card *ngIf="this.shared.toggleMenu.shoppingCart"></app-shopping-card>
+      <app-score *ngIf="this.shared.toggleMenu.score" [username]="username"></app-score>
+      <app-edit-user *ngIf="this.shared.toggleMenu.edit"></app-edit-user>
+      <app-shipment-preview *ngIf="this.shared.toggleMenu.preview"></app-shipment-preview>
+      <app-shipment-edit *ngIf="this.shared.toggleMenu.address"></app-shipment-edit>
+      <app-payment *ngIf="this.shared.toggleMenu.payment"></app-payment>
+
+      <div class="header-content-loginInfo-pic" (click)="toggleProfileMenu()">
+        <img [src]="Link.avatar(userInfo?.avatar)" alt="" class="profileSelector">
+        <span class="badge">{{userInfo?.level}}</span>
+      </div>
+      <ul class="header-content-loginInfo-stats" (click)="hideProfileMenu()">
+        <li><img src="assets/resources/images/assets/svg/Coin.svg" class="coin" (click)="shop()"><span>{{userInfo?.coins}}</span></li>
+        <li><img src="assets/resources/images/assets/svg/Gem.svg" class="gem" (click)="shop()"><span>{{userInfo?.gems}}</span></li>
+        <li><img src="assets/resources/images/assets/svg/Notification.svg" class="notification"><span>{{userInfo?.notifications.length}}</span></li>
       </ul>
-    </div>
-    <img src="assets/resources/images/assets/svg/magnifying-glass-3.svg" class="cfnSearch-submit magnifying-glass-3">
-  </div>
-  <div class="header-content-loginInfo" dir="ltr" *ngIf="isLoggedIn === true">
-    <app-profile *ngIf="this.shared.toggleMenu.profile"></app-profile>
-    <app-avatar *ngIf="this.shared.toggleMenu.avatar"></app-avatar>
-    <app-finance *ngIf="this.shared.toggleMenu.finance"></app-finance>
-    <app-shopping-card *ngIf="this.shared.toggleMenu.shoppingCart"></app-shopping-card>
-    <app-score *ngIf="this.shared.toggleMenu.score" [username]="username"></app-score>
-    <app-edit-user *ngIf="this.shared.toggleMenu.edit"></app-edit-user>
-    <app-shipment-preview *ngIf="this.shared.toggleMenu.preview"></app-shipment-preview>
-    <app-shipment-edit *ngIf="this.shared.toggleMenu.address"></app-shipment-edit>
-    <app-payment *ngIf="this.shared.toggleMenu.payment"></app-payment>
 
-    <div class="header-content-loginInfo-pic" (click)="toggleProfileMenu()">
-        <img [src]="Link.avatar(userInfo?.avatar)" alt="" class="">
-        <span class="badge">{{userInfo?.orderCount}}</span>
     </div>
-    <ul class="header-content-loginInfo-stats">
-      <li><img src="assets/resources/images/assets/svg/Coin.svg" class="coin" (click)="shared.shop=true;"><span>{{userInfo?.coins}}</span></li>
-      <li><img src="assets/resources/images/assets/svg/Gem.svg" class="gem" (click)="shared.shop=true;"><span>{{userInfo?.gems}}</span></li>
-      <li><img src="assets/resources/images/assets/svg/Notification.svg" class="notification"><span>{{userInfo?.notifications.length}}</span></li>
-    </ul>
 
-  </div>
-  <div class="header-content-unauthorized" *ngIf="isLoggedIn === false">
-    <span routerLink = '/signup' class="header-content-unauthorized-register">ثبت نام</span>
-    <span routerLink = "/signin">ورود</span>
-  </div>
+    <div class="header-content-unauthorized" dir="ltr" *ngIf="isLoggedIn === false">
+      <span routerLink = "/signin">ورود</span>
+      <span routerLink = '/signup' class="header-content-unauthorized-register">ثبت نام</span>
+    </div>
   </div>
 </header>
