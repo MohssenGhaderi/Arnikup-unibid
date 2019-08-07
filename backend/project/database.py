@@ -16,7 +16,7 @@ def init_db():
     from  .model import auction_plan
     from  .model import auction
     from  .model import category
-    from  .model import gift
+    from  .model import coupon
     from  .model import insurance
     from  .model import item
     from  .model import manufacture_product
@@ -30,11 +30,14 @@ def init_db():
     from  .model import product
     from  .model import role
     from  .model import shipment_method
+    from  .model import item_shipment
+    from  .model import item_garanty
+    from  .model import garanty
     from  .model import shipment
     from  .model import user_auction_like
     from  .model import user_auction_participation
     from  .model import user_auction_view
-    from  .model import user_gift
+    from  .model import user_coupon
     from  .model import user_plan
     from  .model import user_plan_payment
     from  .model import user_plan_gem_payment
@@ -52,6 +55,7 @@ def init_db():
     from  .model import credit_log
     from  .model import avatar
     from  .model import user_gem
+    from  .model import user_coin
     from  .model import chest_avatar
     from  .model import chest
     from  .model import coin
@@ -98,7 +102,7 @@ def migrate():
     from  .model import auction_plan
     from  .model import auction
     from  .model import category
-    from  .model import gift
+    from  .model import coupon
     from  .model import insurance
     from  .model import item
     from  .model import manufacture_product
@@ -112,11 +116,14 @@ def migrate():
     from  .model import product
     from  .model import role
     from  .model import shipment_method
+    from  .model import item_shipment
+    from  .model import item_garanty
+    from  .model import garanty
     from  .model import shipment
     from  .model import user_auction_like
     from  .model import user_auction_participation
     from  .model import user_auction_view
-    from  .model import user_gift
+    from  .model import user_coupon
     from  .model import user_plan
     from  .model import user_plan_payment
     from  .model import user_plan_gem_payment
@@ -148,7 +155,7 @@ def migrate():
     from  .model import user_activity
     from  .model import setting
     manager.run()
-
-print ("migrating ... ")
-migrate()
-print ("migration done..!")
+#
+# print ("migrating ... ")
+# migrate()
+# print ("migration done..!")

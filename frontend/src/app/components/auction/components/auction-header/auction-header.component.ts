@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BaseAuction } from 'src/app/models/auction/baseAuction.model';
 import { SharingService } from 'src/app/services/sharing.service';
-
+import { Links } from 'src/app/links.component';
 
 @Component({
   selector: 'app-auction-header',
@@ -10,24 +10,38 @@ import { SharingService } from 'src/app/services/sharing.service';
 })
 export class AuctionHeaderComponent implements OnInit {
   @Input() auction: BaseAuction;
-  textValue;
-  constructor(public shared:SharingService) {
-    this.textValue = 5;
-  }
+  Link = Links;
 
+  constructor(public shared:SharingService) {}
+  subscription: any;
+  toggleSocial = false;
   ngOnInit() {
+    this.subscription = this.shared.getSocialStayEmitter().subscribe((auctionId)=>{
+      if(this.auction.auctionId==auctionId){
+        setTimeout(()=>{
+          this.toggleSocial = false;
+        },300);
+      }
+    });
   }
-
-  toggleAutobid(){
-    this.shared.autobid.state = !this.shared.autobid.state;
-  }
-
-  onDeadlineChange(value){
-    this.shared.autobid.deadline = value;
+  closeOpenedSocial(eventData){
+    if(this.toggleSocial){
+      this.shared.emitCloseSocial(this.auction.auctionId);
+    }
+    eventData.stopPropagation();
   }
   showProductDetails(){
-    console.log('pd');
     this.shared.productDetails = true;
   }
-
+  closeSocial(eventData){
+    if(this.toggleSocial){
+      this.shared.emitCloseSocial(this.auction.auctionId);
+      setTimeout(()=>{
+        this.toggleSocial = false;
+      },300);
+    }else{
+      this.toggleSocial = true;
+    }
+    eventData.stopPropagation();
+  }
 }

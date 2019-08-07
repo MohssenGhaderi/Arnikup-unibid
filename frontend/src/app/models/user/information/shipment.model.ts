@@ -4,7 +4,7 @@ export class ShipmentInformation {
   fullName : string;
   email : string;
   city:string;
-  state:string;
+  state:State;
   address:string;
   workPlace:string;
   states : State[];

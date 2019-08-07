@@ -41,8 +41,7 @@ export class ConfirmComponent implements OnInit {
             this.service.BuyCoin({"coinId":this.buy.Id}).subscribe(result=>{
               this.success.show(result,1000).then(()=>{
                 this.service.PaymentGateway({"GUID":result.GUID}).subscribe(pay=>{
-                  console.log(pay);
-                  console.log('redirect to bank');
+                  document.location.href = "https://www.zarinpal.com/pg/StartPay/"+pay.authority;
                 },
                 error=>{
                   this.loading.hide();
@@ -62,8 +61,7 @@ export class ConfirmComponent implements OnInit {
             this.service.BuyGem({"gemId":this.buy.Id}).subscribe(result=>{
               this.success.show(result,1000).then(()=>{
                 this.service.PaymentGateway({"GUID":result.GUID}).subscribe(pay=>{
-                  console.log(pay);
-                  console.log('redirect to bank');
+                  document.location.href = "https://www.zarinpal.com/pg/StartPay/"+pay.authority;
                 },
                 error=>{
                   this.loading.hide();
@@ -83,8 +81,7 @@ export class ConfirmComponent implements OnInit {
             this.service.BuyChest({"chestId":this.buy.Id}).subscribe(result=>{
               this.success.show(result,1000).then(()=>{
                 this.service.PaymentGateway({"GUID":result.GUID}).subscribe(pay=>{
-                  console.log(pay);
-                  console.log('redirect to bank');
+                  document.location.href = "https://www.zarinpal.com/pg/StartPay/"+pay.authority;
                 },
                 error=>{
                   this.loading.hide();

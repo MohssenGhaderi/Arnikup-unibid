@@ -5,6 +5,7 @@ import { MainServices } from 'src/app/services/main.service';
 import { LoadingComponent } from 'src/app/components/loading/loading.component';
 import { ErrorComponent } from 'src/app/components/error/error.component';
 import { SuccessComponent } from 'src/app/components/success/success.component';
+import { ExtraBidMessage } from 'src/app/models/auction/extra-bid-message.model';
 
 @Component({
   selector: 'app-extra-bid',
@@ -17,6 +18,8 @@ export class ExtraBidComponent implements OnInit {
   @ViewChild(LoadingComponent) loading: LoadingComponent ;
   @ViewChild(ErrorComponent) error: ErrorComponent ;
   @ViewChild(SuccessComponent) success: SuccessComponent ;
+  extraBidMessage = new ExtraBidMessage();
+
   constructor(private el:ElementRef,private shared:SharingService,private mainService:MainServices) {
 
   }
@@ -27,6 +30,7 @@ export class ExtraBidComponent implements OnInit {
 
   closeExtrabid(){
     this.shared.extraBid = false;
+    this.shared.extraBidUsed = true;
   }
 
   acceptExtraBids(eventData){
@@ -34,19 +38,22 @@ export class ExtraBidComponent implements OnInit {
     this.loading.show();
     this.mainService.HandleExtraBid({"auctionId":this.auctionId}).subscribe(result=>{
       this.loading.hide();
-      this.success.show(result,2000)
-      .then(()=>{
-        this.shared.extraBid = false;
-      });
+      this.extraBidMessage.bids = result.bids;
+      this.extraBidMessage.message = result.message;
+      this.shared.emitExtraBidsChanged(this.extraBidMessage);
+      this.shared.extraBidUsed = true;
+      this.shared.extraBid = false;
     },
     error=>{
       this.loading.hide();
-      this.error.show(error,2000,null)
-      .then(()=>{
-        if(error.error.reason==="redirectShop"){
-          this.shared.shop = true;
-        }
-      })
+      this.shared.emitExtraBidsError(error.error.message);
+      // .then(()=>{
+        this.shared.extraBidUsed = true;
+        this.shared.extraBid = false;
+        // if(error.error.reason==="redirectShop"){
+        //   this.shared.shop = true;
+        // }
+      // })
     });
   }
 

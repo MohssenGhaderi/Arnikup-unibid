@@ -3,6 +3,7 @@ from project.database import db, Base
 import datetime
 
 class SiteNotificationType:
+    REGULAR = 1
     WELCOME = 3079
     CHANGEPASS = 3076
     FORGOTPASS = 3078
@@ -23,6 +24,7 @@ class SiteNotification(Base):
     link = db.Column(db.String(length=1024))
     details = db.Column(db.String(length=255))
     type = db.Column(db.Integer,nullable=False)
+    image = db.Column(db.Text,default='')
     user_id = db.Column(db.BigInteger,db.ForeignKey('users.id'),nullable=False)
     user = db.relationship('User')
     delivered = db.Column(db.Boolean,default=False)

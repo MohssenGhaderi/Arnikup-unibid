@@ -1,5 +1,5 @@
 <footer>
-  <div class="footer-content">
+  <div class="footer-content" detect-scroll (onScroll)="handleScroll($event)" [bottomOffset]="300" [topOffset]="300">
     <ul>
       <li>راهنمای شرکت در حراجی</li>
       <li>پرسش و پاسخ</li>
@@ -8,7 +8,7 @@
     </ul>
     <ul>
         <li>درباره ما</li>
-        <li>تماس با ما</li>
+        <li routerLink="contact">تماس با ما</li>
       </ul>
       <ul class="footer-content-contact">
           <li><img src="assets/resources/images/assets/svg/location.svg"/>تهران - وزرا - کوچه ششم - پلاک ۴ - واحد ۳</li>
@@ -18,12 +18,12 @@
         <div class="footer-content-signs">
             <img src="assets/resources/images/assets/png/zarin.png"/>
             <img src="assets/resources/images/assets/png/tejarat.png"/>
-            <img src="assets/resources/images/assets/png/namad.png"/>    
+            <img src="assets/resources/images/assets/png/namad.png"/>
         </div>
   </div>
   <div class="footer-center">
       <img src="assets/resources/images/assets/png/googlePlay.png"/>
-      <img src="assets/resources/images/assets/png/sibApp.png"/>   
+      <img src="assets/resources/images/assets/png/sibApp.png"/>
   </div>
   <div class="footer-bottom">
   تمامی كالاها و خدمات این فروشگاه، دارای مجوزهای لازم از مراجع مربوطه بوده و فعالیت‌های این سایت تابع قوانین و مقررات جمهوری اسلامی ایران است.

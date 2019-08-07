@@ -184,9 +184,9 @@ class AuctionUserParticipation(Resource):
                 auction_notification.title = 'مجوز شرکت در حراجی'
                 auction_notification.text = 'مجوز شرکت در حراجی ' + title + 'برای شما صادر گردید'
                 auction_notification.sms = message
-                auction_notification.link = SITE_PREFIX+'/view/auction/'+str(auction.id)
+                auction_notification.link = SITE_PREFIX+'/auction/'+str(auction.id)
                 auction_notification.details = str(current_user)
-                # auction_notification.details = str(current_user)+";"+title+";"+SITE_PREFIX+'/view/auction/'+str(auction.id)
+                # auction_notification.details = str(current_user)+";"+title+";"+SITE_PREFIX+'/auction/'+str(auction.id)
                 auction_notification.type = SiteNotificationType.PARTICIPATE
                 auction_notification.user = current_user
                 db.session.add(auction_notification)
@@ -310,7 +310,7 @@ class AuctionUserParticipation(Resource):
             auction_notification.title = 'مجوز شرکت در حراجی'
             auction_notification.text = 'مجوز شرکت در حراجی ' + title + 'برای شما صادر گردید'
             auction_notification.sms = message
-            auction_notification.link = SITE_PREFIX+'/view/auction/'+str(auction.id)
+            auction_notification.link = SITE_PREFIX+'/auction/'+str(auction.id)
             auction_notification.details = str(current_user)
             auction_notification.type = SiteNotificationType.PARTICIPATE
             auction_notification.user = current_user

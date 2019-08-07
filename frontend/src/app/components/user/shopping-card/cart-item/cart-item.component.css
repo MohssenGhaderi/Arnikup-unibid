@@ -1,0 +1,100 @@
+.accountProfile-priceItem-wrapper{
+  display: flex;
+  align-items: center;
+  /*border-bottom: 1px solid #ebebeb;*/
+}
+
+.accountProfile-basketImage-wrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 14px;
+  border: solid 1px #ebebeb;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+  position: relative;
+}
+
+.accountProfile-basketImage-wrapper > img {
+  max-width: 60px;
+}
+
+.accountProfile-basketImage-remove {
+  width: 20px;
+  height: 20px;
+  background-color: #212121;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 120%;
+  padding-top: 2px;
+  box-sizing: border-box;
+  color: #f5f5f5;
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  cursor: pointer;
+}
+
+.accountProfile-priceItem {
+  /*border-bottom: 1px solid #ebebeb;*/
+  /*padding: 15px;*/
+  margin-right: 10px;
+}
+
+.accountProfile-priceItem-title {
+  font-size: 16px;
+}
+
+.accountProfile-priceItem-after {
+  color: #ec407a;
+  font-size: 12px;
+}
+
+.accountProfile-priceItem-before {
+  color: #707070;
+  font-size: 12px;
+}
+
+.accountProfile-basket .accountProfile-priceItem {
+  border-bottom: initial;
+}
+
+.cart-menu-selector{
+  border: 1px solid #ebebeb;
+  border-radius: 24px;
+  font-size: 14px;
+  text-align: center;
+  padding: 15px;
+  position: relative;
+  cursor: pointer;
+  width: 300px;
+}
+
+.cart-menu-selector > img {
+  position: absolute;
+  left: 15px;
+  top: 20px;
+}
+
+.dropDown-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 1px solid #ebebeb;
+}
+.dropDown-container > span{
+  position: absolute;
+  transform: rotate(90deg);
+  transform-origin: left top 0;
+  display: inline-block;
+  right: 0;
+  margin-top: 25px;
+  margin-right: 20px;
+  color: #ec4d83;
+  font-size: 10px;
+  font-weight: bold;
+}

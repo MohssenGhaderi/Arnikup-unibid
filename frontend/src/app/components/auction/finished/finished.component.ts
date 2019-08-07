@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { Auction } from 'src/app/models/auction/auction.model';
+import { FinishedAuction } from 'src/app/models/auction/finishedAuction.model';
 import { Links } from 'src/app/links.component';
 import { MainServices } from 'src/app/services/main.service';
 import { SharingService } from 'src/app/services/sharing.service';
@@ -13,7 +13,7 @@ import { SuccessComponent } from 'src/app/components/success/success.component';
   styleUrls: ['./finished.component.css']
 })
 export class FinishedComponent implements OnInit {
-  @Input() auction: Auction;
+  @Input() auction: FinishedAuction;
   Link = Links;
   toggleHeart = false;
   toggleSocial = false;

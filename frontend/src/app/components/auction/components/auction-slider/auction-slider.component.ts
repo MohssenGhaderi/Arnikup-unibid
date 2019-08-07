@@ -21,8 +21,11 @@ export class AuctionSliderComponent implements OnInit {
   }
 
   ngOnInit() {
+  
     this.auctionSocket.status.subscribe(result =>{
-      this.status = result;
+      if(this.auction && this.auction.auctionId==result.auctionId){
+        this.status = result.status;
+      }
     });
   }
   ngAfterViewInit(){

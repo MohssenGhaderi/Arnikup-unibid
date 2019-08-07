@@ -1,0 +1,44 @@
+<div class="accountProfile-notification">
+  <div *ngIf="transaction.type=='coin'">
+    <img class="accountProfile-notification-img" src="assets/resources/images/assets/png/gold.png" />
+  </div>
+  <div *ngIf="transaction.type=='gem'">
+    <img class="accountProfile-notification-img" src="assets/resources/images/assets/png/diamond.png" />
+  </div>
+  <div *ngIf="transaction.status=='inc'">
+    <img class="accountProfile-notification-plus" src="assets/resources/images/assets/png/plus.png" />
+  </div>
+  <div *ngIf="transaction.status=='dec'">
+    <img class="accountProfile-notification-minus" src="assets/resources/images/assets/png/minus.png" />
+  </div>
+
+  <div *ngIf="transaction.type=='coin' && transaction.status=='dec'">
+    <div class="accountProfile-notification-info" *ngIf="transaction.status=='dec'">
+      <p class="accountProfile-notification-info-name">شما <span>{{transaction.amount}} سکه </span> جهت <span>{{transaction.description}}</span>خرج کرده اید.</p>
+    </div>
+  </div>
+
+  <div *ngIf="transaction.type=='coin' && transaction.status=='inc'">
+    <div class="accountProfile-notification-info" *ngIf="transaction.status=='inc'">
+      <p class="accountProfile-notification-info-name">شما <span>{{transaction.amount}} سکه </span> به دلیل <span>{{transaction.description}}</span>بدست آورده اید.</p>
+    </div>
+  </div>
+
+  <div *ngIf="transaction.type=='gem' && transaction.status=='dec'">
+    <div class="accountProfile-notification-info" *ngIf="transaction.status=='dec'">
+      <p class="accountProfile-notification-info-name">شما <span>{{transaction.amount}} الماس </span> جهت <span>{{transaction.description}}</span>خرج کرده اید.</p>
+    </div>
+  </div>
+
+  <div *ngIf="transaction.type=='gem' && transaction.status=='inc'">
+    <div class="accountProfile-notification-info" *ngIf="transaction.status=='inc'">
+      <p class="accountProfile-notification-info-name">شما <span>{{transaction.amount}} الماس </span> به دلیل <span>{{transaction.description}}</span>بدست آورده اید.</p>
+    </div>
+  </div>
+
+  <!-- <div class="accountProfile-notification-info" *ngIf="transaction.status=='inc'">
+    <p class="accountProfile-notification-info-name">شما <span>{{transaction.amount}}</span> سکه خریداری کردید</p>
+  </div> -->
+
+  <span class="accountProfile-notification-dateinfo">{{ transaction.date | persian : 'dddd DD MMMM YY ساعت HH:mm'}}</span>
+</div>

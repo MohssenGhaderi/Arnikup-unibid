@@ -1,66 +1,67 @@
+<h3>توجه! شما در نسخه آزمایشی وبسایت هستید.محصول درحال تست است.</h3>
 <div *ngIf="auction.remainedTime > 60000">
   <div class="cart" (click)="RegisterAuctionSlideupClick($event)">
     <app-social *ngIf="toggleSocial"
-    [auctionId]="auction.auctionId"
-    [title]="auction.title"
-    [description]="auction.title"
-    [url]="Link.auctionUrl(auction.auctionId)">
-    </app-social>
+      [auctionId]="auction.auctionId"
+      [title]="auction.title"
+      [description]="auction.title"
+      [url]="Link.auctionUrl(auction.auctionId)">
+   </app-social>
 
-    <app-coin-participate *ngIf="cart.state=='participate'" [auctionId]="auction?.auctionId" [coins]="auction?.coins"></app-coin-participate>
-    <app-gem-participate *ngIf="cart.state=='gems'" [details]="cart.details" [auctionId]="auction?.auctionId"></app-gem-participate>
-    <app-participated *ngIf="cart.state=='confirmed'" [details]="cart.details" [auctionId]="auction?.auctionId"></app-participated>
-    <app-participated *ngIf="cart.state=='participated'" [plan]="auction.plan" [auctionId]="auction?.auctionId" [auctionTitle]="auction?.title"></app-participated>
+  <app-coin-participate *ngIf="cart.state=='participate'" [auctionId]="auction?.auctionId" [coins]="auction?.coins"></app-coin-participate>
+  <app-gem-participate *ngIf="cart.state=='gems'" [details]="cart.details" [auctionId]="auction?.auctionId"></app-gem-participate>
+  <app-participated *ngIf="cart.state=='confirmed'" [details]="cart.details" [auctionId]="auction?.auctionId"></app-participated>
+  <app-participated *ngIf="cart.state=='participated'" [plan]="auction.plan" [auctionId]="auction?.auctionId" [auctionTitle]="auction?.title"></app-participated>
 
-    <div class="cart-tag" *ngIf="auction.tag"></div>
-    <span class="cart-tag-content" *ngIf="auction.tag">{{auction.tag}}</span>
-    <div class="cart-share-fav">
-      <div class="heart" [ngClass]="{'is_animating': toggleHeart || (toggleHeart && auction.liked)}" (click)="toggleClick($event,auction.auctionId)"></div>
-      <img (click)="closeSocial($event)" src="assets/resources/images/assets/png/share.png">
-      <img *ngIf="auction.participated || participated " class="cart-participated" src="assets/resources/images/assets/svg/tick.svg">
-    </div>
-    <img [src]="Link.auction(auction.image)" alt="" class="cart-image">
-    <p class="cart-title">{{auction.title}}</p>
-
-    <div class="cart-off">
-      <span class="cart-off-percent">٪{{auction.discount}}</span>
-      <div class="cart-off-info">
-        <p class="cart-off-after">شروع حراجی: {{auction.basePrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان</p>
-        <p class="cart-off-before">سقف حراجی: {{auction.maxPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان</p>
-      </div>
-    </div>
-    <div class="cart-timer">
-      <div class="cart-timer-part">
-        <span class="cart-time">{{remainedTime.seconds}}</span>
-        <span class="cart-time-text">ثانیه</span>
-      </div>
-      <div class="cart-timer-part">
-        <span class="cart-time">{{remainedTime.minute}}</span>
-        <span class="cart-time-text">دقیقه</span>
-      </div>
-      <div class="cart-timer-part">
-        <span class="cart-time">{{remainedTime.hour}}</span>
-        <span class="cart-time-text">ساعت</span>
-      </div>
-      <div class="cart-timer-part">
-        <span class="cart-time">{{remainedTime.day}}</span>
-        <span class="cart-time-text">روز</span>
-      </div>
-    </div>
-    <div class="cart-footer">
-      <div class="cart-footer-rank">
-        <img src="assets/resources/images/assets/png/star.png">
-        <span>{{auction.maxLevel}} / {{auction.level}}</span>
-      </div>
-      <div class="cart-footer-contributer" dir="ltr">
-        <img *ngFor="let pic of auction.participants.icons" [src]="Link.avatar(pic)" alt="" class="">
-        <span>شرکت کنندگان: {{auction.participants.count }} از {{auction.maxMembers}}</span>
-      </div>
-    </div>
-    <app-error></app-error>
-    <app-success></app-success>
-    <app-loading></app-loading>
+  <div class="cart-tag" *ngIf="auction.tag"></div>
+  <span class="cart-tag-content" *ngIf="auction.tag">{{auction.tag}}</span>
+  <div class="cart-share-fav">
+    <div class="heart" [ngClass]="{'is_animating': toggleHeart || (toggleHeart && auction.liked)}" (click)="toggleClick($event,auction.auctionId)"></div>
+    <img (click)="closeSocial($event)" src="assets/resources/images/assets/png/share.png">
+    <img *ngIf="auction.participated || participated " class="cart-participated" src="assets/resources/images/assets/svg/tick.svg">
   </div>
+  <img [src]="Link.auction(auction.image)" alt="" class="cart-image">
+  <p class="cart-title">{{auction.title}}</p>
+
+  <div class="cart-off">
+    <span class="cart-off-percent">٪{{auction.discount}}</span>
+    <div class="cart-off-info">
+      <p class="cart-off-after">شروع حراجی: {{auction.basePrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان</p>
+      <p class="cart-off-before">سقف حراجی: {{auction.maxPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان</p>
+    </div>
+  </div>
+  <div class="cart-timer">
+    <div class="cart-timer-part">
+      <span class="cart-time">{{remainedTime.seconds}}</span>
+      <span class="cart-time-text">ثانیه</span>
+    </div>
+    <div class="cart-timer-part">
+      <span class="cart-time">{{remainedTime.minute}}</span>
+      <span class="cart-time-text">دقیقه</span>
+    </div>
+    <div class="cart-timer-part">
+      <span class="cart-time">{{remainedTime.hour}}</span>
+      <span class="cart-time-text">ساعت</span>
+    </div>
+    <div class="cart-timer-part">
+      <span class="cart-time">{{remainedTime.day}}</span>
+      <span class="cart-time-text">روز</span>
+    </div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-footer-rank">
+      <img src="assets/resources/images/assets/png/star.png">
+      <span>{{auction.maxLevel}} / {{auction.level}}</span>
+    </div>
+    <div class="cart-footer-contributer" dir="ltr">
+      <img *ngFor="let pic of auction.participants.icons" [src]="Link.avatar(pic)" alt="" class="">
+      <span>شرکت کنندگان: {{auction.participants.count }} از {{auction.maxMembers}}</span>
+    </div>
+  </div>
+  <app-error></app-error>
+  <app-success></app-success>
+  <app-loading></app-loading>
+</div>
 </div>
 
 <div *ngIf="auction.remainedTime <= 60000">
@@ -72,8 +73,11 @@
       <img *ngIf="auction.participated || participated " class="cart-participated" src="assets/resources/images/assets/svg/tick.svg">
     </div>
 
-    <img [src]="Link.auction(auction.image)" alt="" class="cart-image">
-    <p class="cart-title">{{auction.title}}</p>
+    <a routerLink = "/auction/{{auction.auctionId}}">
+      <img [src]="Link.auction(auction.image)" alt="" class="cart-image">
+      <p class="cart-title">{{auction.title}}</p>
+    </a>
+
     <div class="cart-off">
       <span class="cart-off-percent">٪{{auction.discount}}</span>
       <div class="cart-off-info">
@@ -89,12 +93,19 @@
       <app-progress [current]="tryParseInt(auction.remainedTime/1000)" [total]="tryParseInt(auction.remainedTime/1000)" ></app-progress>
     </div>
 
-    <div class="cart-footer">
-      <p>آخرین پیشنهاد : {{auction.status?.bidPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+    <div class="cart-footer" *ngIf="auction?.status?.avatar!=''">
+      <p>آخرین پیشنهاد : {{auction?.status?.bidPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
       <div class="cart-footer-contributer" dir="ltr">
-        <span>{{auction.status?.winnerName}}</span>
-        <img [src]="Link.avatar(auction.status?.winnerAvatar)" alt="" class="">
+        <span>{{auction?.status?.name}}</span>
+        <img [src]="Link.avatar(auction?.status?.avatar)" alt="" class="">
         <span>نفر اول</span>
+      </div>
+    </div>
+
+    <div class="cart-footer" *ngIf="auction?.status?.avatar==''">
+      <p>بدون پیشنهاد</p>
+      <div class="cart-footer-contributer" dir="ltr">
+        <span>بدون برنده</span>
       </div>
     </div>
 

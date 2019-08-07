@@ -17,7 +17,6 @@
     </a>
 
     <app-search-box></app-search-box>
-
     <div class="header-content-loginInfo" dir="ltr" *ngIf="isLoggedIn === true">
       <app-profile *ngIf="this.shared.toggleMenu.profile"></app-profile>
       <app-avatar *ngIf="this.shared.toggleMenu.avatar"></app-avatar>
@@ -28,6 +27,11 @@
       <app-shipment-preview *ngIf="this.shared.toggleMenu.preview"></app-shipment-preview>
       <app-shipment-edit *ngIf="this.shared.toggleMenu.address"></app-shipment-edit>
       <app-payment *ngIf="this.shared.toggleMenu.payment"></app-payment>
+      <app-password *ngIf="this.shared.toggleMenu.password"></app-password>
+      <app-notification *ngIf="this.shared.toggleMenu.notification"></app-notification>
+      <app-transaction *ngIf="this.shared.toggleMenu.transaction" [coins]="userInfo?.coins" [gems]="userInfo?.gems"></app-transaction>
+      <app-messages  *ngIf="this.shared.toggleMenu.messages"></app-messages>
+      <app-message-archive *ngIf="this.shared.toggleMenu.messageArchive"></app-message-archive>
 
       <div class="header-content-loginInfo-pic" (click)="toggleProfileMenu()">
         <img [src]="Link.avatar(userInfo?.avatar)" alt="" class="profileSelector">
@@ -36,7 +40,7 @@
       <ul class="header-content-loginInfo-stats" (click)="hideProfileMenu()">
         <li><img src="assets/resources/images/assets/svg/Coin.svg" class="coin" (click)="shop()"><span>{{userInfo?.coins}}</span></li>
         <li><img src="assets/resources/images/assets/svg/Gem.svg" class="gem" (click)="shop()"><span>{{userInfo?.gems}}</span></li>
-        <li><img src="assets/resources/images/assets/svg/Notification.svg" class="notification"><span>{{userInfo?.notifications.length}}</span></li>
+        <li><img src="assets/resources/images/assets/svg/Notification.svg" class="notification" (click)="nofiy()"><span>{{userInfo?.notifications.length}}</span></li>
       </ul>
 
     </div>

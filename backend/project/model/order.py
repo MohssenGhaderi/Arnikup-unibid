@@ -10,7 +10,7 @@ class OrderStatus:
     PAID = 'پرداخت شده'
 
 class OrderDiscountStatus:
-    REGULAR = 'معمولی'
+    REGULAR = 'خرید محصول'
     INAUCTION = 'شرکت کننده حراجی'
     AUCTIONWINNER = 'برنده حراجی'
     EXPIRED = 'منقضی شده'
@@ -37,10 +37,8 @@ class Order(Base):
 
     shipmet = db.relationship('Shipment')
 
-    # payments = db.relationship('Payment',secondary='payment_orders',back_populates='orders')
-
     payment_id = db.Column(db.BigInteger,db.ForeignKey('payments.id'))
-    payment = db.relationship('Payment')
+    payment = db.relationship('Payment',cascade="all,delete",backref="orders")
 
     created = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False)
     updated = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False, onupdate=datetime.datetime.now)

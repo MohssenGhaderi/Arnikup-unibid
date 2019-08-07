@@ -6,11 +6,10 @@ from ..model import *
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from passlib.hash import pbkdf2_sha256 as sha256
-
-from flask_security import current_user, login_required, Security,SQLAlchemyUserDatastore
-# Initialize the SQLAlchemy data store and quart-Security.
-user_datastore = SQLAlchemyUserDatastore(db, User, Role)
-security = Security(app, user_datastore)
+from flask_security import current_user, login_required
+# # Initialize the SQLAlchemy data store and quart-Security.
+# user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+# security = Security(app, user_datastore)
 
 # Create admin
 admin = Admin(
@@ -32,9 +31,13 @@ admin.add_view(ChestAdmin(Chest, db.session,name='پکیج های پیشنهاد
 admin.add_view(LevelAdmin(Level, db.session,name='مراحل',menu_icon_type='fa', menu_icon_value='fa fa-user'))
 admin.add_view(AdvertisementAdmin(Advertisement, db.session,name='تبلیغات',menu_icon_type='fa', menu_icon_value='fa fa-user'))
 admin.add_view(CharityAdmin(Charity, db.session,name='خیریه ها',menu_icon_type='fa', menu_icon_value='fa fa-user'))
-admin.add_view(ShipmentMethodAdmin(ShipmentMethod, db.session,name='روش های ارسال',menu_icon_type='fa', menu_icon_value='fa fa-user'))
+admin.add_view(ShipmentMethodAdmin(ShipmentMethod, db.session,name='روش ارسال پیش فرض',menu_icon_type='fa', menu_icon_value='fa fa-user'))
+admin.add_view(ShipmentAdmin(Shipment, db.session,name='گزارش ارسال ها',menu_icon_type='fa', menu_icon_value='fa fa-user'))
+admin.add_view(ItemShipmentAdmin(ItemShipment, db.session,name='روش ارسال محصولات',menu_icon_type='fa', menu_icon_value='fa fa-user'))
+admin.add_view(GarantyAdmin(Garanty, db.session,name='گارانتی ها',menu_icon_type='fa', menu_icon_value='fa fa-user'))
+admin.add_view(ItemGarantyAdmin(ItemGaranty, db.session,name='گارانتی محصولات',menu_icon_type='fa', menu_icon_value='fa fa-user'))
 admin.add_view(InsuranceAdmin(Insurance, db.session,name='بیمه',menu_icon_type='fa', menu_icon_value='fa fa-user'))
-admin.add_view(GiftAdmin(Gift, db.session,name='جایزه',menu_icon_type='fa', menu_icon_value='fa fa-user'))
+admin.add_view(CouponAdmin(Coupon, db.session,name='کوپن تخفیف های سایت',menu_icon_type='fa', menu_icon_value='fa fa-user'))
 admin.add_view(ManufactureAdmin(Manufacture, db.session,name='کارخانه ها',menu_icon_type='fa', menu_icon_value='fa fa-user'))
 admin.add_view(StateAdmin(State, db.session,name='استان ها',menu_icon_type='fa', menu_icon_value='fa fa-user'))
 admin.add_view(UserAuctionParticipationAdmin(UserAuctionParticipation, db.session,name='گزارش شرکت کنندگان حراجی',menu_icon_type='fa', menu_icon_value='fa fa-user'))
@@ -50,18 +53,18 @@ admin.add_view(PaymentAdmin(Payment, db.session,name='گزارش پرداخت ه
 admin.add_view(GemPaymentAdmin(GemPayment, db.session,name='گزارش پرداخت الماس',menu_icon_type='fa', menu_icon_value='fa fa-user'))
 admin.add_view(CoinPaymentAdmin(CoinPayment, db.session,name='گزارش پرداخت های سکه',menu_icon_type='fa', menu_icon_value='fa fa-user'))
 admin.add_view(OrderAdmin(Order, db.session,name='گزارش سفارشات',menu_icon_type='fa', menu_icon_value='fa fa-user'))
-admin.add_view(ShipmentAdmin(Shipment, db.session,name='گزارش ارسال ها',menu_icon_type='fa', menu_icon_value='fa fa-user'))
+admin.add_view(UserCouponAdmin(UserCoupon, db.session,name='گزارش کوپن های تخفیف کاربران',menu_icon_type='fa', menu_icon_value='fa fa-user'))
 admin.add_view(PaymentMessageAdmin(PaymentMessage, db.session,name='پیام پرداختی های سایت',menu_icon_type='fa', menu_icon_value='fa fa-user'))
+admin.add_view(UserActivityAdmin(UserActivity, db.session,name='گزارش فعالیت های کاربران',menu_icon_type='fa', menu_icon_value='fa fa-user'))
+admin.add_view(AddressAdmin(Address, db.session,name='گزارش آدرس های کاربران',menu_icon_type='fa', menu_icon_value='fa fa-user'))
+# admin.add_view(SettingAdmin(Setting, db.session,name='تنظیمات',menu_icon_type='fa', menu_icon_value='fa fa-user'))
+
+admin.add_view(NotificationAdmin(Notification, db.session,name='ناتیفیکیشن ها',menu_icon_type='fa', menu_icon_value='fa fa-user'))
+admin.add_view(SiteNotificationAdmin(SiteNotification, db.session,name='گزارش ناتیفیکیشن های سایت',menu_icon_type='fa', menu_icon_value='fa fa-user'))
+admin.add_view(UserNotificationAdmin(UserNotification, db.session,name='گزارش ناتیفیکیشن های کاربران',menu_icon_type='fa', menu_icon_value='fa fa-user'))
+admin.add_view(AuctionNotificationAdmin(AuctionNotification, db.session,name='ایجاد ناتیفیکیشن حراجی',menu_icon_type='fa', menu_icon_value='fa fa-user'))
 admin.add_view(UserMessageAdmin(UserMessage, db.session,name='پیام های کاربران سایت',menu_icon_type='fa', menu_icon_value='fa fa-user'))
 admin.add_view(GuestMessageAdmin(GuestMessage, db.session,name='پیام های کاربران مهمان',menu_icon_type='fa', menu_icon_value='fa fa-user'))
 admin.add_view(SMSAdmin(UserSMS, db.session,name='گزارش پیامک های ارسالی',menu_icon_type='fa', menu_icon_value='fa fa-user'))
-admin.add_view(SiteNotificationAdmin(SiteNotification, db.session,name='گزارش ناتیفیکیشن های سایت',menu_icon_type='fa', menu_icon_value='fa fa-user'))
-admin.add_view(UserActivityAdmin(UserActivity, db.session,name='گزارش فعالیت های کاربران',menu_icon_type='fa', menu_icon_value='fa fa-user'))
-admin.add_view(AddressAdmin(Address, db.session,name='گزارش آدرس های کاربران',menu_icon_type='fa', menu_icon_value='fa fa-user'))
-admin.add_view(SettingAdmin(Setting, db.session,name='تنظیمات',menu_icon_type='fa', menu_icon_value='fa fa-user'))
-
-# admin.add_view(NotificationAdmin(Notification, db.session,name='ناتیفیکیشن ها',menu_icon_type='fa', menu_icon_value='fa fa-user'))
-# admin.add_view(UserNotificationAdmin(UserNotification, db.session,name='ناتیفیکیشن های کاربران',menu_icon_type='fa', menu_icon_value='fa fa-user'))
-# admin.add_view(AuctionNotificationAdmin(AuctionNotification, db.session,name='ناتیفیکیشن حراجی',menu_icon_type='fa', menu_icon_value='fa fa-user'))
 # admin.add_view(UserAuctionNotificationAdmin(UserAuctionNotification, db.session,name='ناتیفیکیشن کاربران حراجی',menu_icon_type='fa', menu_icon_value='fa fa-user'))
 # admin.add_view(CreditLogAdmin(CreditLog, db.session,name='لاگ اعتبارات کاربر',menu_icon_type='fa', menu_icon_value='fa fa-user'))

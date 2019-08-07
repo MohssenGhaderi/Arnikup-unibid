@@ -15,7 +15,7 @@ class AuctionNotification(Base):
     sms = db.Column(db.Text, nullable=False)
     link = db.Column(db.String(length=1024))
     details = db.Column(db.String(length=255))
-    type = db.Column(db.Integer,nullable=False)
+    type = db.Column(db.String(length=255))
     auction_id = db.Column(db.BigInteger,db.ForeignKey('auctions.id'),nullable=False)
     auction = db.relationship('Auction')
     created = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False)

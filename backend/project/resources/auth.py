@@ -13,6 +13,7 @@ import string,random
 from datetime import datetime,timedelta
 from project.lang.fa import *
 from project.utils import token_required, token_optional
+from flask_login import login_user, logout_user
 import jwt
 import hashlib
 from rejson import Path
@@ -129,6 +130,7 @@ class Register(Resource):
         new_user.mobile = mobile
         new_user.password = User.generate_hash(password)
         new_user.invitor = invitor
+        new_user.points = 99
         for avatar in Avatar.query.filter_by(type=AvatarType.REGULAR):
             new_user.avatars.append(avatar)
 
@@ -245,6 +247,8 @@ class Login(Resource):
             ua.activity = ACTIVITIES['LOGIN']
             db.session.add(ua)
             db.session.commit()
+
+            login_user(current_user,remember=True)
 
             return make_response(jsonify({'accessToken': _access_token, 'refreshToken': _refresh_token}),200)
 
@@ -474,7 +478,7 @@ class ForgotPassword(Resource):
         current_user.send_sms_attempts += 1
         db.session.add(current_user)
         db.session.commit()
-        
+
         message = current_user.username +' عزیز٬ '\
         + '\n' + "رمز عبور جدید شما :" + new_password + "است."\
         + '\n' + 'www.unibid.ir'
@@ -491,6 +495,7 @@ class ForgotPassword(Resource):
         forgotpass_notification.type = SiteNotificationType.FORGOTPASS
         forgotpass_notification.delivered = sms_response['success']
         forgotpass_notification.user = current_user
+        forgotpass_notification.image = current_user.avatar.image.split("'")[1]
         db.session.add(forgotpass_notification)
         db.session.commit()
 
@@ -527,6 +532,9 @@ class ChangePassword(Resource):
                     if key==k:
                         return make_response(jsonify({"success":False,"reason":k,"message":v}),400)
 
+        if not User.verify_hash(auth_ns.payload['oldPassword'], current_user.password):
+            return make_response(jsonify({"success":False,"reason":"password","message":PASSWORD['FAILED']}),400)
+
         if len(auth_ns.payload['newPassword']) < 4:
             return make_response(jsonify({"success":False,"reason":'newPassword',"message":PASS_VALIDATION['min_length']}),400)
 
@@ -536,8 +544,6 @@ class ChangePassword(Resource):
         if(auth_ns.payload['newPassword']!=auth_ns.payload['confirmPassword']):
             return make_response(jsonify({"success":False,"reason":'confirmPassword',"message":PASS_VALIDATION['same']}),400)
 
-        if not User.verify_hash(auth_ns.payload['oldPassword'], current_user.password):
-            return make_response(jsonify({"success":False,"reason":"password","message":PASSWORD['FAILED']}),400)
 
 
         current_user.password = User.generate_hash(auth_ns.payload['newPassword'])
@@ -552,10 +558,11 @@ class ChangePassword(Resource):
         changepass_notification.title = 'تغییر رمز عبور'
         changepass_notification.text = 'رمز عبور شما تغییر یافت. برای دسترسی به همه امکانات لطفا دوباره به یونی بید وارد شوید'
         changepass_notification.sms = message
-        changepass_notification.link = SITE_PREFIX+'/logout'
+        changepass_notification.link = SITE_PREFIX+'/signin'
         changepass_notification.details = current_user.username+";"+auth_ns.payload['currentTime']
         changepass_notification.type = SiteNotificationType.CHANGEPASS
         changepass_notification.user = current_user
+        changepass_notification.image = current_user.avatar.image.split("'")[1]
         db.session.add(changepass_notification)
         db.session.commit()
 
@@ -638,9 +645,13 @@ class Logout(Resource):
         return make_response(jsonify({"success":True,"reason":"logout"}),200)
 
 @auth_ns.route('/avatar')
-class Avatar(Resource):
+class GetAvatar(Resource):
     def get(self):
-        user_agent_string = request.user_agent.string.encode('utf-8')
-        user_agent_hash = hashlib.md5(user_agent_string).hexdigest()
-        avatar = rj.jsonget(user_agent_hash, Path('.avatar'))
+        avatar = ''
+        try:
+            user_agent_string = request.user_agent.string.encode('utf-8')
+            user_agent_hash = hashlib.md5(user_agent_string).hexdigest()
+            avatar = rj.jsonget(user_agent_hash, Path('.avatar'))
+        except(e):
+            pass
         return make_response(jsonify(avatar),200)

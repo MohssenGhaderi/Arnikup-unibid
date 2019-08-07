@@ -5,7 +5,7 @@ from  .advertisement import *
 from  .auction_plan import *
 from  .auction import *
 from  .category import *
-from  .gift import *
+from  .coupon import *
 from  .insurance import *
 from  .item import *
 from  .manufacture_product import *
@@ -19,11 +19,14 @@ from  .plan import *
 from  .product import *
 from  .role import *
 from  .shipment_method import *
+from  .item_shipment import *
+from  .item_garanty import *
+from  .garanty import *
 from  .shipment import *
 from  .user_auction_like import *
 from  .user_auction_participation import *
 from  .user_auction_view import *
-from  .user_gift import *
+from  .user_coupon import *
 from  .user_plan import *
 from  .user_plan_payment import *
 from  .user_plan_gem_payment import *

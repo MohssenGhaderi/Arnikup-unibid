@@ -1,0 +1,14 @@
+<div class="social-container">
+  <span class="details-button" (click)="closeMe($event)"><img src="assets/resources/images/assets/png/share.png"/>اشتراک گزاری</span>
+  <share-buttons [theme]="'outline'"
+  [include]="['facebook','twitter','linkedin','telegram','whatsapp','sms','email','print','copy']"
+  [show]="3"
+  [showText]="false"
+  [showCount]="false"
+  [size]="3"
+  [url]="url"
+  [title]="title"
+  [description]="description"
+  [tags]="'unibid'"
+  ></share-buttons>
+</div>

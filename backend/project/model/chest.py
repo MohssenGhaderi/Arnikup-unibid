@@ -23,4 +23,4 @@ class Chest(Base):
     updated = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False, onupdate=datetime.datetime.now)
 
     def __str__(self):
-        return  self.title + " به قیمت " + str(self.price)
+        return  self.title

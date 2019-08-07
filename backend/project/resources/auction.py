@@ -121,9 +121,10 @@ class CoinRegisterAuction(Resource):
 
         auction_notification = SiteNotification()
         auction_notification.title = 'مجوز شرکت در حراجی'
-        auction_notification.text = 'مجوز شرکت در حراجی ' + title + 'برای شما صادر گردید'
+        auction_notification.text = 'مجوز شرکت در حراجی ' + title + ' برای شما صادر گردید '
+        auction_notification.image = auction.image.split("'")[1]
         auction_notification.sms = message
-        auction_notification.link = SITE_PREFIX+'/view/auction/'+str(auction.id)
+        auction_notification.link = SITE_PREFIX+'/auction/'+str(auction.id)
         auction_notification.details = str(current_user)
         auction_notification.type = SiteNotificationType.PARTICIPATE
         auction_notification.user = current_user
@@ -246,8 +247,9 @@ class GemRegisterAuction(Resource):
         auction_notification = SiteNotification()
         auction_notification.title = 'مجوز شرکت در حراجی'
         auction_notification.text = ' مجوز شرکت در حراجی ' + title + ' برای شما صادر گردید '
+        auction_notification.image = auction.image.split("'")[1]
         auction_notification.sms = message
-        auction_notification.link = SITE_PREFIX+'/view/auction/'+str(auction.id)
+        auction_notification.link = SITE_PREFIX+'/auction/'+str(auction.id)
         auction_notification.details = str(current_user)
         auction_notification.type = SiteNotificationType.PARTICIPATE
         auction_notification.user = current_user
@@ -307,10 +309,11 @@ class LikeAuction(Resource):
             db.session.commit()
 
             message = AUCTION['LIKE'].replace('attribute',auction.title)
-            current_user.auction_likes.append(auction)
+            # current_user.auction_likes.append(auction)
+            auction.likes.append(current_user)
 
         else:
-            current_user.auction_likes.remove(auction)
+            auction.likes.remove(current_user)
             message = AUCTION['DISLIKE'].replace('attribute',auction.title)
             user_activity = UserActivity()
             user_activity.user = current_user
@@ -319,8 +322,8 @@ class LikeAuction(Resource):
             db.session.add(user_activity)
             db.session.commit()
 
-
-        db.session.add(current_user)
+        auction.updated = datetime.now()
+        db.session.add(auction)
         db.session.commit()
         return make_response(jsonify({"success":True,"message":message}),200)
 
@@ -377,7 +380,8 @@ class AuctionPage(Resource):
                             "row":counter,
                             "name" : bid.user_plan.user.username,
                             "bidPrice" : str(bid.bid_price),
-                            "avatar" : bid.user_plan.user.avatar.image.split("'")[1]
+                            "avatar" : bid.user_plan.user.avatar.image.split("'")[1],
+                            "level":bid.user_plan.user.level.number,
                         })
                         temp.add(bid.user_plan_id)
             else:
@@ -390,7 +394,6 @@ class AuctionPage(Resource):
                         "avatar" : participant.avatar.image.split("'")[1],
                         "level":participant.level.number,
                     })
-
 
         liked = False
         participated = False
@@ -410,11 +413,11 @@ class AuctionPage(Resource):
 
         discount = math.ceil(( (auction.item.price - auction.max_price) / auction.item.price )*100)
         images = []
-        # for image in auction.item.images.split("'"):
-        #     if len(image) > 5:
-        #         images.append(image)
+        for image in auction.item.images.split("'"):
+            if len(image) > 5:
+                images.append(image)
 
-        images.append(auction.item.images.split("'")[1])
+        # images.append(auction.item.images.split("'")[1])
 
         product = {}
         if auction.item.quantity > 0:
@@ -440,7 +443,13 @@ class AuctionPage(Resource):
                 "avatar":last_bid.user_plan.user.avatar.image.split("'")[1],
                 "level":last_bid.user_plan.user.level.number,
                 }
-
+        extraBids = {}
+        if auction.have_extra_gems:
+            extraBids = {
+                "bids":auction.extra_bids,
+                "gems":auction.required_gems,
+                "target":auction.target_bid,
+            }
         result = {
             "charity":charity,
             "auctionId":auction.id,
@@ -462,6 +471,118 @@ class AuctionPage(Resource):
             "product":product,
             "status":status,
             "done":auction.done,
+            "extraBids":extraBids
         }
 
         return make_response(jsonify(result),200)
+
+
+@auction_ns.route('/details/<int:auctionId>')
+@auction_ns.param('auctionId', 'The auction identifier')
+class AuctionDetails(Resource):
+    @auction_ns.response(200, "Success")
+    def get(self, auctionId):
+        auction = Auction.query.get(auctionId)
+        if not auction :
+            return make_response(jsonify({"success":False,"reason":'auctionId',"message":AUCTION['NOT_FOUND']}),400)
+
+        descriptions = []
+        try:
+            for item in auction.description.split('\n'):
+                obj = item.split(':')
+                if(obj[0].strip()!='رنگ'):
+                    descriptions.append({"title":obj[0].strip(),"description":obj[1].strip()})
+                else:
+                    colors = obj[1].strip().split(' ')
+                    descriptions.append({"title":obj[0].strip(),"colors":colors})
+        except Exception as e:
+            pass
+
+        result = {"title":auction.item.title,"descriptions":descriptions}
+
+        return make_response(jsonify(result),200)
+
+
+@auction_ns.route('/extrabids')
+class ExtraBids(Resource):
+    parser = rest_api.parser()
+    parser.add_argument('Authorization',type=str,location='headers',help='Bearer Access Token',required=True)
+    @auction_ns.header('Authorization: Bearer', 'JWT TOKEN', required=True)
+    @auction_ns.doc('Register for auction api', parser=parser, body=like_auction_model, validate=False)
+    @auction_ns.response(200, "Success")
+    @auction_ns.response(400, "Validation and system errors")
+    @auction_ns.response(401, "Not Authorized")
+    @auction_ns.response(403, "User is not qualified for auction registeration")
+    @token_required
+    def post(self,current_user):
+
+        if 'auctionId' not in auction_ns.payload:
+            return make_response(jsonify({"success":False,"reason":'auctionId',"message":AUCTION['REQUIRED']}),400)
+
+        auction = Auction.query.get(auction_ns.payload['auctionId'])
+        if not auction :
+            return make_response(jsonify({"success":False,"reason":'auctionId',"message":AUCTION['NOT_FOUND']}),400)
+
+        now = datetime.now()
+
+        if auction.done or auction.start_date < now:
+            return make_response(jsonify({"success":False,"reason":'auctionDone',"message":AUCTION['DONE']}),403)
+
+        diff = secondDiff(auction.start_date,now)
+        if diff > 60:
+            return make_response(jsonify({"success":False,"reason":'auctionDone',"message":AUCTION['NOT_STARTED_YET']}),403)
+
+        if not auction.have_extra_gems:
+            return make_response(jsonify({"success":False,"reason":'auctionNoExtraOffer',"message":AUCTION['NO_EXTRA']}),403)
+
+        if current_user.gems < auction.required_gems:
+            return make_response(jsonify({"success":False,"reason":'redirectShop',"message":AUCTION['NOT_ENOGH_GEMS']}),403)
+
+        user_plan = UserPlan.query.filter_by(user_id = current_user.id).join(AuctionPlan).filter_by(auction_id=auction.id).first()
+
+        if not user_plan:
+            return make_response(jsonify({"success":False,"reason":'notRegisteredAuction',"message":AUCTION['NOT_REGISTERED']}),403)
+
+        my_last_bids = Bid.query.join(UserPlan).filter(UserPlan.id==user_plan.id,Bid.auction_id==auction.id).order_by(desc(Bid.created))
+        last_bid = my_last_bids.first()
+
+        if not last_bid:
+            message = AUCTION['BEFORE_TARGET'].replace('target',str(auction.target_bid))
+            return make_response(jsonify({"success":False,"reason":'targetNotMeet',"message":message}),403)
+
+        bid_count = my_last_bids.count()
+
+        if(user_plan.auction_plan.max_bids - bid_count) != last_bid.current_bids :
+            return make_response(jsonify({"success":False,"reason":'extraBidsAlreadyUsed',"message":AUCTION['EXTRA_BID_USED']}),403)
+
+
+        if last_bid.current_bids > auction.target_bid:
+            message = AUCTION['BEFORE_TARGET'].replace('target',str(auction.target_bid))
+            return make_response(jsonify({"success":False,"reason":'targetNotMeet',"message":message}),403)
+
+        last_bid.current_bids += auction.extra_bids
+
+        remained_bids = last_bid.current_bids
+
+        user_activity = UserActivity()
+        user_activity.user = current_user
+        user_activity.ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
+        user_activity.activity = ACTIVITIES['AUCTION_EXTRA_BID'].replace('attribute',auction.title)
+
+        gem_payment = GemPayment()
+        gem_payment.paid_gems = auction.required_gems
+        gem_payment.type = GemPayType.BID
+        gem_payment.status = GemPayStatus.DONE
+        gem_payment.sequence = GemPayStatus.WAIT + ' - ' + GemPayStatus.DONE
+        gem_payment.user = current_user
+        current_user.gems -= auction.required_gems
+
+
+        db.session.add(gem_payment)
+        db.session.add(user_activity)
+        db.session.add(last_bid)
+        db.session.add(current_user)
+        db.session.commit()
+
+        message = AUCTION['SUCCESS_EXTRA_GEM'].replace('gem',str(auction.required_gems)).replace('bid',str(auction.extra_bids))
+        return make_response(jsonify({"success":True,"message":message,"bids":remained_bids}),200)

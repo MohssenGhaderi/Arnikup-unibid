@@ -1,0 +1,14 @@
+common Name : unibid.ir
+email :info@unibid.ir
+country :Ir
+company :Arnikup
+unit : Auction
+password : 1qunibid2wstrong
+
+
+common Name : admin.unibid.ir
+email :info@unibid.ir
+country :Ir
+company :Arnikup
+unit : Auction
+password : 1qunibid2wadminssl

@@ -4,10 +4,15 @@ import datetime
 
 class NotificationType:
     REGULAR = 1
-    CHANGEPASS = 2038
-    FORGOTPASS = 2021
-    INVITOR = 2039
-    SELFINVITATION = 2040
+    WELCOME = 3079
+    CHANGEPASS = 3076
+    FORGOTPASS = 3078
+    PARTICIPATE = 3082
+    INVITORGIFT = 3080
+    INVITORSELFGIFT = 3081
+    STARTAUCTION = 2984
+    ENDAUCTION_ALLUSER = 3083
+    ENDAUCTION_WINNER = 3084
 
 class Notification(Base):
     __tablename__ = 'notifications'

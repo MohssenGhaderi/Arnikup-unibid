@@ -392,6 +392,15 @@
   justify-content: center;
   align-items: center;
   border-radius: 50%;
+  cursor: pointer;
+}
+
+.accountProfile-profile-headerTop-rank > img {
+  opacity: 0.8;
+}
+
+.accountProfile-profile-headerTop-rank:hover > img {
+  opacity: 1;
 }
 
 .accountProfile-profile-headerTop-item {
@@ -427,7 +436,18 @@
   position: absolute;
   top:-5px;
   right: -5px;
+  cursor: pointer;
 }
+
+.accountProfile-profile-headerTop-item-image-pic  > img{
+  opacity: 0.8;
+}
+
+.accountProfile-profile-headerTop-item-image-pic:hover  > img{
+  opacity: 1;
+}
+
+
 
 .accountProfile-profile-headerTop-basket {
   width: 52px;
@@ -438,7 +458,18 @@
   align-items: center;
   border-radius: 50%;
   position: relative;
+  cursor: pointer;
 }
+
+.accountProfile-profile-headerTop-basket > img {
+  opacity: 0.8;
+}
+
+.accountProfile-profile-headerTop-basket:hover > img {
+  opacity: 1;
+}
+
+
 
 .accountProfile-profile-headerTop-basket > span {
   width: 24px;
@@ -456,6 +487,7 @@
 
 .accountProfile-profile-headerBottom > p {
   text-align: center;
+
 }
 
 .accountProfile-profile-headerBottom > p:first-of-type {
@@ -473,9 +505,19 @@
   justify-content: center;
   align-items: center;
   font-size: 13px;
+  cursor: pointer;
+  opacity: 0.8;
 }
 .accountProfile-profile-headerBottom > p:last-of-type > img {
   margin-left: 10px;
+  opacity: 0.8;
+}
+.accountProfile-profile-headerBottom > p:last-of-type:hover  {
+  opacity: 1;
+}
+
+.accountProfile-profile-headerBottom > p:last-of-type:hover > img {
+  opacity: 1;
 }
 
 .accountProfile-profile-items {

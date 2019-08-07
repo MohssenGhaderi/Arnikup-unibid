@@ -35,17 +35,24 @@ export class SlideComponent implements OnInit {
 
     this.cart.auctionId = this.slider.auctionId;
 
-    if(!this.joined){
-      this.joined = true;
-      this.auctionSocket.join(this.slider.auctionId);
-    }
+    // if(!this.joined){
+    //   this.joined = true;
+    //   this.auctionSocket.PublicRoom(this.slider.auctionId);
+    // }
 
-    this.auctionSocket.auctionItem.subscribe(result=>{
-
+    this.auctionSocket.iceAge.subscribe(result=>{
       if(this.slider.auctionId===result.auctionId){
-        this.slider = result;
+        this.auctionSocket.getAuctionItem(this.slider.auctionId);
       }
     });
+
+    this.auctionSocket.auctionItem.subscribe(result=>{
+      if(this.slider.auctionId===result.auctionId){
+        this.slider = result.auction;
+      }
+    });
+
+
 
 
     if (this.slider) {

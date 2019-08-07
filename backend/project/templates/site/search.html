@@ -165,7 +165,7 @@
 									price : ToPersian(formatCurrency(auction.main_price)),
 									image : product_image_path + ClearifyNames(auction.images)[0],
 									instantview_link : "/instantview/"+ auction.id,
-									auctionview_link : "/view/auction/"+ auction.id,
+									auctionview_link : "/auction/"+ auction.id,
 									item_id : auction.item_id,
 									likeflag: auction.liked ? "fa fa-heart" : "fa fa-heart-o",
 								});
@@ -272,7 +272,7 @@
 							price : ToPersian(formatCurrency(auction.main_price)),
 							image : product_image_path + ClearifyNames(auction.images)[0],
 							instantview_link : "/instantview/"+ auction.id,
-							auctionview_link : "/view/auction/"+ auction.id,
+							auctionview_link : "/auction/"+ auction.id,
 							item_id : auction.item_id,
 							likeflag: auction.liked ? "fa fa-heart" : "fa fa-heart-o",
 						});

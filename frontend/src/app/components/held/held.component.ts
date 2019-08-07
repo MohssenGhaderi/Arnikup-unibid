@@ -33,6 +33,4 @@ export class HeldComponent implements OnInit {
 
   }
 
-
-
 }

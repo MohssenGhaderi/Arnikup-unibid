@@ -1,0 +1,7 @@
+<p class="radio-title">روش فرستادن پیام</p>
+<div class="radio-check">
+  <div class="radio-check-wrapper" *ngFor="let item of items">
+    <span #chkElements (click)="check($event)"  class="radio-check-circle" [ngClass]="{'radio-check-circle-fill': item?.id==selectedItem?.id}"></span>
+    <span class="radio-check-circle-title">{{item?.title}}</span>
+  </div>
+</div>

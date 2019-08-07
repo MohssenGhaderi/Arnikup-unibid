@@ -1,3 +1,6 @@
+.cfnErrorHide{
+  display: none;
+}
 .cfnError {
   background-color: #f8d7da;
   position: absolute;

@@ -15,7 +15,7 @@ class UserNotification(Base):
     delivered = db.Column(db.Boolean,default=False)
     seen = db.Column(db.Boolean,default=False)
     send_sms = db.Column(db.Boolean,default=False)
-    retry = db.Column(db.Integer,default=1)
+    retry = db.Column(db.Integer,default=0)
 
     created = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False)
     updated = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False, onupdate=datetime.datetime.now)

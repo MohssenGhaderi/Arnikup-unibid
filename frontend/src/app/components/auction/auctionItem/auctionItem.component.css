@@ -22,7 +22,11 @@
   animation: fadeInHoriz 0.8s ease;
   outline: none;
 }
-
+.cart .cfnButton {
+  width:180px;
+  align-self: center;
+  margin-top: 18px;
+}
 /*.cart * {
   pointer-events: none;
 }*/
@@ -375,6 +379,10 @@
 .cart-suggest  > a{
   cursor: pointer;
   pointer-events: initial !important;
+  text-decoration: none;
+}
+.cart-suggest  > a > p {
+  color:#222;
 }
 
 .cart-suggest .cart-footer-contributer > * {

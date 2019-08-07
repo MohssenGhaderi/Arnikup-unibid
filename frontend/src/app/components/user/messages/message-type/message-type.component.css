@@ -1,0 +1,61 @@
+.customDropdown-container{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 74px;
+}
+
+.accountProfile-title {
+  font-size: 14px;
+  text-align: center;
+  margin: 0;
+  padding: 6px 0px 15px 0px;
+  position: relative;
+}
+
+.accountProfile-title > img {
+  position: absolute;
+  left: 9px;
+  top: 7px;
+}
+
+.customDropdown {
+  background-color: #fff;
+  z-index: 999999999;
+  max-height: inherit;
+  padding: 10px;
+  border: 1px solid #dcdbdc;
+  border-radius: 24px;
+  text-align: center;
+  height: 215px;
+  width: 338px;
+}
+
+.cities {
+  overflow: auto;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  max-height: inherit;
+  height: 225px;
+}
+
+.cities > li {
+  padding: 15px;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.cities > li:nth-of-type(2n) {
+  background-color: #fafafa;
+}
+
+.customDropdown .accountProfile-title {
+  border-bottom: 1px solid #ebebeb;
+}
+
+.cities > li:hover {
+  background-color: #f1f1f1;
+}

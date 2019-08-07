@@ -6,11 +6,11 @@ class Auction(Base):
     __tablename__ = 'auctions'
     id = db.Column(db.BigInteger, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
+    image = db.Column(db.Text)
     tag = db.Column(db.String(255))
     description = db.Column(db.Text, nullable=False)
     is_active = db.Column(db.Boolean,nullable =False,default=True)
     done = db.Column(db.Boolean,default=False)
-    have_extra_gems = db.Column(db.Boolean,nullable =False,default=False)
     start_date = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False)
     base_price = db.Column(db.DECIMAL(precision=20, scale=4), nullable=False)
     max_price = db.Column(db.DECIMAL(precision=20, scale=4), nullable=False)
@@ -18,8 +18,10 @@ class Auction(Base):
     min_members = db.Column(db.BigInteger,default=0,nullable=False)
     ratio = db.Column(db.Integer,default=1,nullable=False)
 
+    have_extra_gems = db.Column(db.Boolean,nullable =False,default=False)
     extra_bids = db.Column(db.Integer,default=0,nullable=False)
     required_gems = db.Column(db.Integer,default=0,nullable=False)
+    target_bid = db.Column(db.Integer,default=3)
 
     item_id = db.Column(db.BigInteger, db.ForeignKey('items.id'),nullable=False)
     item = db.relationship('Item')

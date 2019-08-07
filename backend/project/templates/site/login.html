@@ -70,9 +70,20 @@ var app = new Vue({
 		next : "{{next}}",
 	},
 	mounted:function(){
-		console.log(this.next);
+
 	},
 	methods:{
+
+		getParameterByName(name, url) {
+	    if (!url) url = window.location.href;
+	    name = name.replace(/[\[\]]/g, '\\$&');
+	    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+	        results = regex.exec(url);
+	    if (!results) return null;
+	    if (!results[2]) return '';
+	    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+		},
+
 		handleSubmit: function(){
 			self = this;
 			var obj = self.loginInformation;
@@ -82,7 +93,7 @@ var app = new Vue({
           delete obj[propName];
         }
       }
-			axios.post("{{url_for('userlogin')}}",obj,
+			axios.post("{{url_for('rest_api.auth_login')}}",obj,
 				{
 					headers:
 					{
@@ -93,24 +104,25 @@ var app = new Vue({
 					$(".error_alert").addClass('hide');
 					$(".success_alert").removeClass('hide');
 					$(".success_container").html('ورود شما با موفقیت انجام گرفت')
-					if(self.next!="None"){
-							window.location = self.next;
+					var nexturl = self.getParameterByName('next');
+					console.log(nexturl);
+					if(nexturl!=null){
+							window.location = nexturl;
 						}
 						else {
-						window.parent.location.reload();
+						window.location = "/admin/";
 					}
+
          })
          .catch((error)=>{
-					 console.log(error.response.data.message);
+					 console.log(error.response);
 
-					 if (error.response.data.message.field == "verification"){
+					 if (error.response.data.reason == "verification"){
 
 						 window.location = "/verify";
 					 }else {
 						 $(".error_alert").removeClass('hide');
-						 for (var propName in error.response.data.message) {
-							 $(".error_container").html(error.response.data.message[propName]);
-						 }
+						 $(".error_container").html(error.response.data.message);
 					 }
  				});
 		},

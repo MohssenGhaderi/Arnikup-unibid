@@ -1,7 +1,7 @@
 <div class="accountProfile">
   <div class="financeContainer">
-    <p class="accountProfile-title">اعتبار مالی<img src="assets/resources/images/assets/png/001-down-arrow-copy-5.png"  (click)="goBack()"/></p>
-    <p class="accountProfile-financialCredit-title">آخرین تراکنش‌ها</p>
+    <p class="accountProfile-title">تاریخچه خرید<img src="assets/resources/images/assets/png/001-down-arrow-copy-5.png"  (click)="goBack()"/></p>
+    <p class="accountProfile-financialCredit-title">آخرین خریدهای شما</p>
     <div class="accountProfile-financialCredit-wrapper">
       <div class="accountProfile-financialCredit-item" *ngFor="let payment of payments">
         <img class="accountProfile-financialCredit-item-img" [src]="Link.product(payment.image)" alt="">

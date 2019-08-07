@@ -13,6 +13,9 @@
 /* @import url(assets/resources/fonts/roboto/css/roboto.css); */
 @import '~@ngx-share/button/themes/default/default-theme';
 @import '~@ngx-share/button/themes/circles/circles-light-theme';
+@import '~@ngx-share/button/themes/modern/modern-light-theme';
+@import '~@ngx-share/button/themes/outline/outline-theme';
+
 
 app-default {
   display: flex;

@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { AuctionStatus } from '../models/auction/auctionStatus.model';
-import { Winner } from '../models/auction/winner.model';
 import { States } from '../models/auction/states.model';
-import { LiveUser } from '../models/liveUser.model';
-import { GetError } from '../models/service/getError.model';
+import { ErrorMessage } from '../models/socket/error.model';
 import { SuccessMessage } from '../models/success.message.model';
 import { GetAuction } from 'src/app/models/service/getAuction.model';
-import { AuctionItem } from 'src/app/models/auction/auctionItem.model';
+import { AuctionLive } from 'src/app/models/socket/auction.model';
+import { Joined } from 'src/app/models/socket/joined.model';
+import { Leaved } from 'src/app/models/socket/leaved.model';
+import { Status } from 'src/app/models/socket/status.model';
+import { HeartBeat } from 'src/app/models/socket/heartbeat.model';
+import { Bids } from 'src/app/models/socket/bids.model';
+import { EndState } from 'src/app/models/socket/endState.model';
+import { AuctionWinner } from '../models/socket/winner.model';
+import { AuctionUsers } from '../models/socket/users.model';
 
 
 @Injectable({
@@ -15,20 +20,26 @@ import { AuctionItem } from 'src/app/models/auction/auctionItem.model';
 })
 export class LiveAuctionService {
   connect = this.socket.fromEvent<string>('connect');
-  status = this.socket.fromEvent<AuctionStatus>('status');
-  winner = this.socket.fromEvent<Winner>('winner');
-  joined = this.socket.fromEvent<string>('joined');
-  leaved = this.socket.fromEvent<string>('leaved');
-  failed = this.socket.fromEvent<GetError>('failed');
+  status = this.socket.fromEvent<Status>('status');
+  joined = this.socket.fromEvent<Joined>('joined');
+  leaved = this.socket.fromEvent<Leaved>('leaved');
+  failed = this.socket.fromEvent<ErrorMessage>('failed');
   succeed = this.socket.fromEvent<SuccessMessage>('succeed');
   accepted = this.socket.fromEvent<string>('accepted');
-  bids = this.socket.fromEvent<string>('remainBids');
-  users = this.socket.fromEvent<LiveUser[]>('users');
+  keepalive = this.socket.fromEvent<string>('keepalive');
+  bids = this.socket.fromEvent<Bids>('bids');
+  users = this.socket.fromEvent<AuctionUsers>('users');
   auction = this.socket.fromEvent<GetAuction>('auction');
-  auctionItem = this.socket.fromEvent<AuctionItem>('auctionItem');
-  remained = this.socket.fromEvent<string>('remained');
-  done = this.socket.fromEvent<string>('done');
-  states = this.socket.fromEvent<States>('states');
+  auctionItem = this.socket.fromEvent<AuctionLive>('auctionItem');
+
+  reset = this.socket.fromEvent<HeartBeat>('reset');
+  iceAge = this.socket.fromEvent<HeartBeat>('iceAge');
+  holliDay = this.socket.fromEvent<HeartBeat>('holliDay');
+  hotSpot = this.socket.fromEvent<HeartBeat>('hotSpot');
+  stayAlive = this.socket.fromEvent<HeartBeat>('stayAlive');
+  zeroTime = this.socket.fromEvent<EndState>('zeroTime');
+  feniTto = this.socket.fromEvent<EndState>('feniTto');
+  winner = this.socket.fromEvent<AuctionWinner>('winner');
 
   constructor(private socket: Socket) {
     console.log('socket constructor');
@@ -37,17 +48,29 @@ export class LiveAuctionService {
   connectToServer(){
     this.socket.connect();
   }
-
-  leave(auctionId){
-    this.socket.emit('leave',{'auctionId':auctionId});
+  
+  keepaliveServer(){
+    this.socket.emit("keepalive");
   }
 
-  join(auctionId){
+  leave(auctionId){
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       const token = JSON.parse(currentUser)['accessToken'];
-      this.socket.emit('join',{'auctionId':auctionId,'authorization':token});
+      this.socket.emit('leave',{'auctionId':auctionId,'authorization':token});
     }
+  }
+
+  PrivateRoom(auctionId){
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      this.socket.emit('join_private',{'auctionId':auctionId,'authorization':token});
+    }
+  }
+
+  PublicRoom(auctionId){
+    this.socket.emit('join_public',{'auctionId':auctionId});
   }
 
   getStatus(auctionId){
@@ -63,7 +86,19 @@ export class LiveAuctionService {
   }
 
   getAuction(auctionId){
-    this.socket.emit('getAuction',{'auctionId':auctionId});
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      this.socket.emit('getAuction',{'auctionId':auctionId,'authorization':token});
+    }
+  }
+
+  getAuctionItem(auctionId){
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      this.socket.emit('getAuctionItem',{'auctionId':auctionId,'authorization':token});
+    }
   }
 
   offerBid(auctionId){

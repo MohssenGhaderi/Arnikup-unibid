@@ -15,7 +15,6 @@ export class HeaderComponent implements OnInit {
 
   isLoggedIn = false;
   Link = Links;
-  toggleProfile = false;
   userInfo:BasicUserInformation;
   userSyncTimer;
   joined;
@@ -57,7 +56,11 @@ export class HeaderComponent implements OnInit {
   }
 
   shop(){
-    this.shared.shop=true;
+    this.shared.shop = true;
+  }
+
+  nofiy(){
+    this.shared.toggleMenu.notification = !this.shared.toggleMenu.notification;
   }
 
   ngAfterViewInit(){
@@ -76,6 +79,7 @@ export class HeaderComponent implements OnInit {
 
   toggleProfileMenu(){
     this.liveUser.getStatus();
+    this.shared.toggleMenu.notification = false;
     this.shared.toggleMenu.profile = !this.shared.toggleMenu.profile;
     this.shared.toggleMenu.profileReset();
     this.shared.lastClass = "myCfnAnimation-fadeIn";

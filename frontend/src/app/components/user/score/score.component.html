@@ -1,14 +1,16 @@
 <div class="accountProfile">
   <div class="ScoresContainer">
     <p class="accountProfile-title"><span>{{username}}</span>نفرات برتر<img src="assets/resources/images/assets/png/arrowDown.png" (click)="goBack()" /></p>
-    <div class="accountProfile-yourScoreWrapper" *ngFor="let user of scores">
-      <div class="accountProfile-yourScoreItem" [ngClass]="{'accountProfile-yourScoreItem-active':user.name==username}">
-        <img *ngIf="user.status=='up'" src="assets/resources/images/assets/png/icons8-up-filled-24.png" alt=""/>
-        <img *ngIf="user.status=='down'" src="assets/resources/images/assets/png/icons8-down-arrow-filled-24.png" alt=""/>
-        <img class="accountProfile-yourScoreItem-img" [src]="Link.avatar(user.avatar)" />
-        <div class="accountProfile-yourScoreItem-info">
-          <p class="accountProfile-yourScoreItem-info-name">{{user.row}} - {{user.name}}</p>
-          <p class="accountProfile-yourScoreItem-info-score"><img src="assets/resources/images/assets/png/star.png"/> {{user.level}}</p>
+    <div class="accountProfile-yourScoreWrapper">
+      <div *ngFor="let user of scores">
+        <div class="accountProfile-yourScoreItem" [ngClass]="{'accountProfile-yourScoreItem-active':user.name==username}">
+          <img *ngIf="user.status=='up'" src="assets/resources/images/assets/png/icons8-up-filled-24.png" alt=""/>
+          <img *ngIf="user.status=='down'" src="assets/resources/images/assets/png/icons8-down-arrow-filled-24.png" alt=""/>
+          <img class="accountProfile-yourScoreItem-img" [src]="Link.avatar(user.avatar)" />
+          <div class="accountProfile-yourScoreItem-info">
+            <p class="accountProfile-yourScoreItem-info-name">{{user.row}} - {{user.name}}</p>
+            <p class="accountProfile-yourScoreItem-info-score"><img src="assets/resources/images/assets/png/star.png"/> {{user.level}}</p>
+          </div>
         </div>
       </div>
     </div>

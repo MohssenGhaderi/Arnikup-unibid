@@ -3,11 +3,11 @@ from project.database import db, Base
 import datetime
 
 class Payment_Types:
-    Credit = 0
-    Online = 1
-    CardToCard = 2
-    BankReceipt = 3
-    NOPAY = 4
+    Credit = 'اعتبار'
+    Online = 'پرداخت آنلاین'
+    CardToCard = 'کارت به کارت'
+    BankReceipt = 'فیش بانکی'
+    NOPAY = 'رایگان'
 
 class PaymentMethod(Base):
     __tablename__ = 'payment_methods'

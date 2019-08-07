@@ -1,8 +1,8 @@
-<div *ngIf="states.iceAge;then iceAge"></div>
-<div *ngIf="states.holliDay || states.hotSpot;then holliDayOrHotSpot"></div>
-<div *ngIf="states.feniTto || auction?.done;then feniTto"></div>
+<div *ngIf="states.iceAge && !auction?.done; then iceAge"></div>
+<div *ngIf="states.holliDay || states.hotSpot && !auction?.done; then holliDayOrHotSpot"></div>
+<div *ngIf="states.feniTto || auction?.done; then feniTto"></div>
 
-<ng-template #iceAge>
+ <ng-template #iceAge>
   <div class="contributer-wrapper">
     <p class="contributer-title">شرکت کنندگان: <span>{{auction?.participants?.length}} / {{auction?.maxMembers}}</span></p>
     <div class="contributer-item-warpper">

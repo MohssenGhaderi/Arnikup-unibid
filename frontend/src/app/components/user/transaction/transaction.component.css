@@ -1,0 +1,159 @@
+/*margin: 25px 50px 75px 100px;
+top margin is 25px
+right margin is 50px
+bottom margin is 75px
+left margin is 100px*/
+
+.accountProfile {
+  position: absolute;
+  top: 58px;
+  width: 400px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  background-color: #ffffff;
+  z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #212121;
+  font-size: 12px;
+  direction: rtl;
+  padding: 15px 0;
+  padding-top: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.accountProfile-header {
+  border-top: 1px solid #b5b5b5;
+  border-bottom: 1px solid #ebebeb;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 12px 0 12px 0;
+}
+
+.accountProfile-footer{
+  position: relative;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.accountProfile-footer > span{
+  border: 1px solid #a2a2a2;
+  border-radius: 24px;
+  padding: 5px 50px;
+  background: #a2a2a2;
+  color: #fff;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.accountProfile-footer > span:hover{
+  opacity: 1;
+}
+
+.accountProfile-header-coins > img {
+  width: 30px;
+  margin-right: 10px;
+}
+
+.accountProfile-header-gems-action {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background-color: #e8e8e8;
+  position: absolute;
+  right: 4px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+.accountProfile-header-gems-action > img {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+}
+
+.accountProfile-header-gems-action:hover , .accountProfile-header-gems-action > img:hover {
+  opacity: 1;
+}
+
+.accountProfile-header-gems > img:last-of-type {
+  width: 30px;
+  margin-right: 10px;
+}
+
+.accountProfile-header-coins{
+  width: 120px;
+  border-radius: 48px;
+  border: solid 1px #d9d9d9;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+}
+
+.accountProfile-header-coins > span {
+  font-size: 20px;
+  font-weight: 100;
+  text-align: left;
+  width: 72px;
+}
+
+.accountProfile-header-gems{
+  width: 160px;
+  height: 50px;
+  border-radius: 48px;
+  border: solid 1px #d9d9d9;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+}
+
+.accountProfile-header-gems > span {
+  font-size: 20px;
+  font-weight: 100;
+  width: 50px;
+  margin-right: 60px;
+  text-align: center;
+}
+
+
+.accountProfile-title {
+  font-size: 16px;
+  text-align: center;
+  margin: 0;
+  padding: 15px;
+  position: relative;
+}
+
+.accountProfile-title > img {
+  position: absolute;
+  right: 10px;
+  top: 13px;
+}
+
+.accountProfile-title > span {
+  position: absolute;
+  left: 10px;
+  top: 18px;
+  color: #ec407a;
+}
+
+.accountProfile-yourScoreWrapper {
+  width: 100%;
+  max-height: 393px;
+  min-height: 393px;
+  overflow: auto;
+}
+
+.accountProfile > div {
+  width: 400px;
+}
+.accountProfile > div > p {
+  align-self: stretch;
+}
+
+/*here*/

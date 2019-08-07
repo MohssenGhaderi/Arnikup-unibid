@@ -1,0 +1,16 @@
+<div class="accountProfile">
+  <div class="ScoresContainer">
+    <p class="accountProfile-title">آرشیو پیام ها<img src="assets/resources/images/assets/png/001-down-arrow-copy-5.png" (click)="goBack()" /></p>
+
+    <div class="accountProfile-yourScoreWrapper">
+      <div *ngFor="let message of msg?.messages">
+        <app-message-archive-item [message]="message"></app-message-archive-item>
+      </div>
+      <div class="accountProfile-footer">
+        <span (click)="showMore($event)">نتایج بیشتر</span>
+      </div>
+    </div>
+    <app-loading></app-loading>
+    <app-error></app-error>
+  </div>
+</div>

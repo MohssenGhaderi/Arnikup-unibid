@@ -1,0 +1,11 @@
+<div class="accountProfile-priceItem">
+  <p class="accountProfile-priceItem-title">{{cart.title}}</p>
+  <p class="accountProfile-priceItem-before">قیمت : {{cart.price | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+  <p class="accountProfile-priceItem-before" *ngIf="selectedGaranty.price!=0">گارانتی : {{selectedGaranty.title}} به قیمت {{selectedGaranty.price | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+  <p class="accountProfile-priceItem-after">تخفیف : {{cart.discount | currency : ' ' : 'symbol' : '1.0-0'}} تومان</p>
+  <p class="accountProfile-priceItem-after">نوع تخفیف : {{cart.type}}</p>
+</div>
+<div class="accountProfile-priceTotal">
+  <span>قیمت نهایی</span>
+  <span>{{cart.price - cart.discount + selectedGaranty.price  | currency : ' ' : 'symbol' : '1.0-0'}} تومان </span>
+</div>

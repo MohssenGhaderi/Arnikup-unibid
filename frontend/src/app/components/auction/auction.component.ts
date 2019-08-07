@@ -16,10 +16,11 @@ import { SuccessComponent } from 'src/app/components/success/success.component';
 })
 export class AuctionComponent implements OnInit {
   auction: GetAuction;
-  timeoutId;
+
   @ViewChild(LoadingComponent) loading: LoadingComponent ;
   @ViewChild(ErrorComponent) error: ErrorComponent ;
   @ViewChild(SuccessComponent) success: SuccessComponent ;
+  @ViewChild('mainWrapper') mainWrapperElem: ElementRef;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,7 +30,7 @@ export class AuctionComponent implements OnInit {
     private renderer: Renderer2,
     public shared:SharingService,
   )
-  {this.auctionSocket.connectToServer();}
+  {}
 
   ngOnInit() {
 
@@ -50,9 +51,5 @@ export class AuctionComponent implements OnInit {
       this.auction = result;
     });
 
-
-    this.auctionSocket.remained.subscribe(result=>{
-      console.log(result);
-    });
   }
 }

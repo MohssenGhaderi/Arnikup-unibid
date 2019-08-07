@@ -1,0 +1,19 @@
+<div class="accountProfile">
+  <div class="editProfileContainer">
+    <p class="accountProfile-title">پیام ها<img src="assets/resources/images/assets/png/001-down-arrow-copy-5.png" (click)="goBack()" /></p>
+    <div class="accountProfile-profile-editProfile">
+      <app-small-states *ngIf="shared.states" [state]="selectedState?.title" [states]="editables?.states"></app-small-states>
+      <form [formGroup]="registerForm">
+        <p (click)="toggleMessageType($event)" class="accountProfile-type">{{selectedMessageType}}<img class="accountProfile-type-img" (click)="toggleMessageType($event)" src="assets/resources/images/assets/png/arrowDown.png"/></p>
+        <app-message-type *ngIf="toggleMessageTypeMenu" [messageType]="selectedMessageType"></app-message-type>
+        <div><input type="text" class="cfnText" placeholder="عنوان پیام"  formControlName="title"/></div>
+        <div><textarea class="accountProfile-profile-text" placeholder="متن پیام" formControlName="message"></textarea></div>
+        <span (click)="sendMessage($event)" class="cfnButton cfnButton-primary">ارسال پیام</span>
+        <span (click)="toggleArchive()" class="cfnButton cfnButton-primary-invert">مشاهده آرشیو پیام ها</span>
+    </form>
+    </div>
+    <app-success></app-success>
+    <app-error></app-error>
+    <app-loading></app-loading>
+  </div>
+</div>

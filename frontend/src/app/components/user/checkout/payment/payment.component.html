@@ -1,6 +1,6 @@
 <div class="accountProfile">
   <div class="paymentContainer">
-    <p class="accountProfile-title">اطلاعات حساب کاربری<img src="assets/resources/images/assets/png/001-down-arrow-copy-5.png" (click)="goBack()"/></p>
+    <p class="accountProfile-title">تایید پرداخت<img src="assets/resources/images/assets/png/001-down-arrow-copy-5.png" (click)="goBack()"/></p>
     <div class="accountProfile-shippingSteps">
       <div>
         <div>
@@ -13,33 +13,37 @@
 
         <div>
           <div class="accountProfile-shippingSteps-check accountProfile-shippingSteps-check-checked"></div>
-          <span>روش ارسال</span>
+          <span>تایید آدرس</span>
         </div>
       </div>
       <div>
         <span class="accountProfile-shippingSteps-line"></span>
         <div>
           <div class="accountProfile-shippingSteps-check"></div>
-          <span>روش پرداخت</span>
+          <span>تایید نهایی</span>
         </div>
       </div>
     </div>
-    <div class="accountProfile-priceWrapper" *ngFor="let cart of carts">
-      <div class="accountProfile-priceItem">
-        <p class="accountProfile-priceItem-title">{{cart.title}}</p>
-        <p class="accountProfile-priceItem-before">قیمت : {{cart.price | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
-        <p class="accountProfile-priceItem-after">تخفیف : {{cart.discount | currency : ' ' : 'symbol' : '1.0-0'}} تومان</p>
-      </div>
-      <div class="accountProfile-priceTotal">
-        <span>قیمت نهایی</span>
-        <span>{{totalPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </span>
-      </div>
+
+    <div class="accountProfile-priceWrapper">
+      <app-payment-item *ngFor="let cart of carts" [cart]="cart"></app-payment-item>
     </div>
-    <p class="accountProfile-footer-title">روش پرداخت</p>
-    <a class="cfnButton cfnButton-empty">کیف پول<img src="assets/resources/images/assets/png/arrowDown.png"/></a>
-    <a style="width:160px;" class="cfnButton cfnButton-primary">پرداخت</a>
+
+    <app-coupon *ngIf="!userCoupon" [title]="'اعمال'" [operation]="'check'"></app-coupon>
+    <app-coupon-item *ngIf="userCoupon" [userCoupon]="userCoupon"></app-coupon-item>
+
+    <app-shipment-method-item [shipmentMethod]="this.shared.checkoutInfo.method"></app-shipment-method-item>
+
+    <div class="accountProfile-priceTotal">
+      <span>جمع کل پرداختی : {{totalPrice  | currency : ' ' : 'symbol' : '1.0-0'}} تومان </span>
+    </div>
+
+    <!-- <p class="accountProfile-footer-title">روش پرداخت</p>
+    <a class="cfnButton cfnButton-empty">کیف پول<img src="assets/resources/images/assets/png/arrowDown.png"/></a> -->
+    <a style="width:160px;" class="cfnButton cfnButton-primary" (click)="buyProduct()">تایید نهایی و پرداخت</a>
     <app-error></app-error>
     <app-success></app-success>
     <app-loading></app-loading>
   </div>
 </div>
+<app-confirm *ngIf="shared.showConfirm" [buy]="buy" [shopWrapperElem]="shopWrapperElem"></app-confirm>

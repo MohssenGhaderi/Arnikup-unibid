@@ -1,8 +1,9 @@
 import random
 from markupsafe import Markup
-from flask import url_for,render_template,abort,session,redirect
+from flask import request,url_for,render_template,abort,session,redirect
 from flask_admin import AdminIndexView
 from flask_admin import expose,form
+from flask_login import current_user,login_required,logout_user
 from functools import wraps
 from ..middleware import has_role
 from flask_security import current_user
@@ -17,9 +18,171 @@ from sqlalchemy import or_ , and_
 from sqlalchemy import func
 from project.database import db
 
+
+class DeliveredBooleanField(SelectField):
+    def __init__(self, *args, **kwargs):
+        choices = [
+            (False, 'عدم تحویل'),
+            (True, 'تحویل داده شده')
+        ]
+        kwargs["choices"] = choices
+        kwargs["coerce"] = lambda x: str(x) == "True"
+        super(DeliveredBooleanField, self).__init__(*args, **kwargs)
+
+class SeenBooleanField(SelectField):
+    def __init__(self, *args, **kwargs):
+        choices = [
+            (False, 'عدم مشاهده'),
+            (True, 'مشاهده شده')
+        ]
+        kwargs["choices"] = choices
+        kwargs["coerce"] = lambda x: str(x) == "True"
+        super(SeenBooleanField, self).__init__(*args, **kwargs)
+
+class SendSMSField(SelectField):
+    def __init__(self, *args, **kwargs):
+        choices = [
+            (False, 'عدم ارسال پیامک'),
+            (True, 'ارسال پیامک')
+        ]
+        kwargs["choices"] = choices
+        kwargs["coerce"] = lambda x: str(x) == "False"
+        super(SendSMSField, self).__init__(*args, **kwargs)
+
+class VerifiedBooleanField(SelectField):
+    def __init__(self, *args, **kwargs):
+        choices = [
+            (False,'عدم تایید'),
+            (True,'تایید شده')
+        ]
+        kwargs["choices"] = choices
+        kwargs["coerce"] = lambda x: str(x) == "True"
+        super(VerifiedBooleanField, self).__init__(*args, **kwargs)
+
+class ActiveBooleanField(SelectField):
+    def __init__(self, *args, **kwargs):
+        choices = [
+            (False,'کاربر غیرفعال'),
+            (True,'کاربر فعال')
+        ]
+        kwargs["choices"] = choices
+        kwargs["coerce"] = lambda x: str(x) == "True"
+        super(ActiveBooleanField, self).__init__(*args, **kwargs)
+
+class BanBooleanField(SelectField):
+    def __init__(self, *args, **kwargs):
+        choices = [
+            (False,'کاربر مجاز'),
+            (True,'کاربر بن شده')
+        ]
+        kwargs["choices"] = choices
+        kwargs["coerce"] = lambda x: str(x) == "True"
+        super(BanBooleanField, self).__init__(*args, **kwargs)
+
+class ShowAdsField(SelectField):
+    def __init__(self, *args, **kwargs):
+        choices = [
+            (False,'عدم نمایش تبلیغ'),
+            (True,'نمایش تبلیغ')
+        ]
+        kwargs["choices"] = choices
+        kwargs["coerce"] = lambda x: str(x) == "True"
+        super(ShowAdsField, self).__init__(*args, **kwargs)
+
+class ExtraGemBooleanField(SelectField):
+    def __init__(self, *args, **kwargs):
+        choices = [
+            (False,'عدم پیشنهاد الماس'),
+            (True,'پیشنهاد الماس در حراجی')
+        ]
+        kwargs["choices"] = choices
+        kwargs["coerce"] = lambda x: str(x) == "True"
+        super(ExtraGemBooleanField, self).__init__(*args, **kwargs)
+
+class ActiveAuctionBooleanField(SelectField):
+    def __init__(self, *args, **kwargs):
+        choices = [
+            (False,'حراجی غیرفعال'),
+            (True,'حراجی فعال')
+        ]
+        kwargs["choices"] = choices
+        kwargs["coerce"] = lambda x: str(x) == "True"
+        super(ActiveAuctionBooleanField, self).__init__(*args, **kwargs)
+
+class ExpireCouponField(SelectField):
+    def __init__(self, *args, **kwargs):
+        choices = [
+            (False,'خیر'),
+            (True,'بله')
+        ]
+        kwargs["choices"] = choices
+        kwargs["coerce"] = lambda x: str(x) == "True"
+        super(ExpireCouponField, self).__init__(*args, **kwargs)
+
+class BidBooleanField(SelectField):
+    def __init__(self, *args, **kwargs):
+        choices = [
+            (True, "برنده"),
+            (False, "بازنده"),
+        ]
+        kwargs["choices"] = choices
+        kwargs["coerce"] = lambda x: str(x) == "True"
+        super(BidBooleanField, self).__init__(*args, **kwargs)
+
+class UserAdmin(ModelView):
+    form_overrides = {
+        "is_verified": VerifiedBooleanField,
+        "is_active": ActiveBooleanField,
+        "is_banned": BanBooleanField,
+    }
+
+    form_excluded_columns = ('created', 'updated','password','payments','gem_payments','messages','short_messages','orders','plans','notifications','auction_views','user_gems')
+
+    page_size = 20
+    can_view_details = True
+    column_searchable_list = ['full_name', 'username','mobile','address.city','address.state.title','address.address','address.postal_code']
+    column_editable_list = ['full_name', 'mobile','verification_attempts','login_attempts','send_sms_attempts','coins','gems','points']
+    column_exclude_list = ('work_place','password')
+
+    def is_accessible(self):
+        return checkAdmin('admin')
+
+class UsedCouponField(SelectField):
+    def __init__(self, *args, **kwargs):
+        choices = [
+            (False,'خیر'),
+            (True,'بله')
+        ]
+        kwargs["choices"] = choices
+        kwargs["coerce"] = lambda x: str(x) == "True"
+        super(UsedCouponField, self).__init__(*args, **kwargs)
+
+class ActiveChestBooleanField(SelectField):
+    def __init__(self, *args, **kwargs):
+        choices = [
+            (False,'پکیج غیرفعال'),
+            (True,'نمایش پکیج در فروشگاه')
+        ]
+        kwargs["choices"] = choices
+        kwargs["coerce"] = lambda x: str(x) == "True"
+        super(ActiveChestBooleanField, self).__init__(*args, **kwargs)
+
+class ActiveCharittyBooleanField(SelectField):
+    def __init__(self, *args, **kwargs):
+        choices = [
+            (False,'خیریه غیرفعال'),
+            (True,'خیریه فعال')
+        ]
+        kwargs["choices"] = choices
+        kwargs["coerce"] = lambda x: str(x) == "True"
+        super(ActiveCharittyBooleanField, self).__init__(*args, **kwargs)
+
+
 def checkAdmin(role):
-    return True
-    return current_user.has_role(role)
+    # return True
+    if not current_user.is_authenticated:
+        return abort(403)
+    return current_user.has_role(role) or current_user.has_role('api')
 
 class MyAdminIndexView(AdminIndexView):
 
@@ -96,53 +259,17 @@ class MyAdminIndexView(AdminIndexView):
         #
         return super(MyAdminIndexView, self).index()
 
-class VerifiedBooleanField(SelectField):
-    def __init__(self, *args, **kwargs):
-        choices = [
-            (False,'عدم تایید'),
-            (True,'تایید شده')
-        ]
-        kwargs["choices"] = choices
-        kwargs["coerce"] = lambda x: str(x) == "True"
-        super(VerifiedBooleanField, self).__init__(*args, **kwargs)
-
-class ActiveBooleanField(SelectField):
-    def __init__(self, *args, **kwargs):
-        choices = [
-            (False,'کاربر غیرفعال'),
-            (True,'کاربر فعال')
-        ]
-        kwargs["choices"] = choices
-        kwargs["coerce"] = lambda x: str(x) == "True"
-        super(ActiveBooleanField, self).__init__(*args, **kwargs)
-
-class BanBooleanField(SelectField):
-    def __init__(self, *args, **kwargs):
-        choices = [
-            (False,'کاربر مجاز'),
-            (True,'کاربر بن شده')
-        ]
-        kwargs["choices"] = choices
-        kwargs["coerce"] = lambda x: str(x) == "True"
-        super(BanBooleanField, self).__init__(*args, **kwargs)
-
-class UserAdmin(ModelView):
-    form_overrides = {
-        "is_verified": VerifiedBooleanField,
-        "is_active": ActiveBooleanField,
-        "is_banned": BanBooleanField,
-    }
-
-    form_excluded_columns = ('created', 'updated','password','payments','gem_payments','messages','short_messages','orders','gifts','plans','notifications','auction_views','user_gems')
-
-    page_size = 20
-    can_view_details = True
-    column_searchable_list = ['full_name', 'username','mobile','address.city','address.state.title','address.address','address.postal_code']
-    column_editable_list = ['full_name', 'mobile','verification_attempts','login_attempts','send_sms_attempts','coins','gems','points']
-    column_exclude_list = ('work_place','password')
-
-    def is_accessible(self):
-        return checkAdmin('admin')
+    def logged_in(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if current_user.is_authenticated:
+                return f(*args, **kwargs)
+            else:
+                flash('Please log in first...', 'error')
+                next_url = request.url
+                login_url = '%s?next=%s' % (url_for('login'), next_url)
+                return redirect(login_url)
+        return decorated_function
 
 class RoleAdmin(ModelView):
     form_excluded_columns = ('created','updated')
@@ -185,15 +312,7 @@ class ItemAdmin(ModelView):
                                                             url_relative_path="images/products/",
                                                             thumbnail_size=(64, 64, 1))}
 
-class ShowAdsField(SelectField):
-    def __init__(self, *args, **kwargs):
-        choices = [
-            (False,'عدم نمایش تبلیغ'),
-            (True,'نمایش تبلیغ')
-        ]
-        kwargs["choices"] = choices
-        kwargs["coerce"] = lambda x: str(x) == "True"
-        super(ShowAdsField, self).__init__(*args, **kwargs)
+
 
 class AdvertisementAdmin(ModelView):
     form_overrides={
@@ -205,8 +324,7 @@ class AdvertisementAdmin(ModelView):
     column_searchable_list = ['title', 'description']
     column_editable_list = ['title', 'description']
     def is_accessible(self):
-        return True
-        return current_user.has_role('admin')
+        return checkAdmin('admin')
 
     def _list_thumbnail(view, context, model, name):
         if not model.image:
@@ -235,8 +353,7 @@ class CategoryAdmin(ModelView):
     column_exclude_list = ('description')
 
     def is_accessible(self):
-        return True
-        return current_user.has_role('admin')
+        return checkAdmin('admin')
 
     def _list_thumbnail(view, context, model, name):
         if not model.icon:
@@ -273,25 +390,6 @@ class ProductAdmin(ModelView):
     def is_accessible(self):
         return checkAdmin('admin')
 
-class ExtraGemBooleanField(SelectField):
-    def __init__(self, *args, **kwargs):
-        choices = [
-            (False,'عدم پیشنهاد الماس'),
-            (True,'پیشنهاد الماس در حراجی')
-        ]
-        kwargs["choices"] = choices
-        kwargs["coerce"] = lambda x: str(x) == "True"
-        super(ExtraGemBooleanField, self).__init__(*args, **kwargs)
-
-class ActiveAuctionBooleanField(SelectField):
-    def __init__(self, *args, **kwargs):
-        choices = [
-            (False,'حراجی غیرفعال'),
-            (True,'حراجی فعال')
-        ]
-        kwargs["choices"] = choices
-        kwargs["coerce"] = lambda x: str(x) == "True"
-        super(ActiveAuctionBooleanField, self).__init__(*args, **kwargs)
 
 class AuctionAdmin(ModelView):
     form_overrides = {
@@ -302,14 +400,14 @@ class AuctionAdmin(ModelView):
     form_columns = (
     'item', 'level','advertisement','charity',
     'title','description','start_date','base_price','max_price','max_members','ratio',
-    'tag','is_active','have_extra_gems','extra_bids','required_gems','done'
+    'tag','is_active','have_extra_gems','extra_bids','image','required_gems','target_bid','done'
     )
 
     page_size = 20
     can_view_details = True
     column_searchable_list = ['title', 'description']
     column_editable_list = ['title', 'description','start_date','max_price','base_price','max_members','min_members','ratio','tag','done']
-    column_exclude_list = ('description','have_extra_gems','extra_bids','required_gems')
+    column_exclude_list = ('description','have_extra_gems','extra_bids','required_gems','target_bid')
     form_excluded_columns = ('participants','views','likes','plans','created','updated')
     form_widget_args = {
     'description': {
@@ -319,6 +417,24 @@ class AuctionAdmin(ModelView):
     }
     def is_accessible(self):
         return checkAdmin('admin')
+
+    def _list_thumbnail(view, context, model, name):
+        if not model.image:
+            return None
+
+        def gen_img(filename):
+            return '<img src="{}">'.format(url_for('static',
+                                                   filename="images/auctions/" + form.thumbgen_filename(model.image).split("'")[1]))
+
+        return Markup("<br />".join(gen_img(model.image) for image in ast.literal_eval(model.image)))
+
+    column_formatters = {'image': _list_thumbnail}
+
+    form_extra_fields = {'image': MultipleImageUploadField("Image",
+                                                            base_path="project/static/images/auctions",
+                                                            url_relative_path="images/auctions/",
+                                                            thumbnail_size=(64, 64, 1))}
+
 
 
 class AddressAdmin(ModelView):
@@ -336,19 +452,16 @@ class StateAdmin(ModelView):
     def is_accessible(self):
         return checkAdmin('admin')
 
-class ExpireGiftField(SelectField):
-    def __init__(self, *args, **kwargs):
-        choices = [
-            (False,'خیر'),
-            (True,'بله')
-        ]
-        kwargs["choices"] = choices
-        kwargs["coerce"] = lambda x: str(x) == "True"
-        super(ExpireGiftField, self).__init__(*args, **kwargs)
 
-class GiftAdmin(ModelView):
+class CouponAdmin(ModelView):
+    form_choices = {
+    'type':[
+    ('سیستمی','سیستمی'),
+    ('عمومی','عمومی'),
+    ]}
+
     form_overrides={
-    'expired':ExpireGiftField
+    'expired':ExpireCouponField
     }
 
     def is_accessible(self):
@@ -370,15 +483,6 @@ class ManufactureAdmin(ModelView):
     def is_accessible(self):
         return checkAdmin('admin')
 
-class BidBooleanField(SelectField):
-    def __init__(self, *args, **kwargs):
-        choices = [
-            (True, "برنده"),
-            (False, "بازنده"),
-        ]
-        kwargs["choices"] = choices
-        kwargs["coerce"] = lambda x: str(x) == "True"
-        super(BidBooleanField, self).__init__(*args, **kwargs)
 
 class BidAdmin(ModelView):
     form_overrides = {
@@ -410,7 +514,7 @@ class ShipmentMethodAdmin(ModelView):
 class OrderAdmin(ModelView):
     form_choices = {
     'discount_status':[
-    ('معمولی','معمولی'),
+    ('خرید محصول','خرید محصول'),
     ('شرکت کننده حراجی','شرکت کننده حراجی'),
     ('برنده حراجی','برنده حراجی'),
     ('منقضی شده','منقضی شده'),
@@ -448,6 +552,7 @@ class PaymentAdmin(ModelView):
     ],
     'type':[
     ('اولیه','اولیه'),
+    ('خرید بسته سکه','خرید بسته سکه'),
     ('خرید مستقیم سکه حراجی','خرید مستقیم سکه حراجی'),
     ('خرید بسته الماس','خرید بسته الماس'),
     ('خرید محصول','خرید محصول'),
@@ -460,7 +565,7 @@ class PaymentAdmin(ModelView):
     can_view_details = True
     column_searchable_list = ['user.full_name','user.username','user.mobile','GUID','status','amount','type']
     column_editable_list = ['status','type']
-    form_excluded_columns = ('user','created','updated')
+    form_excluded_columns = ('created','updated')
 
     def is_accessible(self):
         return checkAdmin('admin')
@@ -485,11 +590,37 @@ class ShipmentAdmin(ModelView):
     def is_accessible(self):
         return checkAdmin('admin')
 
+class ItemShipmentAdmin(ModelView):
+    page_size = 10
+    can_view_details = True
+    column_editable_list = ['price']
+    column_searchable_list = ['item.title','shipment_method.title']
+    form_excluded_columns = ('created','updated')
+    def is_accessible(self):
+        return checkAdmin('admin')
+
+class GarantyAdmin(ModelView):
+    page_size = 10
+    can_view_details = True
+    column_editable_list = ['title','description']
+    column_searchable_list = ['title',]
+    form_excluded_columns = ('created','updated')
+    def is_accessible(self):
+        return checkAdmin('admin')
+
+class ItemGarantyAdmin(ModelView):
+    page_size = 10
+    can_view_details = True
+    column_editable_list = ['price']
+    column_searchable_list = ['item.title','garanty.title']
+    form_excluded_columns = ('created','updated')
+    def is_accessible(self):
+        return checkAdmin('admin')
+
 class PlanAdmin(ModelView):
     form_excluded_columns = ('created','updated')
     def is_accessible(self):
-        return True
-        return current_user.has_role('admin')
+        return checkAdmin('admin')
 
 class UserPlanAdmin(ModelView):
     page_size = 20
@@ -536,13 +667,38 @@ class UserAuctionParticipationAdmin(ModelView):
         return checkAdmin('admin')
 
 class UserMessageAdmin(ModelView):
+
+    form_choices = {
+    'status':[
+    ('خوانده نشده','خوانده نشده'),
+    ('خوانده شده','خوانده شده'),
+    ('پاسخ داده شده','پاسخ داده شده'),
+    ('رد شده','رد شده'),
+    ('پذیرفته شده','پذیرفته شده'),
+    ('در دست اقدام','در دست اقدام'),
+    ('ویرایش شده','ویرایش شده'),
+    ]
+    }
+
     page_size = 10
     can_view_details = True
-    column_searchable_list = ['title','subject','message','user.username','user.full_name']
+    column_searchable_list = ['title','subject','status','message','user.username','user.full_name']
+    form_excluded_columns = ('created','updated','user')
     def is_accessible(self):
         return checkAdmin('admin')
 
 class GuestMessageAdmin(ModelView):
+    form_choices = {
+    'send_type':[
+    ('موبایل','موبایل'),
+    ('ایمیل','ایمیل'),
+    ]
+    }
+
+    page_size = 10
+    can_view_details = True
+    column_searchable_list = ['message','full_name','email','mobile','send_type']
+    form_excluded_columns = ('created','updated')
     def is_accessible(self):
         return checkAdmin('admin')
 
@@ -555,36 +711,91 @@ class PaymentMessageAdmin(ModelView):
         return checkAdmin('admin')
 
 class NotificationAdmin(ModelView):
+    form_choices = {
+    'type':[
+    ('1','عمومی'),
+    ('3079','خوش آمدگویی'),
+    ('3076','تغییر رمزعبور'),
+    ('3078','فراموشی رمزعبور'),
+    ('3082','شرکت در حراجی'),
+    ('3080','هدیه دعوت شده'),
+    ('3081','هدیه دعوت کننده'),
+    ('2984','شروع حراجی'),
+    ('3083','پایان حراجی'),
+    ('3084','برنده حراجی')
+    ]
+    }
+
+    form_overrides = {
+        "delivered": DeliveredBooleanField,
+        "seen": SeenBooleanField
+    }
+
+    page_size = 10
+    can_view_details = True
+    column_searchable_list = ['text','title','type']
+
     def is_accessible(self):
         return checkAdmin('admin')
 
 class SiteNotificationAdmin(ModelView):
+
+
     form_choices = {
-    'delivered':[
-    (False, 'عدم تحویل'),
-    (True, 'تحویل داده شده')],
-    'seen':[
-    (False, 'عدم مشاهده'),
-    (True, 'مشاهده شده')],
+    'type':[
+    ('3079','خوش آمدگویی'),
+    ('3076','تغییر رمزعبور'),
+    ('3078','فراموشی رمزعبور'),
+    ('3082','شرکت در حراجی'),
+    ('3080','هدیه دعوت شده'),
+    ('3081','هدیه دعوت کننده'),
+    ('2984','شروع حراجی'),
+    ('3083','پایان حراجی'),
+    ('3084','برنده حراجی')
+    ]
+    }
+
+    form_overrides = {
+        "delivered": DeliveredBooleanField,
+        "seen": SeenBooleanField
     }
 
     page_size = 30
     can_view_details = True
     column_searchable_list = ['title','text','link','type','delivered','retry','user.username','user.mobile']
-    column_editable_list = ['delivered','seen']
+    # column_editable_list = ['delivered','seen']
     form_excluded_columns = ('created','updated')
     def is_accessible(self):
         return checkAdmin('admin')
 
 class UserNotificationAdmin(ModelView):
+
+    form_overrides = {
+        "delivered": DeliveredBooleanField,
+        "seen": SeenBooleanField,
+        "send_sms":SendSMSField,
+    }
     page_size = 10
     can_view_details = True
     column_searchable_list = ['notification.text','notification.title','user.username','user.mobile']
-    column_editable_list = ['delivered','seen','send_sms']
     def is_accessible(self):
         return checkAdmin('admin')
 
 class AuctionNotificationAdmin(ModelView):
+
+    form_choices = {
+    'type':[
+    ('2156','اتمام حراجی'),
+    ('2158','شروع حراجی'),
+    ('2159','عضویت در حراجی')
+    ],
+    'color': [('bw', 'Black & White'), ('color', 'Color')]
+    }
+
+    page_size = 30
+    can_view_details = True
+    column_searchable_list = ['title','text','link','type']
+    form_excluded_columns = ('created','updated')
     def is_accessible(self):
         return checkAdmin('admin')
 
@@ -655,6 +866,15 @@ class UserAvatarAdmin(ModelView):
     def is_accessible(self):
         return checkAdmin('admin')
 
+
+class UserCouponAdmin(ModelView):
+    form_overrides={
+    'used':UsedCouponField
+    }
+
+    def is_accessible(self):
+        return checkAdmin('admin')
+
 class UserGemAdmin(ModelView):
     def is_accessible(self):
         return checkAdmin('admin')
@@ -663,15 +883,7 @@ class UserCoinAdmin(ModelView):
     def is_accessible(self):
         return checkAdmin('admin')
 
-class ActiveChestBooleanField(SelectField):
-    def __init__(self, *args, **kwargs):
-        choices = [
-            (False,'پکیج غیرفعال'),
-            (True,'نمایش پکیج در فروشگاه')
-        ]
-        kwargs["choices"] = choices
-        kwargs["coerce"] = lambda x: str(x) == "True"
-        super(ActiveChestBooleanField, self).__init__(*args, **kwargs)
+
 
 class ChestAdmin(ModelView):
     page_size = 20
@@ -708,16 +920,6 @@ class ChestAdmin(ModelView):
 class UserChestAdmin(ModelView):
     def is_accessible(self):
         return checkAdmin('admin')
-
-class ActiveCharittyBooleanField(SelectField):
-    def __init__(self, *args, **kwargs):
-        choices = [
-            (False,'خیریه غیرفعال'),
-            (True,'خیریه فعال')
-        ]
-        kwargs["choices"] = choices
-        kwargs["coerce"] = lambda x: str(x) == "True"
-        super(ActiveCharittyBooleanField, self).__init__(*args, **kwargs)
 
 class CharityAdmin(ModelView):
     page_size = 20
@@ -841,7 +1043,8 @@ class LevelAdmin(ModelView):
     can_view_details = True
     form_excluded_columns = ('users','auctions','created','updated')
     column_exclude_list = ('description')
-    column_searchable_list = ['title', 'number']
+    column_editable_list = ['title', 'number','required_points','offered_gems','points_per_win']
+    column_searchable_list = ['title']
 
 
     def is_accessible(self):

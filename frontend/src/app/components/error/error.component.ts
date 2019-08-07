@@ -42,4 +42,8 @@ export class ErrorComponent implements OnInit {
       }, time);
     })
   }
+
+  hide(){
+    this.errorObj = null;
+  }
 }

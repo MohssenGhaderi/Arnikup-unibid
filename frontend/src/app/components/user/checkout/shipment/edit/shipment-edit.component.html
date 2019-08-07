@@ -13,7 +13,7 @@
 
         <div>
           <div class="accountProfile-shippingSteps-check"></div>
-          <span>روش ارسال</span>
+          <span>تایید آدرس</span>
         </div>
       </div>
       <div class="accountProfile-shippingSteps-disabled">
@@ -25,19 +25,17 @@
       </div>
     </div>
     <div class="accountProfile-address">
+      <app-states *ngIf="shared.states" [state]="selectedState?.title" [states]="shipmentInfo.states"></app-states>
       <form [formGroup]="registerForm">
         <div><input type="text" value="{{shipmentInfo?.fullName}}" class="cfnText" formControlName="fullName"/></div>
         <div><span class="cfnTextSign">@</span><input type="text" value="mrjcr" class="cfnText" formControlName="email"/></div>
-        <div><a class="cfnButton cfnButton-empty">تهران<img src="assets/resources/images/assets/png/arrowDown.png"/></a></div>
+        <div (click)="toggleStates($event)"><a class="cfnButton cfnButton-empty">{{selectedState?.title}}<img src="assets/resources/images/assets/png/arrow-down.png"/></a></div>
         <div><input value="{{shipmentInfo?.city}}" type="text" class="cfnText" placeholder="شهر" formControlName="city"/></div>
         <div><input value="{{shipmentInfo?.address}}" type="text" class="cfnText" placeholder="آدرس" formControlName="address"/></div>
         <div><input value="{{shipmentInfo?.workPlace}}" type="text" class="cfnText" placeholder="محل کار" formControlName="workPlace"/></div>
         <a class="cfnButton cfnButton-primary" (click)="SaveShipment($event)">تایید</a>
-
       </form>
     </div>
-    <p class="accountProfile-footer-tittle">روش ارسال</p>
-    <a class="cfnButton cfnButton-empty"> تحویل حضوری <img src="assets/resources/images/assets/png/arrowDown.png"/></a>
     <a style="width:160px;" class="cfnButton cfnButton-primary" (click)="goToNext()">مرحله بعد</a>
     <app-error></app-error>
     <app-success></app-success>

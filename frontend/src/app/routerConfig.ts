@@ -7,11 +7,21 @@ import { VerificationComponent } from './components/auth/verification/verificati
 import { ForgetPasswordComponent } from './components/auth/forget-password/forget-password.component';
 import { SearchComponent } from './components/search/search.component';
 import { HeldComponent } from './components/held/held.component';
+import { FavoriteComponent } from './components/favorite/favorite.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 const appRoutes: Routes = [
   {
+      path: 'contact',
+      component: ContactComponent
+  },
+  {
       path: 'auction/:id',
       component: AuctionComponent
+  },
+  {
+      path: 'favorite',
+      component: FavoriteComponent
   },
   {
       path: 'finished',

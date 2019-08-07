@@ -12,11 +12,17 @@
     <span style="font-size: 16px; color: #212121;">{{auction?.level}} / {{auction?.maxLevel}}</span>
   </div>
 </div>
-<div class="details-header-bottom">
+<div class="details-header-bottom" (click)="closeOpenedSocial($event)">
   <div class="details-header-bottom-right">
     <span class="details-button" (click)="showProductDetails()">مشخصات محصول</span>
     <span class="details-button details-button-heart"><img src="assets/resources/images/assets/svg/heart-red.svg"/> {{auction?.likeCount}} </span>
-    <span class="details-button"><img src="assets/resources/images/assets/png/share.png"/> اشتراک گذاری </span>
+    <span class="details-button" (click)="closeSocial($event)"><img src="assets/resources/images/assets/png/share.png"/> اشتراک گذاری </span>
+    <app-share-auction *ngIf="toggleSocial"
+      [auctionId]="auction?.auctionId"
+      [title]="auction?.title"
+      [description]="auction?.title"
+      [url]="Link.auctionUrl(auction?.auctionId)">
+   </app-share-auction>
   </div>
 
   <div class="details-header-bottom-left">
@@ -24,14 +30,6 @@
     <ng-template #content>
       <span>{{auction.charity?.description}}</span>
     </ng-template>
-
-    <span class="details-header-bottom-left-textSeperator">اتوبید</span>
-    <label class="switch">
-      <input type="checkbox" (click)="toggleAutobid()" [checked]="shared.autobid.state" />
-      <span class="switch-slider"></span>
-      <span class="switch-text" *ngIf="shared.autobid.state">
-        <input class="autobid" type="number" min="1" max="9" maxlength="1" value="{{shared.autobid.deadline}}"  (input)="onDeadlineChange($event.target.value)" />
-      </span>
-    </label>
+    <app-auto-bid></app-auto-bid>
   </div>
 </div>

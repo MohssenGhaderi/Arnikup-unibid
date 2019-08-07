@@ -1,0 +1,18 @@
+<div class="notification">
+  <div class="NotificationContainer">
+    <div>
+      <p class="notification-title">اعلان ها<img src="assets/resources/images/assets/png/arrowDown.png" (click)="goBack()" /></p>
+    </div>
+    <div class="notification-Wrapper">
+      <div *ngFor="let notification of notifs?.notifications">
+        <app-notification-item [notification]="notification"></app-notification-item>
+      </div>
+      <div class="notification-footer">
+        <span (click)="showMore($event)">نتایج بیشتر</span>
+      </div>
+    </div>
+
+    <app-loading></app-loading>
+    <app-error></app-error>
+  </div>
+</div>

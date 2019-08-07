@@ -54,8 +54,32 @@ import { HeldComponent } from './components/held/held.component';
 import { ShareModule } from '@ngx-share/core';
 import { ShareButtonsModule } from '@ngx-share/buttons';
 import { SocialComponent } from './components/social/social.component';
+import { StatesComponent } from './components/user/checkout/shipment/states/states.component';
+import { SmallStatesComponent } from './components/user/states/states.component';
+import { CouponItemComponent } from './components/coupon-item/coupon-item.component';
+import { ScrollEventModule } from 'ngx-scroll-event';
+import { ShipmentMethodComponent } from './components/user/shipment-method/shipment-method.component';
+import { ItemGarantyComponent } from './components/user/item-garanty/item-garanty.component';
+import { CartItemComponent } from './components/user/shopping-card/cart-item/cart-item.component';
+import { PaymentItemComponent } from './components/user/checkout/payment/payment-item/payment-item.component';
+import { ShipmentMethodItemComponent } from './components/user/shipment-method/shipment-method-item/shipment-method-item.component';
+import { AutoBidComponent } from './components/auction/auto-bid/auto-bid.component';
+import { ShareAuctionComponent } from './components/auction/components/share-auction/share-auction.component';
+import { FavoriteComponent } from './components/favorite/favorite.component';
+import { FavoriteItemComponent } from './components/favorite/favorite-item/favorite-item.component';
+import { PasswordComponent } from './components/user/password/password.component';
+import { NotificationComponent } from './components/user/notification/notification.component';
+import { NotificationItemComponent } from './components/user/notification/notification-item/notification-item.component';
+import { TransactionComponent } from './components/user/transaction/transaction.component';
+import { TransactionItemComponent } from './components/user/transaction/transaction-item/transaction-item.component';
+import { MessagesComponent } from './components/user/messages/messages.component';
+import { MessageArchiveComponent } from './components/user/messages/message-archive/message-archive.component';
+import { MessageArchiveItemComponent } from './components/user/messages/message-archive/message-archive-item/message-archive-item.component';
+import { MessageTypeComponent } from './components/user/messages/message-type/message-type.component';
+import { ContactComponent } from './components/contact/contact.component';
+import { RadioButtonComponent } from './components/radio-button/radio-button.component';
 
-const config: SocketIoConfig = { url: 'http://dev.unibid.ir', options: {resource:'A/socket.io', 'force new connection': true} };
+const config: SocketIoConfig = { url: 'https://admin.unibid.ir', options: {transports:['websocket']} };
 // const config: SocketIoConfig = { url: 'http://127.0.0.1:9001', options: {resource:'A/socket.io', 'force new connection': true} };
 
 @NgModule({
@@ -108,6 +132,29 @@ const config: SocketIoConfig = { url: 'http://dev.unibid.ir', options: {resource
     FinishedComponent,
     HeldComponent,
     SocialComponent,
+    StatesComponent,
+    SmallStatesComponent,
+    CouponItemComponent,
+    ShipmentMethodComponent,
+    CartItemComponent,
+    ItemGarantyComponent,
+    PaymentItemComponent,
+    ShipmentMethodItemComponent,
+    AutoBidComponent,
+    ShareAuctionComponent,
+    FavoriteComponent,
+    FavoriteItemComponent,
+    PasswordComponent,
+    NotificationComponent,
+    NotificationItemComponent,
+    TransactionComponent,
+    TransactionItemComponent,
+    MessagesComponent,
+    MessageArchiveComponent,
+    MessageArchiveItemComponent,
+    MessageTypeComponent,
+    ContactComponent,
+    RadioButtonComponent,
   ],
   imports: [
     BrowserModule,
@@ -117,7 +164,8 @@ const config: SocketIoConfig = { url: 'http://dev.unibid.ir', options: {resource
     SocketIoModule.forRoot(config),
     HttpClientModule,       // (Required) For share counts
     ShareModule,
-    ShareButtonsModule
+    ShareButtonsModule,
+    ScrollEventModule
   ],
 providers: [],
   bootstrap: [AppComponent]

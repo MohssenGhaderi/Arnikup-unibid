@@ -17,6 +17,7 @@ export class AuthenticationService {
     logoutUrl = Links.prefix+'v2/api/auth/logout';
     forgotUrl = Links.prefix+'v2/api/auth/password/forgot';
     verificationUrl = Links.prefix+'v2/api/auth/verify';
+    passwordUrl = Links.prefix+'v2/api/auth/password/change';
 
     constructor(private http: HttpClient) {
         // this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
@@ -29,6 +30,23 @@ export class AuthenticationService {
 
     getAvatar(){
       return this.http.get(this.avatarUrl);
+    }
+
+    changePassword(changeObj) {
+
+      const currentUser = localStorage.getItem('currentUser');
+      if (currentUser) {
+        const token = JSON.parse(currentUser)['accessToken'];
+        const httpOptions = {
+          headers: new HttpHeaders({
+            Authorization: 'Bearer ' + token
+          })
+        };
+        return this.http.post(this.passwordUrl, changeObj , httpOptions);
+      } else {
+        return this.http.post(this.passwordUrl, changeObj);
+      }
+
     }
 
     forgotPassword(forgotObj) {

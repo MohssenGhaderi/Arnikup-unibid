@@ -2,19 +2,28 @@
 from project.database import db, Base
 import datetime
 
+class GuestSendType:
+    MOBILE = 'موبایل'
+    EMAIL = 'ایمیل'
+
 class GuestMessage(Base):
     __tablename__ = 'guest_messages'
     id = db.Column(db.BigInteger, primary_key=True)
 
+    ip = db.Column(db.String(128), nullable=False)
+
     full_name = db.Column(db.String(128), nullable=False)
 
-    email = db.Column(db.String(128), nullable=False)
+    email = db.Column(db.String(128), nullable=True)
 
-    website = db.Column(db.String(256), nullable=True)
+    mobile = db.Column(db.String(128), nullable=True)
 
-    message = db.Column(db.String(1024), nullable=False)
+    send_type = db.Column(db.String(64), nullable=False,default=GuestSendType.MOBILE)
+
+    message = db.Column(db.Text, nullable=False)
 
     created = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False)
+    updated = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False)
 
     def __str__(self):
         return " ارسال توسط :" + str(self.full_name) + " درتاریخ " + self.created

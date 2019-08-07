@@ -15,14 +15,18 @@ from project.melipayamak import SendMessage
 if __name__ == '__main__':
 
     # production
-    port = int(os.environ.get("PORT", 9001))
-    app.debug = True
+    logging.basicConfig(level=logging.INFO)
+    logging.getLogger('suds.client').setLevel(logging.DEBUG)
+    logging.getLogger('suds.transport').setLevel(logging.DEBUG)
+
+    port = int(os.environ.get("PORT", 8000))
+    app.debug = False
     applogger = app.logger
     file_handler = logging.FileHandler("app.log")
     file_handler.setLevel(logging.DEBUG)
     applogger.setLevel(logging.DEBUG)
     applogger.addHandler(file_handler)
-    socketio.run(app, port=port, debug=True)
+    socketio.run(app, port=port, debug=False,keyfile='ssl/admin.unibid.ir.key', certfile='ssl/admin.bundle.cer')
 
 
     # developement

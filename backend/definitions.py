@@ -31,8 +31,12 @@ SMS_BodyId_CHPS = 2163
 SMS_BodyId_GIFT_INVITOR = 2182
 SMS_BodyId_GIFT_USER = 2184
 
+# SITE_PREFIX = "https://unibid.ir"
 SITE_PREFIX = "https://unibid.ir"
-# SITE_PREFIX = "https://dev.unibid.ir"
+
+
+# CALLBACKLINK = "http://127.0.0.1:4200/v2/api/payment/zarinpal/callback"
+CALLBACKLINK = "https://admin.unibid.ir/v2/api/payment/zarinpal/callback"
 
 MAX_SMS_RETRY = 1
 
@@ -48,3 +52,4 @@ COINS_BASE_PRICE = 1000
 GEMS_BASE_PRICE = 20000
 AUCTION_START_DEADLINE = 60
 AUCTION_START_PROGRESS = 60
+AUCTION_WINNER_POINT_FRACTION = 20

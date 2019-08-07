@@ -458,7 +458,7 @@
 							price : ToPersian(formatCurrency(item.main_price)),
 							image : product_image_path + ClearifyNames(item.images)[0],
 							instance_link : "/instantview/"+ item.id,
-							link : participated ? "/view/auction/"+item.id : "/participate/"+ item.id,
+							link : participated ? "/auction/"+item.id : "/participate/"+ item.id,
 							is_participant : participated,
 						});
 					}
@@ -490,7 +490,7 @@
 			},
 
 			_createAuctionLink(id){
-				return "/view/auction/"+id;
+				return "/auction/"+id;
 			},
 			_updateTimer(date){
 				return new Date(date).format("yyyy-M-d hh:mm:ss");
@@ -576,7 +576,7 @@
 								price : ToPersian(formatCurrency(auction.main_price)),
 								image : product_image_path + ClearifyNames(auction.images)[0],
 								instance_link : "/instantview/"+ auction.id,
-								link : participated ? "/view/auction/"+auction.id : "/participate/"+ auction.id,
+								link : participated ? "/auction/"+auction.id : "/participate/"+ auction.id,
 								is_participant : participated,
 							});
 						});
@@ -599,7 +599,7 @@
 								price : ToPersian(formatCurrency(auction.main_price)),
 								image : product_image_path + ClearifyNames(auction.images)[0],
 								instance_link : "/instantview/"+ auction.id,
-								link : participated ? "/view/auction/"+auction.id : "/participate/"+ auction.id,
+								link : participated ? "/auction/"+auction.id : "/participate/"+ auction.id,
 								is_participant : participated,
 							});
 						});
@@ -622,7 +622,7 @@
 								price : ToPersian(formatCurrency(auction.main_price)),
 								image : product_image_path + ClearifyNames(auction.images)[0],
 								instance_link : "/instantview/"+ auction.id,
-								link : participated ? "/view/auction/"+auction.id : "/participate/"+ auction.id,
+								link : participated ? "/auction/"+auction.id : "/participate/"+ auction.id,
 								is_participant : participated,
 							});
 						});
@@ -642,8 +642,8 @@
 										deadline : auction.remained_time,
 										image : product_image_path + ClearifyNames(auction.images)[0],
 										instance_link : "/instantview/"+ auction.id,
-										view_link : "/view/auction/"+ auction.id,
-										link : participated ? "/view/auction/"+auction.id : "/participate/"+ auction.id,
+										view_link : "/auction/"+ auction.id,
+										link : participated ? "/auction/"+auction.id : "/participate/"+ auction.id,
 										is_participant : participated,
 										start_date:new persianDate(new Date(new Date(auction.start_date).format("yyyy/M/d HH:mm:ss","UTC"))).format("dddd D MMMM ماه YY ساعت HH:mm:ss"),
 										base_price : ToPersian(formatCurrency(auction.base_price)),

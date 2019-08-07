@@ -7,6 +7,7 @@ import { UserService } from 'src/app/services/user.service';
 import { SharingService } from 'src/app/services/sharing.service';
 import { Links } from 'src/app/links.component';
 import { ShipmentInformation } from 'src/app/models/user/information/shipment.model'
+import { State } from 'src/app/models/user/information/state.model'
 
 @Component({
   selector: 'app-shipment-edit',
@@ -21,7 +22,14 @@ export class ShipmentEditComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
   shipmentInfo:ShipmentInformation;
-  constructor(private el: ElementRef, private shared:SharingService,private userService:UserService,private formBuilder: FormBuilder) { }
+  selectedState:State;
+  subscription: any;
+
+  constructor(
+    private el: ElementRef,
+    public shared:SharingService,
+    private userService:UserService,
+    private formBuilder: FormBuilder) { }
   @HostListener('mouseenter') onMouseEnter() {
     this.shared.visibleProfile = true;
   }
@@ -29,6 +37,11 @@ export class ShipmentEditComponent implements OnInit {
     this.shared.visibleProfile = false;
   }
   ngOnInit() {
+
+    this.subscription = this.shared.getStateEmitter().subscribe(result=>{
+      this.selectedState = result;
+    });
+
     this.el.nativeElement.getElementsByClassName('shipmentEditContainer')[0].classList.add(this.shared.basketClass);
 
     this.registerForm = this.formBuilder.group({
@@ -48,10 +61,11 @@ export class ShipmentEditComponent implements OnInit {
         fullName: [this.shipmentInfo.fullName],
         email: [this.shipmentInfo.email],
         city: [this.shipmentInfo.city],
-        state: [this.shipmentInfo.state],
+        state: [this.shipmentInfo.state.title],
         address: [this.shipmentInfo.address],
         workPlace: [this.shipmentInfo.workPlace],
       });
+      this.selectedState = this.shipmentInfo.state;
 
     },
     error=>{
@@ -72,8 +86,7 @@ export class ShipmentEditComponent implements OnInit {
       "fullName":this.formFields.fullName.value,
       "email":this.formFields.email.value,
       "city":this.formFields.city.value,
-      // "state":this.formFields.state.value,
-      "state":1,
+      "state":this.selectedState.stateId,
       "address":this.formFields.address.value,
       "workPlace":this.formFields.workPlace.value,
     }
@@ -104,5 +117,14 @@ export class ShipmentEditComponent implements OnInit {
     this.shared.toggleMenu.address = false;
     this.shared.toggleMenu.payment = true;
   }
+  toggleStates(eventDate){
+    this.shared.states = true;
+    eventDate.stopPropagation();
+  }
+
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
+  }
+
 
 }

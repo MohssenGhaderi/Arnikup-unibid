@@ -1,0 +1,46 @@
+.accountProfile-coupon-wrapper {
+  width: 370px;
+  height: 56px;
+  border-radius: 34px;
+  border: solid 1px #dcdbdc;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  position: relative;
+  font-size: 1.2em;
+  margin-top: 10px;
+}
+
+.accountProfile-coupon-remove {
+  width: 20px;
+  height: 20px;
+  background-color: #eb407b;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 120%;
+  padding-top: 2px;
+  box-sizing: border-box;
+  color: #f5f5f5;
+  position: absolute;
+  top: -5px;
+  cursor: pointer;
+}
+
+.accountProfile-coupon-title{
+  margin-right: 30px;
+  right: 0;
+  position: absolute;
+}
+
+.accountProfile-coupon-price{
+  margin-left: 30px;
+  left: 0;
+  position: absolute;
+}
+
+p {
+  color: #ea407c;
+  display: inline;
+}

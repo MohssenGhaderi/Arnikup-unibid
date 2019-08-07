@@ -2,7 +2,7 @@
   <app-header></app-header>
     <main>
       <p class="searchResult-title">حراجی های برگزار شده یونی بید</p>
-      <div class="searchResult">
+
 
         <div *ngIf="auctions" class="auctionList">
           <app-finished *ngFor="let item of auctions.lastAuctions" [auction]="item"></app-finished>
@@ -15,7 +15,7 @@
         <app-error></app-error>
         <app-success></app-success>
         <app-loading></app-loading>
-      </div>
+      
    </main>
   <app-footer></app-footer>
 </div>

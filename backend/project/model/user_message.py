@@ -2,6 +2,15 @@
 from project.database import db, Base
 import datetime
 
+class UserMessageStatus:
+    UNREAD = "خوانده نشده"
+    MARKASREAD = "خوانده شده"
+    ANSWERED = "پاسخ داده شده"
+    REJECTED = "رد شده"
+    ACCEPTED = "پذیرفته شده"
+    APPLYING = "در دست اقدام"
+    EDITED = "ویرایش شده"
+
 class UserMessage(Base):
     __tablename__ = 'user_messages'
     id = db.Column(db.BigInteger, primary_key=True)
@@ -9,13 +18,15 @@ class UserMessage(Base):
     user_id = db.Column(db.BigInteger, db.ForeignKey("users.id"))
     user = db.relationship('User')
 
-    message = db.Column(db.String(1024), nullable=True)
+    title = db.Column(db.String(128), nullable=False)
 
-    title = db.Column(db.String(128), nullable=True)
+    subject = db.Column(db.String(128), nullable=False)
 
-    subject = db.Column(db.String(512), nullable=False)
+    status = db.Column(db.String(128), nullable=False, default=UserMessageStatus.UNREAD)
 
-    file = db.Column(db.String(1024), nullable=True)
+    message = db.Column(db.Text, nullable=False)
+
+    answer = db.Column(db.Text, nullable=True)
 
     created = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False)
     updated = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False, onupdate=datetime.datetime.now)

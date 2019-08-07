@@ -7,7 +7,10 @@
   max-width: calc(100vw - 190px);
   /*width: 300px!important;
   height: 300px!important;*/
-  /*border: 1px solid #000;*/
+ border-radius: 10px;
+ overflow: hidden;
+ box-shadow: 0 7px 35px #ccc;
+ height: 640px;
 }
 
 .swiper-button-next,

@@ -5,13 +5,13 @@
 	<div class="container" id="app">
 		<div class="row">
 		<div class="col-md-12">
-			<h2 class="title-shop-page"> ریکاوری رمز عبور حساب کاربری یونی بید</h2>
+			<h2 class="title-shop-page"> بازیابی رمز عبور حساب کاربری یونی بید</h2>
 			<div class="register-content-box">
 				<div class="row">
 					<div class="form">
 					<div class="thumbnail"><img src="/static/images/theme/login-icon.svg"/></div>
 					<form class="code-login-form" @submit.prevent="handleSubmit">
-						<input type="text" v-on:keypress="isNumber($event)" v-model="mobile" placeholder="شماره موبایل (فقط اعداد بصورت انگلیسی)"/>
+						<input type="text" v-model="forgotField" placeholder="شماره همراه/نام کاربری"/>
 						<input type="submit" value="دریافت رمز عبور موقت" />
 					</form>
 					</div>
@@ -32,13 +32,13 @@ app = new Vue({
 	el : "#app",
 
 	data:{
-		mobile : "",
+		forgotField : "",
 	},
 	methods:{
 
 		handleSubmit:function() {
 
-			var obj = {"mobile":this.mobile};
+			var obj = {"forgotField":this.forgotField};
 
 			for (var propName in obj) {
 				if (obj[propName] === "null" || obj[propName] === undefined || obj[propName]==="" || obj[propName]===-1) {
@@ -46,7 +46,7 @@ app = new Vue({
 				}
 			}
 
-			axios.post("{{url_for('userforgotpassword')}}",obj,
+			axios.post("{{url_for('rest_api.auth_forgot_password')}}",obj,
 				{
 					headers:
 					{
@@ -66,10 +66,10 @@ app = new Vue({
 					 });
 
 				 }).catch((error)=>{
-					 err = error.response.data.message.text ? error.response.data.message.text : error.response.data.message.mobile;
+
 					 swal({
 						 title:'مشکل درعملیات فراموشی رمزعبور',
-						 text :err,
+						 text :error.response.data.message,
 						 type: 'error',
 					 });
 

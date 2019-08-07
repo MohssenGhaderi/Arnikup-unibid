@@ -25,10 +25,10 @@
   <div *ngIf="status?.avatar && !auction.done">
     <div class="details-slideImage-info-wrapper">
       <div class="details-slideImage-info">
-        <img class="details-slideImage-info-img" [src]="Link.avatar(status.avatar)" alt="">
+        <img class="details-slideImage-info-img" [src]="Link.avatar(status?.avatar)" alt="">
         <span class="details-slideImage-info-badge">1</span>
       </div>
-      <p style="font-size: 14px;">{{status.name}}</p>
+      <p style="font-size: 14px;">{{status?.name}}</p>
     </div>
   </div>
 </div>

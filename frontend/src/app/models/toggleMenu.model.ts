@@ -11,6 +11,11 @@ export class ToggleMenu {
     this.preview = false;
     this.address = false;
     this.payment = false;
+    this.password = false;
+    this.notification = false;
+    this.transaction = false;
+    this.messages = false;
+    this.messageArchive = false;
   }
   public reset (){
     this.profile = false;
@@ -24,6 +29,11 @@ export class ToggleMenu {
     this.preview = false;
     this.address = false;
     this.payment = false;
+    this.password = false;
+    this.notification = false;
+    this.transaction = false;
+    this.messages = false;
+    this.messageArchive = false;
   }
   public profileReset (){
     this.avatar = false;
@@ -36,8 +46,10 @@ export class ToggleMenu {
     this.preview = false;
     this.address = false;
     this.payment = false;
-
-
+    this.password = false;
+    this.transaction = false;
+    this.messages = false;
+    this.messageArchive = false;
   }
   profile: boolean;
   avatar: boolean;
@@ -50,4 +62,9 @@ export class ToggleMenu {
   preview : boolean;
   address : boolean;
   payment : boolean;
+  password : boolean;
+  notification : boolean;
+  transaction :boolean;
+  messages :boolean;
+  messageArchive :boolean;
 }

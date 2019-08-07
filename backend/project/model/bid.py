@@ -17,3 +17,4 @@ class Bid(Base):
     auction = db.relationship('Auction')
 
     created = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False)
+    updated = db.Column(db.TIMESTAMP, default=datetime.datetime.now, onupdate=datetime.datetime.now)

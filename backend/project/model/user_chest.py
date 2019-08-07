@@ -13,11 +13,11 @@ class UserChest(Base):
     chest = db.relationship('Chest')
 
     payment_id = db.Column(db.BigInteger,db.ForeignKey('payments.id'))
-    payment = db.relationship('Payment')
+    payment = db.relationship('Payment',cascade="all,delete",backref="user_chests")
 
     created = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False)
     updated = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False, onupdate=datetime.datetime.now)
     def __str__(self):
         if(self.user):
-            return " بسته پیشنهادی " + self.chest.title +" به قیمت "+ str(self.chest.price) + " به کاربر "+ self.user.username + " اختصاص دارد "
+            return " بسته پیشنهادی " + self.chest.title +" به قیمت "+ str(self.payment.amount) + " به کاربر "+ self.user.username + " اختصاص دارد "
         return self.chest.title

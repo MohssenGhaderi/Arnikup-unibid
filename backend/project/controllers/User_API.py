@@ -1179,7 +1179,7 @@ class UserApplyPayment(Resource):
                     title = str(auction.title).replace('حراجی','')
                     message = current_user.username + ' عزیز ٬' \
                     + '\n' + 'مجوز شرکت در حراجی ' + title + ' برای شما صادر گردید.'\
-                    + '\n' + SITE_PREFIX+'/view/auction/'+str(auction.id)\
+                    + '\n' + SITE_PREFIX+'/auction/'+str(auction.id)\
                     + '\n' + 'با آرزوی موفقیت شما در حراجی'\
                     + '\n' + 'یونی بید'\
                     + '\n' + 'www.unibid.ir'
@@ -1188,8 +1188,8 @@ class UserApplyPayment(Resource):
                     auction_notification.title = 'مجوز شرکت در حراجی'
                     auction_notification.text = 'مجوز شرکت در حراجی ' + title + 'برای شما صادر گردید'
                     auction_notification.sms = message
-                    auction_notification.link = SITE_PREFIX+'/view/auction/'+str(auction.id)
-                    auction_notification.details = current_user.username+";"+title+";"+SITE_PREFIX+'/view/auction/'+str(auction.id)
+                    auction_notification.link = SITE_PREFIX+'/auction/'+str(auction.id)
+                    auction_notification.details = current_user.username+";"+title+";"+SITE_PREFIX+'/auction/'+str(auction.id)
                     auction_notification.type = SiteNotificationType.PARTICIPATE
                     auction_notification.user = current_user
                     db.session.add(auction_notification)

@@ -1,0 +1,10 @@
+<div class="details-header-bottom-left">
+  <span class="details-header-bottom-left-textSeperator">اتوبید</span>
+  <label class="switch">
+    <input type="checkbox" (click)="toggleAutobid()" [checked]="shared.autobid.state" />
+    <span class="switch-slider"></span>
+    <span class="switch-text" *ngIf="shared.autobid.state">
+      <input class="autobid" type="number" min="1" max="9" maxlength="1" value="{{shared.autobid.deadline}}"  (input)="onDeadlineChange($event.target.value)" />
+    </span>
+  </label>
+</div>

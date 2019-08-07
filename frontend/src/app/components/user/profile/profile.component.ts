@@ -5,7 +5,8 @@ import { UserService } from 'src/app/services/user.service';
 import { SharingService } from 'src/app/services/sharing.service';
 import { LiveUserService } from 'src/app/services/live-user.service';
 import { Links } from 'src/app/links.component';
-import { MainUserInformation } from 'src/app/models/user/information/main.model'
+import { MainUserInformation } from 'src/app/models/user/information/main.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -20,7 +21,7 @@ export class ProfileComponent implements OnInit {
   Link = Links;
   userSyncTimer;
 
-  constructor(private el: ElementRef,private userService:UserService,private shared:SharingService,private liveUser:LiveUserService) {
+  constructor(private router:Router,private el: ElementRef,private userService:UserService,private shared:SharingService,private liveUser:LiveUserService) {
   }
   @HostListener('mouseenter') onMouseEnter() {
     this.shared.visibleProfile = true;
@@ -64,6 +65,11 @@ export class ProfileComponent implements OnInit {
     this.shared.toggleMenu.finance = true;
   }
 
+  toggleTransaction(){
+    this.shared.toggleMenu.reset();
+    this.shared.toggleMenu.transaction = true;
+  }
+
   toggleShoppingCard(){
     this.shared.toggleMenu.reset();
     this.shared.basketClass = "myCfnAnimation-slideup";
@@ -80,9 +86,20 @@ export class ProfileComponent implements OnInit {
     this.shared.toggleMenu.edit = true;
   }
 
-  profileLostFocus(eventData){
-    console.log('here');
+  toggleEditPassword(){
     this.shared.toggleMenu.reset();
+    this.shared.toggleMenu.password = true;
+  }
+
+  toggleMessages(){
+    this.shared.toggleMenu.reset();
+    this.shared.lastClass = "myCfnAnimation-slideright";
+    this.shared.toggleMenu.messages = true;
+  }
+
+  toggleFavorite(){
+    this.shared.toggleMenu.reset();
+    this.router.navigate(['/favorite']);
   }
 
 }

@@ -1,0 +1,20 @@
+<div class="accountProfile-priceItem-wrapper">
+  <div class="accountProfile-basketImage-wrapper">
+    <span class="accountProfile-basketImage-remove" (click)="deleteOrder($event,cart.orderId)">&times;</span>
+    <img [src]="Link.product(cart.image)"/>
+  </div>
+  <div class="accountProfile-priceItem">
+    <p class="accountProfile-priceItem-title">{{cart.title}}</p>
+    <p class="accountProfile-priceItem-before">قیمت : {{cart.price | currency : ' ' : 'symbol' : '1.0-0'}} تومان</p>
+    <p class="accountProfile-priceItem-after">تخفیف : {{cart.discount | currency : ' ' : 'symbol' : '1.0-0'}} تومان</p>
+    <p class="accountProfile-priceItem-after">نوع تخفیف : {{cart.type}}</p>
+  </div>
+</div>
+<div class="dropDown-container" (click)="toggleGaranty=!toggleGaranty;">
+    <span>گارانتی</span>
+    <p class="cart-menu-selector">{{selectedGaranty.title}} با هزینه {{selectedGaranty.price | currency : ' ' : 'symbol' : '1.0-0'}} تومان<img src="assets/resources/images/assets/png/arrowDown.png"/></p>
+    <app-item-garanty *ngIf="toggleGaranty" [orderId]="cart.orderId" [garanties]="cart?.order_details?.item_garanties"></app-item-garanty>
+</div>
+<app-loading></app-loading>
+<app-error></app-error>
+<app-success></app-success>

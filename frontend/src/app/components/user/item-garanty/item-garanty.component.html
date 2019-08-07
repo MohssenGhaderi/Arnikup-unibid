@@ -1,0 +1,8 @@
+<div class="customDropdown-container">
+  <div class="customDropdown">
+    <p class="accountProfile-title">انتخاب گارانتی محصول<img (click)="goBack()" src="assets/resources/images/assets/png/arrowUp.png"/></p>
+    <ul class="methods">
+      <li *ngFor="let garanty of garanties" (click)="changeGaranty($event,garanty.garantyId)"> {{garanty.title}} با هزینه {{garanty.price | currency : ' ' : 'symbol' : '1.0-0'}} تومان</li>
+    </ul>
+  </div>
+</div>

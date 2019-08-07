@@ -3,6 +3,7 @@ import { LoadingComponent } from 'src/app/components/loading/loading.component';
 import { ErrorComponent } from 'src/app/components/error/error.component';
 import { SuccessComponent } from 'src/app/components/success/success.component';
 import { UserService } from 'src/app/services/user.service';
+import { SharingService } from 'src/app/services/sharing.service';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class CouponComponent implements OnInit {
 
-  couponCode;
+  couponCode='';
   @ViewChild('couponButton') couponButton: ElementRef ;
   @ViewChild('couponInput') couponInput: ElementRef ;
 
@@ -24,7 +25,7 @@ export class CouponComponent implements OnInit {
   @ViewChild(SuccessComponent) success: SuccessComponent ;
 
 
-  constructor(private el:ElementRef,private service:UserService) { }
+  constructor(private el:ElementRef,private service:UserService,private shared:SharingService) { }
 
   ngOnInit() {
     if(this.operation==="check"){
@@ -44,26 +45,45 @@ export class CouponComponent implements OnInit {
   }
 
   confirm(){
+    if(this.couponCode==='')
+      return;
     this.loading.show();
-    if(this.operation==="check"){
-      this.service.CheckCoupon({"couponCode":this.couponCode}).subscribe(result=>{
+    // if(this.operation==="check"){
+    //   this.service.CheckCoupon({"couponCode":this.couponCode}).subscribe(result=>{
+    //     this.loading.hide();
+    //     this.success.show(result,6000);
+    //   },
+    //   error=>{
+    //     this.loading.hide();
+    //     this.error.show(error,3000,null);
+    //   });
+    // }
+    // else{
+    //   this.service.ApplyCoupon({"couponCode":this.couponCode}).subscribe(result=>{
+    //     this.loading.hide();
+    //     this.success.show(result,6000);
+    //   },
+    //   error=>{
+    //     this.loading.hide();
+    //     this.error.show(error,2000,null);
+    //   });
+    // }
+
+    this.service.CheckCoupon({"couponCode":this.couponCode}).subscribe(result=>{
+      this.service.GetUserCoupon().subscribe(userCoupon=>{
         this.loading.hide();
-        this.success.show(result,6000);
-      },
-      error=>{
+        this.success.show(result,4000).then(()=>{
+          this.shared.emitUserCoupon(userCoupon);
+        })
+      },error=>{
         this.loading.hide();
         this.error.show(error,3000,null);
       });
-    }else{
-      this.service.ApplyCoupon({"couponCode":this.couponCode}).subscribe(result=>{
-        this.loading.hide();
-        this.success.show(result,6000);
-      },
-      error=>{
-        this.loading.hide();
-        this.error.show(error,2000,null);
-      });
-    }
+    },
+    error=>{
+      this.loading.hide();
+      this.error.show(error,3000,null);
+    });
   }
 
 }

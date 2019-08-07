@@ -59,8 +59,8 @@ class User(Base,UserMixin):
 
     payments = db.relationship('Payment')
     gem_payments = db.relationship('GemPayment')
-
-    messages = db.relationship('UserMessage')
+    
+    messages = db.relationship('UserMessage',lazy='dynamic')
 
     short_messages = db.relationship('UserSMS')
 
@@ -68,7 +68,7 @@ class User(Base,UserMixin):
 
     roles = db.relationship('Role' , secondary = 'user_roles', back_populates='users')
 
-    gifts = db.relationship('Gift', secondary='user_gifts', back_populates='users',lazy='dynamic')
+    coupons = db.relationship('Coupon', secondary='user_coupons', back_populates='users',lazy='dynamic')
 
     level_id = db.Column(db.BigInteger, db.ForeignKey('levels.id'))
     level = db.relationship('Level')

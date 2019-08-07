@@ -24,7 +24,7 @@ class GemPayment(Base):
     paid_gems = db.Column(db.Integer(),default=0,nullable=False)
     type = db.Column(db.String(64),default=GemPayType.NOTITLE)
     status = db.Column(db.String(64),default=GemPayStatus.WAIT)
-    sequence = db.Column(db.String(255), nullable=False,default=GemPayStatus.WAIT)
+    # sequence = db.Column(db.String(255), nullable=False,default=GemPayStatus.WAIT)
 
     user_id = db.Column(db.BigInteger, db.ForeignKey('users.id'))
     user = db.relationship('User')

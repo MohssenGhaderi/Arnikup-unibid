@@ -39,8 +39,8 @@
 }
 
 .details-slideImage-info-badge {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   background-color: #4caf50;
   color: #fff;
   display: flex;
@@ -48,8 +48,9 @@
   align-items: center;
   border-radius: 50%;
   position: absolute;
-  top: -5px;
-  right: -5px;
+  font-size: 14px;
+  top: 0;
+  right: 0;
 
 }
 

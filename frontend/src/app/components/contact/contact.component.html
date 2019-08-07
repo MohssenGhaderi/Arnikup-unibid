@@ -1,0 +1,50 @@
+<div #mainWrapper>
+  <app-header></app-header>
+    <main>
+
+      <div class="about-container">
+        <div class="about-right-side">
+          <span class="about-right-side-title">تماس با ما</span>
+          <p class="about-right-side-content">
+            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.
+          </p>
+
+          <div class="about-circle">
+            <span class="about-circle-1"></span>
+            <span class="about-circle-2"></span>
+            <span class="about-circle-3"></span>
+            <div class="callout bottom">
+              <p class="about-right-side-place">
+                ایران، تهران، تهران
+              </p>
+              <p>
+                پارک وی کوچه تورج پلاک ۱۳ واحد ۱
+              </p>
+            </div>
+          </div>
+
+
+        </div>
+
+        <div class="about-left-side">
+
+          <form class="about-left-side-form" [formGroup]="registerForm">
+            <p>فرستادن پیام برای ما</p>
+            <div><input type="text" placeholder="نام و نام خانوادگی" value="{{editables?.fullName}}" class="cfnText" maxlength="64" formControlName="fullName"/></div>
+            <div><input type="text" placeholder="پست الکترونیک" value="{{editables?.email}}" class="cfnText" formControlName="email" [pattern]="'^[a-zA-Z \-\']$'"/></div>
+            <div><input type="text" class="cfnText" placeholder="شماره تماس" value="{{editables?.mobile}}" formControlName="mobile" maxlength="11" /></div>
+            <app-radio-button></app-radio-button>
+            <div><textarea type="text" class="accountProfile-profile-text" placeholder="متن پیام" value="{{editables?.message}}" formControlName="message"></textarea></div>
+            <span class="cfnButton cfnButton-primary" (click)="sendMessage($event)">اعمال</span>
+        </form>
+        <app-error></app-error>
+        <app-success></app-success>
+        <app-loading></app-loading>
+
+        </div>
+
+      </div>
+   </main>
+  <app-footer></app-footer>
+</div>
+<app-shop [mainWrapperElem]="mainWrapperElem" *ngIf="this.shared.shop"></app-shop>

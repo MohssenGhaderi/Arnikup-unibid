@@ -1,0 +1,32 @@
+<div *ngIf="notification.seen then seen else notSeen;"></div>
+
+<ng-template #notSeen>
+  <div (click)="markAsRead($event)" class="accountProfile-notification">
+      <span class="accountProfile-notification-badge"></span>
+      <img *ngIf="notification.imageType=='us'" class="accountProfile-notification-img" [src]="Link.avatar(notification.image)" />
+      <img *ngIf="notification.imageType=='si'" class="accountProfile-notification-img" [src]="Link.photo(notification.image)" />
+      <img *ngIf="notification.imageType=='au'" class="accountProfile-notification-img" [src]="Link.auction(notification.image)" />
+      <div class="accountProfile-notification-info">
+        <p class="accountProfile-notification-info-name">{{notification.text}}</p>
+      </div>
+      <img (click)="DeleteNotification($event)" class="accountProfile-notification-delimg" src="assets/resources/images/assets/png/delete@1x.png">
+      <span class="accountProfile-notification-dateinfo">{{ notification.date | persian : 'dddd DD MMMM YY ساعت HH:mm'}}</span>
+  </div>
+</ng-template>
+
+
+<ng-template #seen>
+  <div (click)="markAsRead($event)" class="accountProfile-notification">
+    <img *ngIf="notification.imageType=='us'" class="accountProfile-notification-img" [src]="Link.avatar(notification.image)" />
+    <img *ngIf="notification.imageType=='si'" class="accountProfile-notification-img" [src]="Link.photo(notification.image)" />
+    <img *ngIf="notification.imageType=='au'" class="accountProfile-notification-img" [src]="Link.auction(notification.image)" />
+      <div class="accountProfile-notification-info">
+        <p class="accountProfile-notification-info-name-normal">{{notification.text}}</p>
+      </div>
+      <img (click)="DeleteNotification($event)" class="accountProfile-notification-delimg" src="assets/resources/images/assets/png/delete@1x.png">
+      <span class="accountProfile-notification-dateinfo">{{ notification.date | persian : 'dddd DD MMMM YY ساعت HH:mm'}}</span>
+  </div>
+</ng-template>
+
+<app-loading></app-loading>
+<app-error></app-error>

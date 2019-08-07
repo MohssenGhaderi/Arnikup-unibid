@@ -169,7 +169,7 @@ var app = new Vue({
 
 					if(self.next!="None"){
 						if(response.data.redirect_to_auction){
-							window.parent.location = '/view/auction/'+response.data.auction_id;
+							window.parent.location = '/auction/'+response.data.auction_id;
 						}
 						if(self.next.includes('participate') || self.next.includes('instantview')){
 								window.location = self.next;

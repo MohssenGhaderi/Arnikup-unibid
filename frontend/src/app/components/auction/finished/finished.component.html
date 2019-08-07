@@ -10,15 +10,15 @@
 </app-social>
   <div class="cart-share-fav">
     <div class="heart" [ngClass]="{'is_animating': toggleHeart || (toggleHeart && auction.liked)}" (click)="toggleClick($event,auction.auctionId)"></div>
-    <img (click)="closeSocial()" src="assets/resources/images/assets/png/share.png">
-
+    <img class="cart-share-fav-share-img" (click)="closeSocial()" src="assets/resources/images/assets/png/share.png">
+    <img class="cart-share-fav-user-img" src="assets/resources/images/assets/png/user-icon.png">
+    <span class="cart-share-fav-text">{{auction.totalParticipants}}</span>
   </div>
 
-  <img src="assets/resources/images/pics/pic6.jpg" alt="" class="cart-image">
+  <img [src]="Link.auction(auction.image)" alt="" class="cart-image">
   <p class="cart-title">{{auction.title}}</p>
 
   <div class="cart-off">
-
 
     <span class="cart-off-percent">٪{{auction.discount}}</span>
     <div class="cart-off-info">
@@ -37,8 +37,8 @@
       <span>{{auction.maxLevel}} / {{auction.level}}</span>
     </div>
     <div class="cart-footer-contributer" dir="ltr">
-      <span>{{auction.status?.winnerName}}</span>
-      <img [src]="Link.avatar(auction.status?.winnerAvatar)" alt="" class="">
+      <span>{{auction.status?.name}}</span>
+      <img [src]="Link.avatar(auction.status?.avatar)" alt="" class="">
       <span>برنده</span>
     </div>
   </div>

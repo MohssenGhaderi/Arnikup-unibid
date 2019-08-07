@@ -1,11 +1,23 @@
-<div *ngIf="states.iceAge;then iceAge"></div>
-<div *ngIf="states.holliDay;then holliDay"></div>
-<div *ngIf="states.hotSpot;then hotSpot"></div>
-<div *ngIf="states.feniTto || auction?.done;then feniTto"></div>
 
-<ng-template #iceAge>
+<!-- <app-progress [current]="currentTest" [total]="totalTest" ></app-progress>
+<a (click)="reset()" class="cfnButton cfnButton-primary">  ریست </a> -->
+<div class="statusbar-container" *ngIf="process">
+  <div class="statusbar">
+    <app-error></app-error>
+    <app-success></app-success>
+    <app-loading></app-loading>
+  </div>
+</div>
+
+<div *ngIf="states.iceAge && !auction?.done; then iceAge"></div>
+<div *ngIf="states.holliDay && !auction?.done; then holliDay"></div>
+<div *ngIf="states.feniTto || auction?.done;then feniTto"></div>
+<!-- <div *ngIf="states.noWinner; then noWinner"></div> -->
+
+<!-- <ng-template #noWinner>
 
   <div class="details-auction-wrapper">
+
     <div class="details-auction-right">
       <p class="details-auction-right-title">{{auction?.title}}</p>
       <div class="details-cart-off">
@@ -16,6 +28,30 @@
         </div>
       </div>
     </div>
+    <div class="cart-timer">
+      حراجی بدون برنده - بدون پیشنهاد
+    </div>
+
+  </div>
+  <div class="cart-timer-border"></div>
+
+</ng-template> -->
+
+<ng-template #iceAge>
+
+  <div class="details-auction-wrapper">
+
+    <div class="details-auction-right">
+      <p class="details-auction-right-title">{{auction?.title}}</p>
+      <div class="details-cart-off">
+        <span class="details-cart-off-percent">٪{{auction?.discount}}</span>
+        <div class="details-cart-off-info">
+          <p class="details-cart-off-after">شروع حراجی : {{auction?.basePrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+          <p class="details-cart-off-before">سقف حراجی : {{auction?.maxPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+        </div>
+      </div>
+    </div>
+
     <div class="cart-timer">
       <div class="cart-timer-part">
         <span class="cart-time">{{remainedTime?.seconds}}</span>
@@ -37,13 +73,14 @@
 
   </div>
   <div class="cart-timer-border"></div>
+
 </ng-template>
 
 <ng-template #holliDay>
   <div class="details-auction-wrapper">
     <div class="details-auction-right">
       <p class="details-auction-right-title">{{auction?.title}}</p>
-      <app-extra-bid *ngIf="shared.extraBid" [extraBids]="auction.extraBids" [auctionId]="auction?.auctionId"></app-extra-bid>
+      <app-extra-bid *ngIf="shared.extraBid" [extraBids]="auction?.extraBids" [auctionId]="auction?.auctionId"></app-extra-bid>
 
       <div class="details-cart-off">
         <span class="details-cart-off-percent">٪{{auction?.discount}}</span>
@@ -54,41 +91,30 @@
       </div>
     </div>
     <div class="details-auction-left">
-      <p style="font-size: 13px; margin-bottom: 0; text-align: center;">آخرین پیشنهاد : {{auction?.status?.bidPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
 
-      <a (click)="handleBid($event,auction.auctionId)" class="cfnButton cfnButton-primary"> {{auction?.bids}} پیشنهاد </a>
+      <p style="font-size: 13px; margin-bottom: 0; text-align: center;" *ngIf="isLoggedIn">آخرین پیشنهاد : {{auction?.status?.bidPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+      <a (click)="handleBid($event,auction.auctionId)" class="cfnButton cfnButton-primary" *ngIf="isLoggedIn"> {{auction?.bids}} پیشنهاد </a>
+
+      <p style="font-size: 13px; margin-bottom: 0; text-align: center;" *ngIf="!isLoggedIn"> برای ارسال پیشنهاد به سایت وارد شوید</p>
+      <span routerLink = "/signin" class="cfnButton cfnButton-primary" *ngIf="!isLoggedIn"> ورود </span>
+
     </div>
 
   </div>
-  <app-progress [current]="tryParseInt(auction?.remainedTime/1000)" [total]="tryParseInt(auction?.remainedTime/1000)" [fixed]="true" style="margin: 60px 0;"></app-progress>
-</ng-template>
-
-<ng-template #hotSpot>
-  <div class="details-auction-wrapper">
-    <div class="details-auction-right">
-      <p class="details-auction-right-title">{{auction?.title}}</p>
-      <app-extra-bid *ngIf="shared.extraBid" [extraBids]="auction.extraBids" [auctionId]="auction?.auctionId"></app-extra-bid>
-
-      <div class="details-cart-off">
-        <span class="details-cart-off-percent">٪{{auction?.discount}}</span>
-        <div class="details-cart-off-info">
-          <p class="details-cart-off-after">شروع حراجی : {{auction?.basePrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
-          <p class="details-cart-off-before">سقف حراجی : {{auction?.maxPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
-        </div>
-      </div>
-    </div>
-    <div class="details-auction-left">
-      <p style="font-size: 13px; margin-bottom: 0; text-align: center;">آخرین پیشنهاد : {{auction?.status?.bidPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
-
-      <a (click)="handleBid($event,auction.auctionId)" class="cfnButton cfnButton-primary"> {{auction?.bids}} پیشنهاد </a>
-    </div>
-
+  <!-- <span>{{tryParseInt(auction.remainedTime/1000)}}</span> -->
+  <div *ngIf="auction.remainedTime <= 11000">
+    <app-progress [current]="tryParseInt(auction.remainedTime/1000)" [total]="10" ></app-progress>
   </div>
-  <app-progress [current]="tryParseInt(auction?.remainedTime/1000)" [total]="10" style="margin: 60px 0;"></app-progress>
+
+  <div *ngIf="auction.remainedTime > 11000">
+    <app-progress [current]="tryParseInt(auction.remainedTime/1000)" [total]="tryParseInt(auction.remainedTime/1000)" ></app-progress>
+  </div>
+
 </ng-template>
 
 <ng-template #feniTto>
   <div class="details-auction-wrapper">
+
     <div class="details-auction-right">
       <p class="details-auction-right-title">{{auction?.title}}</p>
       <div class="details-cart-off">
@@ -104,6 +130,10 @@
       <a href="" class="cfnButton cfnButton-primary cfnButton-disabled">پایان حراجی</a>
     </div>
 
+    <div class="cart-timer" *ngIf="states.noWinner">
+      حراجی بدون برنده - بدون پیشنهاد
+    </div>
+
   </div>
 
   <div class="details-winner" *ngIf="auction?.status?.bidPrice > 0">
@@ -117,7 +147,7 @@
           <p style="font-size: 14px;">{{auction?.status?.name}}</p>
           <div class="details-winner-main-content-star">
             <img src="assets/resources/images/assets/png/star.png"/>
-            <span>۹</span>
+            <span>{{auction?.status?.level}}</span>
           </div>
         </div>
         <div class="details-winner-main-content-imageSideWrapper">
@@ -129,8 +159,5 @@
       </div>
     </div>
   </div>
-</ng-template>
 
-<app-error></app-error>
-<app-success></app-success>
-<app-loading></app-loading>
+</ng-template>

@@ -1,0 +1,8 @@
+<div class="customDropdown-container">
+  <div class="customDropdown">
+    <p class="accountProfile-title"> انتخاب روش ارسال<img (click)="goBack()" src="assets/resources/images/assets/png/arrowUp.png"/></p>
+    <ul class="methods">
+      <li *ngFor="let method of methods" (click)="changeMethod($event,method.methodId)">{{method.title}} با هزینه {{method.price | currency : ' ' : 'symbol' : '1.0-0'}} تومان </li>
+    </ul>
+  </div>
+</div>

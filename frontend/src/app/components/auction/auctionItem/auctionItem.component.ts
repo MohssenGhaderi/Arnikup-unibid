@@ -13,6 +13,7 @@ import { LoadingComponent } from 'src/app/components/loading/loading.component';
 import { ErrorComponent } from 'src/app/components/error/error.component';
 import { SuccessComponent } from 'src/app/components/success/success.component';
 import { Cart } from 'src/app/models/cart.model';
+import { Joined } from 'src/app/models/socket/joined.model';
 
 @Component({
   selector: 'app-auctionItem',
@@ -32,6 +33,7 @@ export class AuctionItemComponent implements OnInit {
   timer;
   cart:Cart;
   joined = false;
+
   timeoutId = 0;
   subscription: any;
   toggleSocial = false;
@@ -60,9 +62,18 @@ export class AuctionItemComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.auctionSocket.connect();
-    // this.auctionSubscription = this.auctionSocket.connect.pipe().subscribe(result => console.log(result));
+
+    if(!this.timer){
+      this.remainedTime = this.ConvertMS(this.auction.remainedTime);
+      this.timer = setInterval(() => {
+        this.auction.remainedTime = this.auction.remainedTime - 1000;
+        this.remainedTime = this.ConvertMS(this.auction.remainedTime);
+      }, 1000);
+    }
+
     this.cart.auctionId = this.auction.auctionId;
+    this.toggleHeart = this.auction.liked;
+
     this.subscription = this.shared.getCartStateEmitter().subscribe(result=>{
       if(this.auction.auctionId == result.auctionId){
         this.cart.state = result.state;
@@ -73,16 +84,6 @@ export class AuctionItemComponent implements OnInit {
       }
     });
 
-    this.toggleHeart = this.auction.liked;
-
-    if (this.auction) {
-      this.remainedTime = this.ConvertMS(this.auction.remainedTime);
-      this.timer = setInterval(() => {
-        this.auction.remainedTime = this.auction.remainedTime - 1000;
-        this.remainedTime = this.ConvertMS(this.auction.remainedTime);
-      }, 1000);
-    }
-
     this.subscription = this.shared.getSocialStayEmitter().subscribe((auctionId)=>{
       if(this.auction.auctionId==auctionId){
         setTimeout(()=>{
@@ -91,14 +92,89 @@ export class AuctionItemComponent implements OnInit {
       }
     });
 
-  }
+    this.auctionSocket.connect.subscribe(result => console.log(result));
 
-  ngDoCheck(){
-    // this.auction.started = new StartedAuction();
-    if(this.auction.remainedTime <= 60000 && !this.joined){
-      this.joined = true;
-      this.auctionSocket.join(this.auction.auctionId);
-    }
+    this.auctionSocket.iceAge.subscribe(result =>{
+      if(this.auction.auctionId===result.auctionId){
+        this.auction.remainedTime = result.heartbeat;
+        if(!this.timer){
+          this.remainedTime = this.ConvertMS(this.auction.remainedTime);
+          this.timer = setInterval(() => {
+            this.auction.remainedTime = this.auction.remainedTime - 1000;
+            this.remainedTime = this.ConvertMS(this.auction.remainedTime);
+          }, 1000);
+        }
+      }
+    });
+
+    this.auctionSocket.holliDay.subscribe(result =>{
+      if(this.auction.auctionId===result.auctionId){
+        this.auction.remainedTime = result.heartbeat;
+        if(!this.joined){
+          this.joined = true;
+          this.auctionSocket.PublicRoom(this.auction.auctionId);
+          this.auctionSocket.PrivateRoom(this.auction.auctionId);
+        }
+      }
+    });
+
+    this.auctionSocket.joined.subscribe(result => {
+      if(this.auction.auctionId===result.auctionId){
+        this.auctionSocket.getStatus(this.auction.auctionId);
+      }
+    });
+
+    this.auctionSocket.status.subscribe(result => {
+      if(this.auction.auctionId===result.auctionId){
+        this.auction.status = result.status;
+      }
+    });
+
+    this.auctionSocket.bids.subscribe(result => {
+      if(this.auction.auctionId===result.auctionId){
+        this.auction.bids = result.bids;
+        this.auctionSocket.getUsers(this.auction.auctionId);
+        this.loading.hide();
+      }
+    });
+
+    this.auctionSocket.reset.subscribe(result => {
+      if(this.auction.auctionId===result.auctionId){
+        this.auction.remainedTime = result.heartbeat;
+        this.progress.reset(10,10);
+        this.loading.hide();
+      }
+    });
+
+    this.auctionSocket.winner.subscribe(result => {
+      if(this.auction && this.auction.auctionId===result.auctionId){
+        this.auction.status = result.winner;
+        this.success.show({"message":"حراجی با موفقیت به اتمام رسید"},2000).then(()=>{
+          this.loading.hide();
+        })
+      }
+    });
+
+    this.auctionSocket.zeroTime.subscribe(result => {
+
+      if(this.auction.auctionId===result.auctionId){
+        this.success.show(result,2000);
+      }
+    });
+
+    this.auctionSocket.feniTto.subscribe(result => {
+      if(this.auction.auctionId===result.auctionId){
+        this.error.show(result,2000);
+      }
+    });
+
+    this.auctionSocket.failed.subscribe(result => {
+      if(this.auction.auctionId===result.error.auctionId){
+        this.loading.hide();
+        this.error.show(result,2000,null);
+      }
+    });
+
   }
 
   closeSocial(eventData){
@@ -119,39 +195,6 @@ export class AuctionItemComponent implements OnInit {
     clearInterval(this.timer);
   }
 
-  ngAfterViewInit() {
-
-    this.auctionSocket.connect.subscribe(result => console.log(result));
-
-    this.auctionSocket.joined.subscribe(result => {
-      console.log(result);
-      this.auctionSocket.getStatus(this.auction.auctionId);
-    });
-
-    this.auctionSocket.bids.subscribe(result => {
-      this.auction.bids = parseInt(result);
-    });
-
-    this.auctionSocket.accepted.subscribe(result => {
-      var remainingTime = parseInt(result);
-      this.auction.remainedTime = remainingTime;
-      if (this.auction.remainedTime <= 11000){
-        this.progress.reset();
-      }
-      this.auctionSocket.getStatus(this.auction.auctionId);
-    });
-
-    this.auctionSocket.status.subscribe(result => {
-      console.log(result);
-      this.auction.status = result;
-    });
-
-    this.auctionSocket.failed.subscribe(result => {
-      this.loading.hide();
-      this.error.show(result,2000,null);
-    });
-
-  }
 
   tryParseInt(number){
     return parseInt(Math.floor(number).toString());
@@ -159,6 +202,7 @@ export class AuctionItemComponent implements OnInit {
 
   handleBid(eventData,auctionId){
     console.log('try bid for : ',auctionId);
+    this.loading.show();
 
     this.auctionSocket.offerBid(auctionId);
 
@@ -182,7 +226,6 @@ export class AuctionItemComponent implements OnInit {
   RegisterAuctionSlideupClick(eventData) {
     if(this.toggleSocial){
       this.shared.emitCloseSocial(this.auction.auctionId);
-
     }
     else{
       if(this.auction.participated){
@@ -194,7 +237,6 @@ export class AuctionItemComponent implements OnInit {
           this.cart.state = "participate";
       }
     }
-
     eventData.stopPropagation();
   }
 

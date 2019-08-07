@@ -9,15 +9,20 @@
     <span #avatarItems *ngFor="let avatar of avatars" class="selecAvatar-item" [ngClass]="{'selectAvatar-item-active':avatar.selected && !firstTime}" (click)="selectAvatar($event, avatar.avatarId)">
       <!-- <span #avatarItems *ngFor="let avatar of avatars" class="selecAvatar-item" (click)="selectAvatar($event, avatar.avatarId)"> -->
       <img [src]="Link.avatar(avatar.image)" alt="" />
-      <img *ngIf="avatar.owned" class="avatar-owned" src="assets/resources/images/assets/svg/tick.svg">
+      <img *ngIf="avatar?.owned" class="avatar-owned" src="assets/resources/images/assets/svg/tick.svg">
 
     </span>
   </div>
   <div class="selectAvatar-footer">
     <a href="" class="cfnButton cfnButton-primary" (click)="confirmAvatar($event)">
-      <div>
-        <img src="assets/resources/images/assets/png/group-90.png"/>{{selected?.gemsNeed}} الماس
+      <div *ngIf="selected?.gemsNeed >= 0 && !selected?.owned">
+        <img  src="assets/resources/images/assets/png/group-90.png"/>{{selected?.gemsNeed}} الماس
       </div>
+
+      <div *ngIf="selected?.owned">
+        <img *ngIf="selected?.owned" src="assets/resources/images/assets/png/group-90.png"/> خریداری شده
+      </div>
+
       <span>تایید</span>
     </a>
   </div>

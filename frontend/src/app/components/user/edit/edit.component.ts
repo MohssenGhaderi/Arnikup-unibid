@@ -8,6 +8,7 @@ import { ErrorComponent } from 'src/app/components/error/error.component';
 import { SuccessComponent } from 'src/app/components/success/success.component';
 import { Links } from 'src/app/links.component';
 import { EditUserInformation } from 'src/app/models/user/information/edit.model'
+import { State } from 'src/app/models/user/information/state.model'
 
 @Component({
   selector: 'app-edit-user',
@@ -20,6 +21,8 @@ export class EditUserComponent implements OnInit {
   editables : EditUserInformation;
   submitted = false;
   Link = Links;
+  selectedState:State;
+  subscription: any;
 
   @ViewChild(LoadingComponent) loading: LoadingComponent ;
   @ViewChild(ErrorComponent) error: ErrorComponent ;
@@ -27,7 +30,7 @@ export class EditUserComponent implements OnInit {
 
   constructor(
     private el: ElementRef,
-    private shared:SharingService,
+    public shared:SharingService,
     private userService:UserService,
     private formBuilder: FormBuilder,
     private liveUser:LiveUserService,
@@ -41,6 +44,11 @@ export class EditUserComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.subscription = this.shared.getStateEmitter().subscribe(result=>{
+      console.log(result);
+      this.selectedState = result;
+    });
+
     this.el.nativeElement.getElementsByClassName('editProfileContainer')[0].classList.add('myCfnAnimation-slideright');
 
 
@@ -55,14 +63,15 @@ export class EditUserComponent implements OnInit {
     this.loading.show();
     this.userService.GetEditableInformation().subscribe(result =>{
       this.editables = result;
+
       this.registerForm = this.formBuilder.group({
         fullName: [this.editables.fullName],
         email: [this.editables.email],
         city: [this.editables.city],
-        state: [this.editables.state],
+        state: [this.editables.state? this.editables.state.title : 'انتخاب استان' ],
         address: [this.editables.address],
       });
-
+      this.selectedState = this.editables.state ? this.editables.state :{"title":'انتخاب استان',"stateId":0};
       this.loading.hide();
     },
     error => {
@@ -92,12 +101,18 @@ export class EditUserComponent implements OnInit {
 
     var obj = {
       "fullName":this.formFields.fullName.value,
-      "email":this.formFields.email.value,
-      "city":this.formFields.city.value,
-      // "state":this.formFields.state.value,
-      "state":1,
-      "address":this.formFields.address.value,
+      "email":this.formFields.email.value
     }
+
+    if(this.selectedState.stateId != 0)
+      obj["state"]=this.selectedState.stateId;
+
+    if(this.formFields.city.value)
+      obj["city"]=this.formFields.city.value;
+
+    if(this.formFields.address.value)
+      obj["address"]=this.formFields.address.value;
+
 
     this.userService.SetEditableInformation(obj).subscribe(result => {
 
@@ -119,6 +134,15 @@ export class EditUserComponent implements OnInit {
   toggleAvatar(){
     this.shared.toggleMenu.reset();
     this.shared.toggleMenu.avatar = true;
+  }
+
+  toggleStates(eventDate){
+    this.shared.states = true;
+    eventDate.stopPropagation();
+  }
+
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
   }
 
 }

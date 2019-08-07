@@ -15,7 +15,7 @@
 							<div class="banner-shop-info text-left">
 								<h2><a href="#">{{item.advertisement.title}}</a></h2>
 								<p class="title30 color">تخفیف : تا {{_ToPersian(item.advertisement.discount)}}٪ قیمت </p>
-								<a v-bind:href= "'/view/auction/'+item.id" class="btn-rect diswe white bg-color radius">{{item.advertisement.link_title}}</a>
+								<a v-bind:href= "'/auction/'+item.id" class="btn-rect diswe white bg-color radius">{{item.advertisement.link_title}}</a>
 							</div>
 						</div>
 						{%endraw%}
@@ -182,7 +182,7 @@
 									price : ToPersian(formatCurrency(auction.main_price)),
 									image : product_image_path + ClearifyNames(auction.images)[0],
 									instantview_link : "/instantview/"+ auction.id,
-									auctionview_link : "/view/auction/"+ auction.id,
+									auctionview_link : "/auction/"+ auction.id,
 									item_id : auction.item_id,
 									likeflag: auction.liked ? "fa fa-heart" : "fa fa-heart-o",
 								});
@@ -292,7 +292,7 @@
 							price : ToPersian(formatCurrency(auction.main_price)),
 							image : product_image_path + ClearifyNames(auction.images)[0],
 							instantview_link : "/instantview/"+ auction.id,
-							auctionview_link : "/view/auction/"+ auction.id,
+							auctionview_link : "/auction/"+ auction.id,
 							item_id : auction.item_id,
 							likeflag: auction.liked ? "fa fa-heart" : "fa fa-heart-o",
 						});

@@ -1,0 +1,31 @@
+
+.accountProfile-priceItem {
+  border-bottom: 1px solid #ebebeb;
+  padding: 15px;
+}
+
+.accountProfile-priceItem-title {
+  font-size: 16px;
+}
+
+.accountProfile-priceItem-after {
+  color: #ec407a;
+  font-size: 12px;
+}
+
+.accountProfile-priceItem-before {
+  color: #707070;
+  font-size: 12px;
+}
+
+.accountProfile-priceTotal {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 15px;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.accountProfile-priceTotal > span:last-of-type {
+  font-size: 16px;
+}

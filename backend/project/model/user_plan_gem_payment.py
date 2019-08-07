@@ -11,10 +11,10 @@ class UserPlanGemPayment(Base):
     user_plan = db.relationship('UserPlan')
 
     gem_payment_id = db.Column(db.BigInteger,db.ForeignKey('gem_payments.id'))
-    gem_payment = db.relationship('GemPayment')
+    gem_payment = db.relationship('GemPayment',cascade="all,delete",backref="user_plan_gem_payments")
 
     created = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False)
     updated = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False, onupdate=datetime.datetime.now)
     def __str__(self):
-        if(self.user_plane):
-            return    " پلن : " + self.user_plane.auction_plan.plan.title +" "+ self.user_plane.auction_plan.auction.title +" "+ self.user_plane.user.username + " "
+        if(self.gem_payment.user):
+            return    "کاربر " + self.gem_payment.user.username + " "

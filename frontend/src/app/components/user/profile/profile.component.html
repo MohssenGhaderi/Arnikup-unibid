@@ -17,15 +17,16 @@
     <div class="accountProfile-profile-headerBottom profileSelector">
       <p>{{userMainInfo?.fullName}}</p>
       <p>{{userMainInfo?.username}}</p>
-      <p><img src="assets/resources/images/assets/png/ic-edit-24-px.png" (click)="toggleEditProfile()" />ویرایش</p>
+      <p (click)="toggleEditProfile()"><img src="assets/resources/images/assets/png/ic-edit-24-px.png" (click)="toggleEditProfile()" />ویرایش</p>
     </div>
     <ul class="accountProfile-profile-items">
+      <li (click)="toggleFavorite()"><img src="assets/resources/images/assets/svg/heart-red.svg"/>علاقمندی ها<img src="assets/resources/images/assets/png/arrow.png"/></li>
       <li (click)="toggleFinance()"><img src="assets/resources/images/assets/png/ic-history.png"/>تاریخچه خرید<img src="assets/resources/images/assets/png/arrow.png"/></li>
-      <li><img src="assets/resources/images/assets/png/group-102.png"/>{{userMainInfo?.mobile}}<img src="assets/resources/images/assets/png/arrow.png"/></li>
-      <li><img src="assets/resources/images/assets/png/group-103.png"/>{{userMainInfo?.email}}<img src="assets/resources/images/assets/png/arrow.png"/></li>
-      <li><img src="assets/resources/images/assets/png/group-92.png"/>اعتبار مالی<img src="assets/resources/images/assets/png/arrow.png"/></li>
-      <li><img src="assets/resources/images/assets/png/group-105.png"/>پیام‌ها<img src="assets/resources/images/assets/png/arrow.png"/></li>
-      <li><img src="assets/resources/images/assets/png/setting.png"/>تنظیمات<img src="assets/resources/images/assets/png/arrow.png"/></li>
+      <!-- <li><img src="assets/resources/images/assets/png/group-102.png"/>{{userMainInfo?.mobile}}<img src="assets/resources/images/assets/png/arrow.png"/></li> -->
+      <!-- <li><img src="assets/resources/images/assets/png/group-103.png"/>{{userMainInfo?.email}}<img src="assets/resources/images/assets/png/arrow.png"/></li> -->
+      <li (click)="toggleTransaction()"><img src="assets/resources/images/assets/png/group-92.png"/>اعتبار مالی<img src="assets/resources/images/assets/png/arrow.png"/></li>
+      <li (click)="toggleMessages()"><img src="assets/resources/images/assets/png/group-105.png"/>پیام‌ها<img src="assets/resources/images/assets/png/arrow.png"/></li>
+      <li (click)="toggleEditPassword()"><img src="assets/resources/images/assets/png/setting.png"/>تنظیمات<img src="assets/resources/images/assets/png/arrow.png"/></li>
     </ul>
     <app-loading></app-loading>
     <app-error></app-error>

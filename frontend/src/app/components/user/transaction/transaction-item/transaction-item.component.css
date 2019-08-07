@@ -1,0 +1,74 @@
+.accountProfile-notification {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ebebeb;
+  height: 78px;
+}
+.accountProfile-notification:hover{
+  background: #fff5f8;
+}
+
+.accountProfile-notification-active {
+  background-color: #fef5f8;
+}
+
+.accountProfile-notification-dateinfo{
+  position: absolute;
+  bottom: 5px;
+  left: 16px;
+  font-size: 10px;
+  color: #7e7e7e;
+}
+
+.accountProfile-notification-delimg{
+  width: 26px;
+  margin-left: 12px;
+  margin-bottom: 10px;
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.accountProfile-notification-delimg:hover{
+  opacity: 1;
+}
+
+/*req*/
+.accountProfile-notification-badge {
+  width: 18px;
+  height: 18px;
+  background: #ec407a;
+  border-radius: 50%;
+  top: 12px;
+  right: 12px;
+  position: absolute;
+}
+/*req*/
+.accountProfile-notification-info-name {
+  font-size: 12px;
+  font-weight: 300;
+  margin-right: 20px;
+  cursor: pointer;
+}
+/*req*/
+.accountProfile-notification-info-score {
+  color: #ec407a;
+  font-size: 15px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+/*req*/
+
+.accountProfile-notification-img {
+  width: 30px;
+  margin: 0 20px 0 6px;
+}
+
+.accountProfile-notification-plus{
+  width: 20px;
+}
+
+.accountProfile-notification-minus{
+  width: 20px;
+}

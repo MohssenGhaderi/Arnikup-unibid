@@ -1,0 +1,121 @@
+.accountProfile {
+  position: absolute;
+  top: 58px;
+  width: 400px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  background-color: #ffffff;
+  z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #212121;
+  font-size: 12px;
+  direction: rtl;
+  padding: 15px 0;
+  padding-top: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.editProfileContainer {
+  width: 400px;
+}
+
+.accountProfile > div > p {
+  align-self: stretch;
+}
+
+.accountProfile-title {
+  font-size: 16px;
+  text-align: center;
+  margin: 0;
+  padding: 15px;
+  position: relative;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.accountProfile-type {
+  border: solid 1px #dcdbdc;
+  border-radius: 34px;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  color: #959595;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+.accountProfile-type > img{
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  width: 16px;
+  opacity: 0.8;
+}
+
+.accountProfile-type:hover{
+  border-color: #bbb;
+}
+
+.accountProfile-type-highlited{
+  color: #212121;
+}
+
+
+.accountProfile-type:hover > img{
+  opacity: 1;
+}
+
+.accountProfile-title > img {
+  position: absolute;
+  right: 10px;
+  top: 13px;
+}
+
+.accountProfile-title > span {
+  position: absolute;
+  left: 10px;
+  top: 18px;
+  color: #ec407a;
+}
+
+.accountProfile-profile-editProfile {
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+  padding-top: 25px;
+}
+
+.accountProfile-profile-text {
+  font-size: 14px;
+  height: 100px;
+  transition: all 0.15s ease 0s;
+  outline: none;
+  border-radius: 28px;
+  border: 1px solid rgb(220, 219, 220);
+  margin: 24px 0px 0px;
+  font-family: inherit;
+  padding: 16px;
+  max-width: 360px;
+  width: 326px;
+  overflow: hidden;
+}
+
+.accountProfile-profile-text:focus {
+   border-color: #bbb;
+ }
+
+
+
+.cfnText {
+  text-align: center;
+  color: #212121;
+  font-size: 14px;
+}

@@ -15,7 +15,8 @@ class PaymentStatus:
 
 class PaymentType:
     NOTITLE = 'اولیه'
-    COIN = 'خرید مستقیم سکه حراجی'
+    COIN = 'خرید بسته سکه'
+    COINAUCTION = 'خرید مستقیم سکه حراجی'
     GEM = 'خرید بسته الماس'
     PRODUCT = 'خرید محصول'
     CHEST = 'خرید پکیج پیشنهادی'

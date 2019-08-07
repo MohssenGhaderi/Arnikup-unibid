@@ -10,11 +10,12 @@
         <img [src]="Link.avatar(editables?.avatar)" alt="">
       </div>
       <div class="accountProfile-profile-editProfile">
+        <app-small-states *ngIf="shared.states" [state]="selectedState?.title" [states]="editables?.states"></app-small-states>
         <form [formGroup]="registerForm">
           <div><input type="text" placeholder="نام و نام خانوادگی" value="{{editables?.fullName}}" class="cfnText" formControlName="fullName"/></div>
           <div><span class="cfnTextSign">@</span><input type="text" placeholder="پست الکترونیک" value="{{editables?.email}}" class="cfnText" formControlName="email"/></div>
-          <div>
-            <a class="cfnButton cfnButton-empty">{{editables?.state}}<img src="assets/resources/images/assets/png/arrowDown.png"/></a>
+          <div (click)="toggleStates($event)">
+            <a class="cfnButton cfnButton-empty">{{selectedState?.title}}<img src="assets/resources/images/assets/png/arrow-down.png"/></a>
           </div>
           <div><input type="text" class="cfnText" placeholder="شهر" value="{{editables?.city}}" formControlName="city"/></div>
           <div><input type="text" class="cfnText" placeholder="آدرس" value="{{editables?.address}}" formControlName="address" /></div>

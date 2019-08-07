@@ -6,12 +6,12 @@ import { GetAuction } from '../models/service/getAuction.model';
 import { Shop } from '../models/shop/shop.model';
 import { GetSliderAuctions } from '../models/service/sliderAuctions.model';
 import { GetFinishedAuctions } from '../models/service/getFinishedAuctions.model';
-
 import { SearchItems } from '../models/service/searchItems.model';
 import { Links } from '../links.component';
 import { BasicUserInformation } from '../models/user/information/basic.model'
 import { ProductDetails } from '../models/details/details.model'
 import { GetParticipation } from '../models/auction/getParticipation.model'
+import { ExtraBids } from '../models/auction/extrabids.model'
 
 
 @Injectable({ providedIn: 'root' })
@@ -29,8 +29,13 @@ export class MainServices {
   searchUrl = Links.prefix+'v2/api/search';
   finishedUrl = Links.prefix+'v2/api/site/finished/auctions';
   productDetailsUrl = Links.prefix+'v2/api/auction/details/';
+  GuestMessageUrl = Links.prefix+'v2/api/site/guest/message ';
 
   constructor(private http: HttpClient) { }
+
+  SendGuestMessage(msgObj) {
+    return this.http.post(this.GuestMessageUrl, msgObj);
+  }
 
   FinishedAuctions() {
 
@@ -54,11 +59,6 @@ export class MainServices {
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       const token = JSON.parse(currentUser)['accessToken'];
-      const httpOptions = {
-        headers: new HttpHeaders({
-          Authorization: 'Bearer ' + token
-        })
-      };
       return this.http.get<GetAuctions>(
         this.searchUrl,
         { params: searchObj,
@@ -86,9 +86,9 @@ export class MainServices {
           Authorization: 'Bearer ' + token
         })
       };
-      return this.http.post(this.HandleExtraBidUrl, auctionObj , httpOptions);
+      return this.http.post<ExtraBids>(this.HandleExtraBidUrl, auctionObj , httpOptions);
     } else {
-      return this.http.post(this.HandleExtraBidUrl, auctionObj);
+      return this.http.post<ExtraBids>(this.HandleExtraBidUrl, auctionObj);
     }
 
   }
@@ -125,6 +125,41 @@ export class MainServices {
       return this.http.get<GetAuctions>(this.getAuctionsUrl);
     }
 
+  }
+
+  GetAuctionsLazy(searchObj) {
+
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      return this.http.get<GetAuctions>(this.getAuctionsUrl,{ params: searchObj,
+        headers: new HttpHeaders(
+          {
+            Authorization: 'Bearer ' + token
+          }
+        )});
+    } else {
+      return this.http.get<GetAuctions>(this.getAuctionsUrl, {params: searchObj});
+    }
+
+  }
+
+
+
+  GetSliderAuctionsLazy(searchObj) {
+    const headers = new HttpHeaders();
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      return this.http.get<GetSliderAuctions>(this.sliderAuctionUrl,{ params: searchObj,
+        headers: new HttpHeaders(
+          {
+            Authorization: 'Bearer ' + token
+          }
+        )});
+    }else{
+      return this.http.get<GetSliderAuctions>(this.sliderAuctionUrl,{params: searchObj});
+    }
   }
 
   GetShop() {

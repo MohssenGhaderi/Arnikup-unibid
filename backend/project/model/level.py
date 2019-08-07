@@ -12,6 +12,7 @@ class Level(Base):
     description = db.Column(db.Text,nullable=False)
     required_points = db.Column(db.Integer(),default=0,nullable=False)
     offered_gems = db.Column(db.Integer(),default=0,nullable=False)
+    points_per_win = db.Column(db.Integer(),default=0)
     image = db.Column(db.Text,nullable=False)
 
     users = db.relationship("User")

@@ -17,6 +17,7 @@ export class ShipmentPreviewComponent implements OnInit {
   @ViewChild(ErrorComponent) error: ErrorComponent ;
   @ViewChild(SuccessComponent) success: SuccessComponent ;
   address:Address;
+  toggleShipment = false;
   Link = Links;
   constructor(private el: ElementRef,private userService:UserService,private shared:SharingService) { }
   @HostListener('mouseenter') onMouseEnter() {
@@ -27,7 +28,7 @@ export class ShipmentPreviewComponent implements OnInit {
   }
   ngOnInit() {
     this.el.nativeElement.getElementsByClassName('shipmentContainer')[0].classList.add(this.shared.basketClass);
-
+    console.log(this.shared.checkoutInfo);
     this.loading.show();
     this.userService.GetAddress().subscribe(result=>{
       this.loading.hide();

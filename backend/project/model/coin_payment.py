@@ -15,6 +15,7 @@ class CoinPayType:
     NOTITLE = 'اولیه'
     PLANCOIN = 'خرید پلن حراجی با موجودی سکه'
     GEMFRACTION = 'شارژ کسری حساب الماس'
+    CONVERTGEM = 'تبدیل الماس به سکه'
 
 class CoinPayment(Base):
     __tablename__ = 'coin_payments'
@@ -23,7 +24,7 @@ class CoinPayment(Base):
     paid_coins = db.Column(db.Integer(),default=0,nullable=False)
     type = db.Column(db.String(64),default=CoinPayType.NOTITLE)
     status = db.Column(db.String(64),default=CoinPayStatus.WAIT)
-    sequence = db.Column(db.String(255), nullable=False,default=CoinPayStatus.WAIT)
+    # sequence = db.Column(db.String(255), nullable=False,default=CoinPayStatus.WAIT)
 
     user_id = db.Column(db.BigInteger, db.ForeignKey('users.id'))
     user = db.relationship('User')

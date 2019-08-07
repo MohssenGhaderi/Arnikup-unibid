@@ -660,3 +660,9 @@ padding-top: 35px;
 .accountProfile-basket .accountProfile-title > img {
   top: 18px;
 }
+
+.accountProfile-yourScoreWrapper{
+  max-height: 470px;
+  min-height: 470px;
+  overflow: auto;
+}

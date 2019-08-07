@@ -1,0 +1,45 @@
+<div class="accountProfile-notification">
+  <div class="accountProfile-notification-info">
+    <div class="accountProfile-notification-header">
+      <p class="accountProfile-notification-info-title"> {{message.title}} </p>
+      <div class="accountProfile-notification-info-status">
+        <span class="accountProfile-notification-dateinfo">({{ message.date | persian : 'dddd DD MMMM YY ساعت HH:mm'}})</span>
+        <span>
+          {{message.status}}
+          <img src="assets/resources/images/assets/png/tick@1x.png" />
+        </span>
+      </div>
+    </div>
+
+    <div *ngIf="message.message.length >= 60 && !toggleMore" class="accountProfile-notification-info-content">
+      <p class="accountProfile-notification-info-name">{{message.message.substr(0,50)}}
+        <span (click)="showMore($event)" class="accountProfile-notification-info-name-more">(بیشتر...)</span>
+      </p>
+    </div>
+
+    <div *ngIf="message.message.length < 60" class="accountProfile-notification-info-content">
+      <p class="accountProfile-notification-info-name">{{message.message}}</p>
+    </div>
+
+    <div *ngIf="toggleMore" class="accountProfile-notification-info-content">
+      <p class="accountProfile-notification-info-name-expanded">{{message.message}}
+        <span (click)="hideMore($event)" class="accountProfile-notification-info-name-more">(بستن)</span>
+      </p>
+    </div>
+
+    <div *ngIf="message.answer then answer"></div>
+    <ng-template #answer>
+
+      <div *ngIf="!toggleAnswer" (click)="showAnswer($event)" class="accountProfile-notification-footer">
+        <span>مشاهده پاسخ</span>
+      </div>
+
+      <div *ngIf="toggleAnswer" class="accountProfile-notification-answer">
+        <img (click)="hideAnswer($event)" src="assets/resources/images/assets/png/close.png" />
+        <span>{{message.answer}}</span>
+      </div>
+
+    </ng-template>
+
+  </div>
+</div>

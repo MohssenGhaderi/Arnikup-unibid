@@ -1,0 +1,28 @@
+<div class="accountProfile">
+  <div class="ScoresContainer">
+    <p class="accountProfile-title">اعتبار مالی<img src="assets/resources/images/assets/png/arrowDown.png" (click)="goBack()" /></p>
+    <div class="accountProfile-header">
+      <div class="accountProfile-header-coins">
+        <span>{{coins}}</span>
+        <img src="assets/resources/images/assets/png/coins.png" />
+      </div>
+      <div class="accountProfile-header-gems">
+        <div (click)="applyGems($event)" class="accountProfile-header-gems-action">
+          <img src="assets/resources/images/assets/png/001-down-arrow-copy-5.png" />
+        </div>
+        <span>{{gems}}</span>
+        <img  src="assets/resources/images/assets/png/diamond.png" />
+      </div>
+    </div>
+    <div class="accountProfile-yourScoreWrapper">
+      <div *ngFor="let transaction of trans?.transactions">
+        <app-transaction-item [transaction]="transaction"></app-transaction-item>
+      </div>
+      <div class="accountProfile-footer">
+        <span (click)="showMore($event)">نتایج بیشتر</span>
+      </div>
+    </div>
+    <app-loading></app-loading>
+    <app-error></app-error>
+  </div>
+</div>

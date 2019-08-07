@@ -30,10 +30,13 @@
   width: 168px;
 }
 
-/*.profileContainer {
-  width: 400px;
+.menu-container{
+  position: absolute;
+  top: 158px;
+  width: 200px;
   border-bottom-left-radius: 16px;
   border-bottom-right-radius: 16px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
   background-color: #ffffff;
   z-index: 100000;
   display: flex;
@@ -44,8 +47,46 @@
   direction: rtl;
   padding: 15px 0;
   padding-top: 0;
-}*/
+  box-sizing: border-box;
+  overflow: hidden;
+}
 
+.dropDown-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.dropDown-container > span{
+  position: absolute;
+  transform: rotate(90deg);
+  transform-origin: left top 0;
+  display: inline-block;
+  right: 0;
+  margin-top: 33px;
+  margin-right: 25px;
+  color: #ec4d83;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.cart-menu-selector{
+  border: 1px solid #ebebeb;
+  border-radius: 24px;
+  font-size: 14px;
+  text-align: center;
+  padding: 15px;
+  margin-top: 20px;
+  margin-bottom: 0;
+  position: relative;
+  cursor: pointer;
+  width: 300px;
+}
+
+.cart-menu-selector > img {
+  position: absolute;
+  left: 15px;
+  top: 20px;
+}
 
 .accountProfile > div > p {
   align-self: stretch;
@@ -154,38 +195,19 @@
   text-decoration: none;
 }
 
-.accountProfile .cfnButton-empty {
+.accountProfile > div .cfnButton-empty {
   position: relative;
   margin-top: 17px;
   width: 90%;
 }
 
-.accountProfile .cfnButton-empty > img{
+.accountProfile > div  .cfnButton-empty > img{
   left: 20px;
   position: absolute;
 }
 
 .accountProfile-priceWrapper {
   width: 100%;
-}
-
-.accountProfile-priceItem {
-  border-bottom: 1px solid #ebebeb;
-  padding: 15px;
-}
-
-.accountProfile-priceItem-title {
-  font-size: 16px;
-}
-
-.accountProfile-priceItem-after {
-  color: #ec407a;
-  font-size: 12px;
-}
-
-.accountProfile-priceItem-before {
-  color: #707070;
-  font-size: 12px;
 }
 
 .accountProfile-priceTotal {
@@ -204,8 +226,9 @@
   font-size: 16px;
   text-align: center;
   margin-top: 45px;
-   margin-bottom: 0;
+  margin-bottom: 0;
 }
+
 
 .accountProfile-address,
 .accountProfile-profile-editProfile {
@@ -582,33 +605,6 @@
   margin-bottom: 0;
 }
 
-.accountProfile-basketImage-wrapper {
-  width: 80px;
-  height: 80px;
-  border-radius: 14px;
-  border: solid 1px #ebebeb;
-  background-color: #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 20px;
-  position: relative;
-}
-
-.accountProfile-basketImage-wrapper > img {
-  max-width: 60px;
-}
-
-.accountProfile-priceItem-wrapper{
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid #ebebeb;
-}
-
-.accountProfile-basket .accountProfile-priceItem {
-  border-bottom: initial;
-}
-
 .accountProfile-basketWrapper {
   align-self: stretch;
 }
@@ -617,30 +613,12 @@
   border-bottom: 1px solid #ebebeb;
 }
 
-.accountProfile-basketImage-remove {
-  width: 20px;
-  height: 20px;
-  background-color: #212121;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 120%;
-  padding-top: 2px;
-  box-sizing: border-box;
-  color: #f5f5f5;
-  position: absolute;
-  top: -7px;
-  right: -7px;
-  cursor: pointer;
-}
-
 .accountProfile-basket .accountProfile-priceTotal {
   border: initial;
   align-self: stretch;
   justify-content: center;
-  border-top: 1px solid #ebebeb;
-  padding-top: 35px;
+  /*border-top: 1px solid #ebebeb;*/
+  padding-top: 20px;
 }
 
 .accountProfile-basket .accountProfile-priceTotal > span:first-of-type {

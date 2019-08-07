@@ -35,6 +35,17 @@ border: none;
   background-color: #ec407a;
 }
 
+.cfnButton-primary-invert {
+  background-color: #fff;
+  border: solid 1px #ff005d;
+  color: #ff005d;
+}
+
+.cfnButton-primary-invert:hover{
+  background-color: #ec407a;
+  color: #fff;
+}
+
 .cfnButton-danger {
   background-color: #d9534f;
 }

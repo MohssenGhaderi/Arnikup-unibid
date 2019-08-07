@@ -2,15 +2,21 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Shop } from '../models/shop/shop.model';
 import { Links } from '../links.component';
-import { MainUserInformation } from '../models/user/information/main.model'
-import { Cart } from '../models/user/information/cart.model'
-import { Score } from '../models/user/information/score.model'
-import { Avatar } from '../models/user/avatar.model'
-import { EditUserInformation } from 'src/app/models/user/information/edit.model'
-import { ShipmentInformation } from 'src/app/models/user/information/shipment.model'
-import { Address } from 'src/app/models/user/information/address.model'
-import { PaymentInfo } from 'src/app/models/user/information/paymentInfo.model'
+import { MainUserInformation } from '../models/user/information/main.model';
+import { Cart } from '../models/user/information/cart.model';
+import { Score } from '../models/user/information/score.model';
+import { Avatar } from '../models/user/avatar.model';
+import { EditUserInformation } from 'src/app/models/user/information/edit.model';
+import { ShipmentInformation } from 'src/app/models/user/information/shipment.model';
+import { Address } from 'src/app/models/user/information/address.model';
+import { PaymentInfo } from 'src/app/models/user/information/paymentInfo.model';
+import { UserCoupon } from 'src/app/models/user/userCoupon.model';
+import { ShipmentMethod } from 'src/app/models/shipmentMethod.model';
 import { SharingService } from 'src/app/services/sharing.service';
+import { FavAuction } from '../models/auction/favorite.model';
+import { GetTransactions } from '../models/service/getTransactions.model';
+import { GetNotifications } from '../models/service/getNotifications.model';
+import { GetMessages } from '../models/service/getMessages.model';
 
 
 @Injectable({ providedIn: 'root' })
@@ -24,6 +30,11 @@ export class UserService {
   getShipmentUrl = Links.prefix+'/v2/api/user/shipment';
   getPaymentUrl = Links.prefix+'/v2/api/user/payment';
   couponUrl = Links.prefix+'/v2/api/user/coupons';
+  shipmentMethodsUrl = Links.prefix+'/v2/api/user/shipment/methods';
+  favoriteUrl = Links.prefix+'/v2/api/user/favorite';
+  transactionsUrl = Links.prefix+'/v2/api/user/transactions';
+  notificationsUrl = Links.prefix+'/v2/api/user/notifications';
+  messagesUrl = Links.prefix+'/v2/api/user/messages';
 
   constructor(private http: HttpClient,private shared:SharingService) {}
 
@@ -31,6 +42,172 @@ export class UserService {
     this.shared.toggleMenu.profile = false;
     this.shared.toggleMenu.profileReset();
     this.shared.lastClass = "myCfnAnimation-fadeIn";
+  }
+
+  GetMessages(moreObj) {
+
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      return this.http.get<GetMessages>(this.messagesUrl,{ params: moreObj,
+        headers: new HttpHeaders(
+          {
+            Authorization: 'Bearer ' + token
+          }
+        )});
+    } else {
+      return this.http.get<GetMessages>(this.messagesUrl, {params: moreObj});
+    }
+
+  }
+
+  SendMessage(msgObj) {
+
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      const httpOptions = {
+        headers: new HttpHeaders({
+          Authorization: 'Bearer ' + token
+        })
+      };
+      return this.http.post(this.messagesUrl, msgObj, httpOptions);
+    } else {
+      return this.http.post(this.messagesUrl, msgObj);
+    }
+
+  }
+
+  DeleteNotification(notifObj) {
+
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      const httpOptions = {
+        headers: new HttpHeaders({
+          Authorization: 'Bearer ' + token
+        })
+      };
+      return this.http.patch(this.notificationsUrl, notifObj, httpOptions);
+    } else {
+      return this.http.patch(this.notificationsUrl, notifObj);
+    }
+
+  }
+
+  MarkAsReadNotification(notifObj) {
+
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      const httpOptions = {
+        headers: new HttpHeaders({
+          Authorization: 'Bearer ' + token
+        })
+      };
+      return this.http.put(this.notificationsUrl, notifObj, httpOptions);
+    } else {
+      return this.http.put(this.notificationsUrl, notifObj);
+    }
+
+  }
+
+  GetNotifications(moreObj) {
+
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      return this.http.get<GetNotifications>(this.notificationsUrl,{ params: moreObj,
+        headers: new HttpHeaders(
+          {
+            Authorization: 'Bearer ' + token
+          }
+        )});
+    } else {
+      return this.http.get<GetNotifications>(this.notificationsUrl, {params: moreObj});
+    }
+
+  }
+
+  ApplyGem() {
+
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      const httpOptions = {
+        headers: new HttpHeaders({
+          Authorization: 'Bearer ' + token
+        })
+      };
+      return this.http.post<GetTransactions>(this.transactionsUrl ,{},httpOptions);
+    } else {
+      return this.http.post<GetTransactions>(this.transactionsUrl,{});
+    }
+
+  }
+
+  GetTransactions(moreObj) {
+
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      return this.http.get<GetTransactions>(this.transactionsUrl,{ params: moreObj,
+        headers: new HttpHeaders(
+          {
+            Authorization: 'Bearer ' + token
+          }
+        )});
+    } else {
+      return this.http.get<GetTransactions>(this.transactionsUrl, {params: moreObj});
+    }
+
+  }
+
+  GetFavAuctions() {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      const httpOptions = {
+        headers: new HttpHeaders({
+          Authorization: 'Bearer ' + token
+        })
+      };
+      return this.http.get<FavAuction[]>(this.favoriteUrl, httpOptions);
+    } else {
+      return this.http.get<FavAuction[]>(this.favoriteUrl);
+    }
+  }
+
+  GetShipmentMethods() {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      const httpOptions = {
+        headers: new HttpHeaders({
+          Authorization: 'Bearer ' + token
+        })
+      };
+      return this.http.get<ShipmentMethod[]>(this.shipmentMethodsUrl, httpOptions);
+    } else {
+      return this.http.get<ShipmentMethod[]>(this.shipmentMethodsUrl);
+    }
+  }
+
+  GetUserCoupon() {
+
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const token = JSON.parse(currentUser)['accessToken'];
+      const httpOptions = {
+        headers: new HttpHeaders({
+          Authorization: 'Bearer ' + token
+        })
+      };
+      return this.http.get<UserCoupon>(this.couponUrl, httpOptions);
+    } else {
+      return this.http.get<UserCoupon>(this.couponUrl);
+    }
+
   }
 
   CheckCoupon(couponObj) {

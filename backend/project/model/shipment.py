@@ -17,8 +17,8 @@ class Shipment(Base):
     id = db.Column(db.BigInteger, primary_key=True)
     guid = db.Column(db.String(64), default = random.randint(100000000000,10000000000000000))
 
-    shipment_method_id = db.Column(db.BigInteger,db.ForeignKey('shipment_methods.id'))
-    shipment_method = db.relationship('ShipmentMethod')
+    shipment_item_id = db.Column(db.BigInteger,db.ForeignKey('item_shipments.id'))
+    shipment_item = db.relationship('ItemShipment')
 
     insurance_id = db.Column(db.BigInteger, db.ForeignKey('insurances.id'), nullable=True)
     insurance = db.relationship('Insurance')

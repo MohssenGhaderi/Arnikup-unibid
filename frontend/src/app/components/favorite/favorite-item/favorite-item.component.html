@@ -1,0 +1,51 @@
+<div class="fav-cart">
+
+  <div class="cart-off">
+
+    <img (click)="toggleClick($event,auction.auctionId)" class="cart-off-del-img" src="assets/resources/images/assets/png/delete@1x.png">
+
+    <img class="cart-off-img" [src]="Link.auction(auction.image)" alt="">
+
+    <div class="cart-off-info">
+      <p class="cart-title">{{auction.title}}</p>
+      <p class="cart-off-after">قیمت پایه حراجی : {{auction.basePrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+      <p class="cart-off-before">قیمت اتمام حراجی : {{auction.maxPrice | currency : ' ' : 'symbol' : '1.0-0'}} تومان </p>
+    </div>
+
+    <span class="cart-off-percent">٪{{auction.discount}}</span>
+
+  </div>
+
+  <div class="cart-footer">
+    <div class="cart-footer-rank">
+
+      <span>شرکت کنندگان : </span>
+      <span class="cart-footer-rank-highlit">{{auction.maxMembers}}</span>
+      <span>/ {{auction.totalParticipants}}</span>
+    </div>
+    <div class="cart-footer-contributer">
+      <div class="cart-timer">
+        <div class="cart-timer-part">
+          <span class="cart-time">{{remainedTime.seconds}}</span>
+          <span class="cart-time-text">ثانیه</span>
+        </div>
+        <div class="cart-timer-part">
+          <span class="cart-time">{{remainedTime.minute}}</span>
+          <span class="cart-time-text">دقیقه</span>
+        </div>
+        <div class="cart-timer-part">
+          <span class="cart-time">{{remainedTime.hour}}</span>
+          <span class="cart-time-text">ساعت</span>
+        </div>
+        <div class="cart-timer-part">
+          <span class="cart-time">{{remainedTime.day}}</span>
+          <span class="cart-time-text">روز</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-success></app-success>
+  <app-error></app-error>
+  <app-loading></app-loading>
+
+</div>

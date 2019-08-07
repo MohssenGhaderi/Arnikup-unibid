@@ -26,16 +26,6 @@
 					<input v-model="registerInformation.c_password" type="password" placeholder="تکرار رمز عبور(مشابه رمز عبور)"/>
 					<input v-model="registerInformation.mobile" v-on:keypress="isNumber($event)" type="text" placeholder="شماره موبایل (فقط عدد بصورت انگلیسی)" :maxlength="11"/>
 					<input v-model="registerInformation.invitor" type="text" placeholder="کد معرف"/>
-					<div class="form-my-account">
-						<div class="table create-account">
-							<div class="text-left">
-								<p>
-									<!-- <input v-model="registerInformation.accept_roles" type="checkbox"  id="accept_roles" name="accept_roles"/><label for="accept_roles"><a href="/roles" class="color">قوانین و مقررات سایت </a> را مطالعه کرده ام و قبول دارم <span class="required">*</span></label> -->
-									قبل از ثبت نام در سایت <a href="/roles" class="color"> قوانین و مقررات سایت </a>را مطالعه کرده ام و قبول دارم. </label>
-								</p>
-							</div>
-						</div>
-					</div>
 					<input type="submit" value="ثبت نام" />
 					<p class="message">قبلا ثبت نام کرده اید؟ <a href="/login">ورود به حساب کاربری</a></p>
 
@@ -79,22 +69,18 @@ var app = new Vue({
           delete obj[propName];
         }
       }
-			axios.post("{{url_for('userregistration')}}",obj,
+			axios.post("{{url_for('rest_api.auth_register')}}",obj,
 				{
 					headers:
 					{
 						'Content-Type': 'application/json'
 					}
 				}).then(function (response) {
-
 					window.location = "/verify"
-
          })
          .catch((error)=>{
               $(".error_alert").removeClass('hide');
-							for (var propName in error.response.data.message) {
- 							 $(".error_container").html(error.response.data.message[propName]);
- 						 }
+ 							$(".error_container").html(error.response.data.message;
  				});
 		},
 		isNumber: function(evt) {

@@ -21,11 +21,11 @@
   opacity: 0.4;
   border-radius: 24px;
   background-color: #212121;
-
   color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .accountProfile-basket-onButton {
@@ -40,6 +40,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .off-content-text {

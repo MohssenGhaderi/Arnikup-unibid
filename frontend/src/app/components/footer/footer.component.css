@@ -31,6 +31,18 @@ footer {
   color: #212121;
 }
 
+.footer-content > ul > li {
+  color: #212121;
+  outline: none;
+  opacity: 0.9;
+  cursor: pointer;
+}
+
+.footer-content > ul > li:hover{
+    opacity: 1;
+    color: #000;
+}
+
 .footer-content > ul {
   list-style-type: none;
   padding: 0;

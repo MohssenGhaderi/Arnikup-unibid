@@ -13,7 +13,7 @@ class UserGem(Base):
     gem = db.relationship('Gem')
 
     payment_id = db.Column(db.BigInteger,db.ForeignKey('payments.id'))
-    payment = db.relationship('Payment')
+    payment = db.relationship('Payment',cascade="all,delete",backref="user_gems")
 
     created = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False)
     updated = db.Column(db.TIMESTAMP, default=datetime.datetime.now, nullable=False, onupdate=datetime.datetime.now)
