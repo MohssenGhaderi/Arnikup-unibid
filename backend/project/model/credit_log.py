@@ -1,8 +1,8 @@
-from project.database import db, Base
+from project import db
 
 import datetime
 
-class CreditLog(Base):
+class CreditLog(db.Model):
     __tablename__ = 'user_credit_logs'
 
     id = db.Column(db.BigInteger,primary_key=True)

@@ -1,4 +1,4 @@
-from project.database import db, Base
+from project import db
 
 class Revoked(db.Model):
     __tablename__ = 'revoked_tokens'

@@ -1,5 +1,5 @@
 
-from project.database import db, Base
+from project import db
 import datetime
 
 class Payment_Types:
@@ -9,7 +9,7 @@ class Payment_Types:
     BankReceipt = 'فیش بانکی'
     NOPAY = 'رایگان'
 
-class PaymentMethod(Base):
+class PaymentMethod(db.Model):
     __tablename__ = 'payment_methods'
     id = db.Column(db.BigInteger, primary_key=True)
     title = db.Column(db.String(length=100), nullable=False)

@@ -1,7 +1,7 @@
-from project.database import db, Base
+from project import db
 import datetime
 
-class Comment(Base):
+class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.BigInteger, primary_key=True)
     title = db.Column(db.String(length=255), nullable=False)

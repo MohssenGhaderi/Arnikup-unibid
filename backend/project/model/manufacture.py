@@ -1,7 +1,7 @@
-from project.database import db, Base
+from project import db
 import datetime
 
-class Manufacture(Base):
+class Manufacture(db.Model):
     __tablename__ = 'manufactures'
     id = db.Column(db.BigInteger, primary_key=True)
     name = db.Column(db.String(length=25), nullable=False)

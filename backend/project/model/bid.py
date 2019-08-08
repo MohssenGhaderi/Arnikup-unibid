@@ -1,7 +1,7 @@
-from project.database import db, Base
+from project import db
 import datetime
 
-class Bid(Base):
+class Bid(db.Model):
     __tablename__ = 'bids'
 
     id = db.Column(db.BigInteger, primary_key=True)

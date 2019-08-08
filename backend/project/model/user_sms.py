@@ -1,8 +1,8 @@
 
-from project.database import db, Base
+from project import db
 import datetime
 
-class UserSMS(Base):
+class UserSMS(db.Model):
     __tablename__ = 'short_messages'
     id = db.Column(db.BigInteger, primary_key=True)
 

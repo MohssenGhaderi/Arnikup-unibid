@@ -1,9 +1,9 @@
 
-from project.database import db, Base
+from project import db
 import datetime
 
 
-class Setting(Base):
+class Setting(db.Model):
     __tablename__ = 'settings'
     id = db.Column(db.BigInteger,primary_key=True)
     default_coupon = db.Column(db.String(length=255), nullable=False)

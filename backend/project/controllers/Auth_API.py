@@ -5,8 +5,7 @@ from flask import url_for, redirect, render_template, request, abort, make_respo
 from ..model import *
 from ..model.order import *
 import json
-from ..database import db
-from project import app,mail
+from project import app,mail,db
 from flask_login import LoginManager, UserMixin,login_required, login_user, logout_user ,current_user
 from ..melipayamak import SendMessage
 from flask_mail import Message

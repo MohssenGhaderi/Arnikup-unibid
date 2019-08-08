@@ -1,5 +1,5 @@
 
-from project.database import db, Base
+from project import db
 from datetime import datetime
 import time
 import random
@@ -17,7 +17,7 @@ class CoinPayType:
     GEMFRACTION = 'شارژ کسری حساب الماس'
     CONVERTGEM = 'تبدیل الماس به سکه'
 
-class CoinPayment(Base):
+class CoinPayment(db.Model):
     __tablename__ = 'coin_payments'
     id = db.Column(db.Integer, primary_key=True)
     GUID = db.Column(db.String(64),nullable=False)

@@ -1,7 +1,7 @@
-from project.database import db, Base
+from project import db
 import datetime
 
-class ItemShipment(Base):
+class ItemShipment(db.Model):
     __tablename__ = 'item_shipments'
 
     id = db.Column(db.BigInteger,primary_key=True)

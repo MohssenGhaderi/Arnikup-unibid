@@ -1,12 +1,12 @@
 
-from project.database import db, Base
+from project import db
 import datetime
 
 class GemType:
     INCHEST = 'پیشنهادات روزانه'
     FORSALE = 'بسته های فروشی'
 
-class Gem(Base):
+class Gem(db.Model):
     __tablename__ = 'gems'
     id = db.Column(db.BigInteger,primary_key=True)
     title = db.Column(db.String(length=255), nullable=False)

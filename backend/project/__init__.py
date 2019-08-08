@@ -26,6 +26,7 @@ from .exceptions import ValidationException
 from .lang.fa import TOKEN
 import jwt as original_jwt
 import rejson
+from flask_sqlalchemy import SQLAlchemy
 
 # class CustomApi(flask_restful.Api):
 #     def handle_error(self, e):
@@ -44,6 +45,7 @@ rj = rejson.Client(host='localhost', port=6379,decode_responses=True)
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
+db = SQLAlchemy(app)
 
 mail = Mail(app)
 jwt = JWTManager(app)

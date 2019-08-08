@@ -1,8 +1,8 @@
-from project.database import db, Base
+from project import db
 import datetime
 
 
-user_auction_views = db.Table('user_auction_views', Base.metadata,
+user_auction_views = db.Table('user_auction_views', db.Model.metadata,
     db.Column('user_id', db.ForeignKey('users.id')),
     db.Column('auction_id', db.ForeignKey('auctions.id')),
     db.Column('count',db.Integer()),

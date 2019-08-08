@@ -1,4 +1,4 @@
-from project.database import db, Base
+from project import db
 import datetime
 import time
 import random
@@ -9,7 +9,7 @@ from  .role import Role
 
 
 
-class User(Base,UserMixin):
+class User(db.Model,UserMixin):
     def __init__(self, username):
         try:
              return cls.query.get(uid)
@@ -59,7 +59,7 @@ class User(Base,UserMixin):
 
     payments = db.relationship('Payment')
     gem_payments = db.relationship('GemPayment')
-    
+
     messages = db.relationship('UserMessage',lazy='dynamic')
 
     short_messages = db.relationship('UserSMS')

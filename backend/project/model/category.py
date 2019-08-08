@@ -1,7 +1,7 @@
-from project.database import db, Base
+from project import db
 import datetime
 
-class Category(Base):
+class Category(db.Model):
     __tablename__ = 'categories'
     id = db.Column(db.BigInteger, primary_key=True)
     title = db.Column(db.String(length=100), nullable=False)

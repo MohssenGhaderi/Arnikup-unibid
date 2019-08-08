@@ -1,4 +1,4 @@
-from project.database import db, Base
+from project import db
 import datetime
 
 class AuctionNotificationType:
@@ -7,7 +7,7 @@ class AuctionNotificationType:
     START = 2158
     PARTICIPATE = 2159
 
-class AuctionNotification(Base):
+class AuctionNotification(db.Model):
     __tablename__ = 'auction_notifications'
     id = db.Column(db.BigInteger, primary_key=True)
     title = db.Column(db.String(length=100), nullable=False)

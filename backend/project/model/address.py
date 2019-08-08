@@ -1,7 +1,7 @@
-from project.database import db, Base
+from project import db
 import datetime
 
-class Address(Base):
+class Address(db.Model):
     __tablename__ = 'addresses'
 
     id = db.Column(db.BigInteger, primary_key=True)

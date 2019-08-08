@@ -1,8 +1,8 @@
 
-from project.database import db, Base
+from project import db
 import datetime
 
-class Level(Base):
+class Level(db.Model):
     __tablename__ = 'levels'
     __table_args__ = (db.UniqueConstraint('number', name='levels_number_uc'),)
 

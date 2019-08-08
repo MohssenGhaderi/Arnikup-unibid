@@ -1,6 +1,6 @@
 
 import random
-from project.database import db, Base
+from project import db
 import datetime
 import time
 
@@ -12,7 +12,7 @@ class ShipmentStatus:
     DELIVERED = 'تحویل داده شده'
 
 
-class Shipment(Base):
+class Shipment(db.Model):
     __tablename__ = 'shipments'
     id = db.Column(db.BigInteger, primary_key=True)
     guid = db.Column(db.String(64), default = random.randint(100000000000,10000000000000000))

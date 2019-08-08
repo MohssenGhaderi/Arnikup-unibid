@@ -1,7 +1,7 @@
 from ..model import *
 from flask_restplus import Resource, fields, Namespace
 from flask import url_for, redirect, request, abort, make_response , jsonify , session, flash
-from project import app, rest_api
+from project import app, db, rest_api
 from datetime import datetime
 from sqlalchemy import or_, asc, desc
 from ..model.guest_message import GuestMessage

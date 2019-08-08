@@ -1,5 +1,5 @@
 
-from project.database import db, Base
+from project import db
 import datetime
 
 class NotificationType:
@@ -14,7 +14,7 @@ class NotificationType:
     ENDAUCTION_ALLUSER = 3083
     ENDAUCTION_WINNER = 3084
 
-class Notification(Base):
+class Notification(db.Model):
     __tablename__ = 'notifications'
     id = db.Column(db.BigInteger, primary_key=True)
     title = db.Column(db.String(length=100), nullable=False)

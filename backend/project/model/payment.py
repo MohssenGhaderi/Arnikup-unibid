@@ -1,5 +1,5 @@
 import random
-from project.database import db, Base
+from project import db
 from datetime import datetime
 import time
 
@@ -22,7 +22,7 @@ class PaymentType:
     CHEST = 'خرید پکیج پیشنهادی'
     FREE = 'خرید رایگان'
 
-class Payment(Base):
+class Payment(db.Model):
     __tablename__ = 'payments'
     id = db.Column(db.Integer, primary_key=True)
     GUID = db.Column(db.String(128) ,default = random.randint(100000000000,10000000000000000))

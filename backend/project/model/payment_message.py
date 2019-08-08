@@ -1,9 +1,9 @@
 
 
-from project.database import db, Base
+from project import db
 import datetime
 
-class PaymentMessage(Base):
+class PaymentMessage(db.Model):
     __tablename__ = 'payment_messages'
     id = db.Column(db.BigInteger, primary_key=True)
     title = db.Column(db.String(length=100), nullable=False)

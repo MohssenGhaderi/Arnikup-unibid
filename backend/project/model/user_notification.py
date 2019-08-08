@@ -1,9 +1,9 @@
 
 
-from project.database import db, Base
+from project import db
 import datetime
 
-class UserNotification(Base):
+class UserNotification(db.Model):
     __tablename__ = 'user_notifications'
     id = db.Column(db.BigInteger, primary_key=True)
     user_id = db.Column(db.BigInteger,db.ForeignKey('users.id'),nullable=False)

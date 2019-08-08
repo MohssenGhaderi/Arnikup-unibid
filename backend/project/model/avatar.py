@@ -1,12 +1,11 @@
-
-from project.database import db, Base
+from project import db
 import datetime
 
 class AvatarType:
     REGULAR = 'عمومی'
     PRIVATE = 'اختصاصی'
 
-class Avatar(Base):
+class Avatar(db.Model):
     __tablename__ = 'avatars'
     id = db.Column(db.BigInteger,primary_key=True)
     title = db.Column(db.String(length=255), nullable=False)

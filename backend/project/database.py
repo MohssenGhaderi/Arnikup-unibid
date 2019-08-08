@@ -1,12 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
-from . import app
+from . import app,db
 from sqlalchemy.ext.declarative import declarative_base
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
-
-
-db = SQLAlchemy(app)
-Base = db.Model
 
 def init_db():
     from  .model import revoked

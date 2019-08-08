@@ -1,7 +1,7 @@
-from project.database import db, Base
+from project import db
 import datetime
 
-class Inventory(Base):
+class Inventory(db.Model):
     __tablename__ = 'inventories'
     id = db.Column(db.BigInteger, primary_key=True)
     name = db.Column(db.String(length=100), nullable=False)

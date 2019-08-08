@@ -1,8 +1,8 @@
 
-from project.database import db, Base
+from project import db
 import datetime
 
-class UserActivity(Base):
+class UserActivity(db.Model):
     __tablename__ = 'user_activities'
     id = db.Column(db.BigInteger, primary_key=True)
     activity = db.Column(db.String(length=255), nullable=False)

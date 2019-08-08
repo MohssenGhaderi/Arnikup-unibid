@@ -1,5 +1,5 @@
 
-from project.database import db, Base
+from project import db
 import datetime
 
 class UserMessageStatus:
@@ -11,7 +11,7 @@ class UserMessageStatus:
     APPLYING = "در دست اقدام"
     EDITED = "ویرایش شده"
 
-class UserMessage(Base):
+class UserMessage(db.Model):
     __tablename__ = 'user_messages'
     id = db.Column(db.BigInteger, primary_key=True)
 

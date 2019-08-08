@@ -1,5 +1,5 @@
 
-from project.database import db, Base
+from project import db
 import datetime
 
 class SiteNotificationType:
@@ -15,7 +15,7 @@ class SiteNotificationType:
     ENDAUCTION_WINNER = 3084
 
 
-class SiteNotification(Base):
+class SiteNotification(db.Model):
     __tablename__ = 'site_notifications'
     id = db.Column(db.BigInteger, primary_key=True)
     title = db.Column(db.String(length=100), nullable=False)

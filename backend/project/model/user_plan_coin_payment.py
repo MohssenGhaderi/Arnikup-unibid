@@ -1,9 +1,9 @@
 
 
-from project.database import db, Base
+from project import db
 import datetime
 
-class UserPlanCoinPayment(Base):
+class UserPlanCoinPayment(db.Model):
     __tablename__ = 'user_plan_coin_payments'
     id = db.Column(db.BigInteger,primary_key=True)
 

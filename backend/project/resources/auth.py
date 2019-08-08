@@ -2,8 +2,7 @@ from flask_restplus import Resource, fields, Namespace
 from flask import current_app, request, abort, make_response , jsonify , session
 from ..model import *
 import json
-from ..database import db
-from project import app,mail, rest_api, redis_db , rj
+from project import app,db,mail, rest_api, redis_db , rj
 from ..melipayamak import SendMessage
 from flask_mail import Message
 from definitions import (MAX_LOGIN_ATTEMPTS, MAX_ACTIVATION_ATTEMPTS, MAX_DEFFER_ACTIVATION_TIME,

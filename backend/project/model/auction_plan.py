@@ -1,7 +1,7 @@
-from project.database import db, Base
+from project import db
 import datetime
 
-class AuctionPlan(Base):
+class AuctionPlan(db.Model):
     __tablename__ = 'auction_plans'
 
     id = db.Column(db.BigInteger,primary_key=True)

@@ -2,7 +2,7 @@ from flask_restplus import Resource, fields, Namespace
 from ..model import *
 from flask import url_for, redirect, render_template, request, abort, make_response , jsonify , session, flash
 import json
-from project import app, rest_api
+from project import app, db, rest_api
 from datetime import datetime
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from flask_login import LoginManager, UserMixin,login_required, login_user, logout_user ,current_user

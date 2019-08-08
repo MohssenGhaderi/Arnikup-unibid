@@ -1,9 +1,9 @@
 
-from project.database import db, Base
+from project import db
 import datetime
 
 
-class ShipmentMethod(Base):
+class ShipmentMethod(db.Model):
     __tablename__ = 'shipment_methods'
     id = db.Column(db.BigInteger, primary_key=True)
     title = db.Column(db.String(length=100), nullable=False)

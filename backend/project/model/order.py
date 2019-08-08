@@ -1,5 +1,5 @@
 
-from project.database import db, Base
+from project import db
 import datetime
 
 # each order has a status for servicing
@@ -15,7 +15,7 @@ class OrderDiscountStatus:
     AUCTIONWINNER = 'برنده حراجی'
     EXPIRED = 'منقضی شده'
 
-class Order(Base):
+class Order(db.Model):
     __tablename__ = 'orders'
     id = db.Column(db.BigInteger, primary_key=True)
 

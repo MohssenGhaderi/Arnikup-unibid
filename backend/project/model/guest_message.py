@@ -1,12 +1,12 @@
 
-from project.database import db, Base
+from project import db
 import datetime
 
 class GuestSendType:
     MOBILE = 'موبایل'
     EMAIL = 'ایمیل'
 
-class GuestMessage(Base):
+class GuestMessage(db.Model):
     __tablename__ = 'guest_messages'
     id = db.Column(db.BigInteger, primary_key=True)
 

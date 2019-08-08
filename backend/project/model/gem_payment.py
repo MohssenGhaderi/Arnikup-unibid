@@ -1,4 +1,4 @@
-from project.database import db, Base
+from project import db
 from datetime import datetime
 import time
 import random
@@ -17,7 +17,7 @@ class GemPayType:
     AVATAR = 'تبدیل به آواتار'
     BID = 'تبدیل به بید اضافه'
 
-class GemPayment(Base):
+class GemPayment(db.Model):
     __tablename__ = 'gem_payments'
     id = db.Column(db.Integer, primary_key=True)
     GUID = db.Column(db.String(64) ,default = 0)

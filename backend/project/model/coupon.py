@@ -1,11 +1,11 @@
-from project.database import db, Base
+from project import db
 import datetime
 
 class CouponType:
     SYSTEM = 'سیستمی'
     PUBLIC = 'عمومی'
 
-class Coupon(Base):
+class Coupon(db.Model):
     __tablename__ = 'coupons'
     id = db.Column(db.BigInteger, primary_key=True)
     title = db.Column(db.String(length=100), nullable=False)

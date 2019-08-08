@@ -1,6 +1,4 @@
-
-from ..database import db
-from .. import app
+from .. import app,db
 from .classes import *
 from ..model import *
 from flask_admin import Admin

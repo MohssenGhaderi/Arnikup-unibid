@@ -1,8 +1,8 @@
-from project.database import db, Base
+from project import db
 import datetime
 
 
-class Insurance(Base):
+class Insurance(db.Model):
     __tablename__ = "insurances"
     id = db.Column(db.BigInteger, primary_key=True)
     company = db.Column(db.String(length=100), nullable=False)

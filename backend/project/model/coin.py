@@ -1,12 +1,12 @@
 
-from project.database import db, Base
+from project import db
 import datetime
 
 class CoinType:
     INCHEST = 'پیشنهادات روزانه'
     FORSALE = 'بسته های فروشی'
 
-class Coin(Base):
+class Coin(db.Model):
     __tablename__ = 'coins'
     id = db.Column(db.BigInteger,primary_key=True)
     title = db.Column(db.String(length=255), nullable=False)

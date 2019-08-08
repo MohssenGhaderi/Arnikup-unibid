@@ -1,8 +1,8 @@
 
-from project.database import db, Base
+from project import db
 import datetime
 
-class State(Base):
+class State(db.Model):
     __tablename__ = 'states'
     id = db.Column(db.BigInteger, primary_key=True)
     title = db.Column(db.String(length=50), nullable=False)

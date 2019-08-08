@@ -1,9 +1,9 @@
 
 
-from project.database import db, Base
+from project import db
 import datetime
 
-class UserPlanGemPayment(Base):
+class UserPlanGemPayment(db.Model):
     __tablename__ = 'user_plan_gem_payments'
     id = db.Column(db.BigInteger,primary_key=True)
 

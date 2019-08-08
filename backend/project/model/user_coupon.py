@@ -1,8 +1,8 @@
 
-from project.database import db, Base
+from project import db
 import datetime
 
-class UserCoupon(Base):
+class UserCoupon(db.Model):
     __tablename__ = 'user_coupons'
     id = db.Column(db.BigInteger,primary_key=True)
     user_id = db.Column(db.BigInteger,db.ForeignKey('users.id'))
